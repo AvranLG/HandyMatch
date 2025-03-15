@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HandyMatch</string>
+    <string name="iniciar">Iniciar</string>
+
 </resources>
