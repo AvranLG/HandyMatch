@@ -22,7 +22,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="15dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/RestButton"
@@ -35,6 +35,16 @@
             android:textStyle="bold"
             app:backgroundTint="@color/md_theme_primary"
             app:cornerRadius="16dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OMARICON"
+            android:textAlignment="center"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="34sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </RelativeLayout>
