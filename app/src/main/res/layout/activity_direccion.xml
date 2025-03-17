@@ -249,18 +249,37 @@
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:hintEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:expandedHintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/referenciaText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:inputType="text"
+                android:paddingTop="20dp"
+                android:gravity="top"
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
+        <Button
+            android:id="@+id/btnregistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/fondosyletras"
+            android:includeFontPadding="true"
+            android:onClick="abrirLogin"
+            android:padding="12dp"
+            android:text="Terminar registro"
+            android:textAllCaps="false"
+            android:textColor="#F7FAFA"
+            app:layout_constraintTop_toBottomOf="@id/descrpicion" />
     </LinearLayout>
 </ScrollView>

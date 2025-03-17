@@ -1,6 +1,8 @@
 package com.example.handymatch;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,9 @@ public class DireccionActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    public void abrirLogin(View v){
+        Intent i = new Intent(this,LoginActivity.class);
+        startActivity(i);
     }
 }

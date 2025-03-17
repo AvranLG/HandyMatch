@@ -68,8 +68,7 @@ public class RegistroActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void abrirDireccion(View v){
+    }    public void abrirDireccion(View v){
         Intent i = new Intent(this,DireccionActivity.class);
         startActivity(i);
     }
