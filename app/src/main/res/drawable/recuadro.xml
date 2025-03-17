@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Esquinas redondeadas -->
+    <corners android:radius="30dp"/>
+
+    <!-- Color de fondo -->
+    <solid android:color="#E8EDF2"/>
+
+    <!-- Borde del EditText -->
+    <stroke android:width="2dp" android:color="@android:color/darker_gray"/>
+
+    <!-- Margen interno -->
+    <padding android:left="12dp" android:right="12dp" android:top="8dp" android:bottom="8dp"/>
+</shape>
