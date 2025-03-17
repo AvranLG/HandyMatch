@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -67,5 +68,9 @@ public class RegistroActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void abrirDireccion(View v){
+        Intent i = new Intent(this,DireccionActivity.class);
+        startActivity(i);
     }
 }

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
+            android:name=".DireccionActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegistroActivity"
             android:exported="false" />
         <activity

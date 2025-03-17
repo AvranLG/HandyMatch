@@ -31,10 +31,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
-                android:id="@+id/registrar"
+                android:id="@+id/direccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/registrar"
+                android:text="@string/direccion"
                 android:textColor="@color/md_theme_onBackground"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -59,34 +59,24 @@
                 android:layout_marginEnd="16dp"/> <!-- Margen opcional -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@android:drawable/ic_menu_gallery"
-                android:background="@drawable/circulo_imagen"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"/>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
         <TextView
-            android:id="@+id/nombre"
+            android:id="@+id/direccio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="Dirección"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="16sp" />
 
-        <!-- Imput Layout de Email -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nombreContainer"
+            android:id="@+id/direccionContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre"
+            android:hint="Calle y número"
             android:textColorHint="@color/textodeguia"
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="@android:color/darker_gray"
@@ -99,26 +89,27 @@
                 android:id="@+id/nombreText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textPostalAddress"
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
         <TextView
-            android:id="@+id/apellidos"
+            android:id="@+id/postal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Apellidos"
+            android:text="Código postal"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="16sp" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/apellidosContainer"
+            android:id="@+id/postalContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Apellidos"
+            android:hint="Código postal"
             android:textColorHint="@color/textodeguia"
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="@android:color/darker_gray"
@@ -128,112 +119,11 @@
             app:boxCornerRadiusBottomEnd="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/apellidosText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:background="@drawable/recuadro"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/correo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Correo electronico"
-            android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Correo"
-            android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@android:color/darker_gray"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/correoText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/recuadro"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/contraseña"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contraseña"
-            android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pwdContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Crea una contraseña"
-            android:textColorHint="@color/textodeguia"
-            app:endIconMode="password_toggle"
-            app:startIconCheckable="false"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@android:color/darker_gray"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:background="@drawable/recuadro"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/telefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Número de teléfono"
-            android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/numeroContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tu número de teléfono"
-            android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@android:color/darker_gray"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/numeroText"
+                android:id="@+id/postalText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLength="10"
-                android:digits="0123456789"
+                android:maxLength="5"
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -241,19 +131,136 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <Button
-            android:id="@+id/btnregistro"
+        <TextView
+            android:id="@+id/colonia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/fondosyletras"
-            android:includeFontPadding="true"
-            android:onClick="abrirRegistro"
-            android:padding="12dp"
-            android:text="Continuar"
-            android:textAllCaps="false"
-            android:textColor="#F7FAFA"
-            app:layout_constraintTop_toBottomOf="@id/descrpicion" />
+            android:text="Colonia"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/coloniaContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Colonia"
+            android:textColorHint="@color/textodeguia"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/coloniaText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:background="@drawable/recuadro"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/estado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/estadoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                android:hint="Estado"
+            android:textColorHint="@color/textodeguia"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/estadoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:background="@drawable/recuadro"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/ciudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ciudad"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ciudadContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ciudad"
+            android:textColorHint="@color/textodeguia"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ciudadText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:background="@drawable/recuadro"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/referencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Referencia"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/referenciaContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Referencias adicionales"
+            android:textColorHint="@color/textodeguia"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/referenciaText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:background="@drawable/recuadro"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
     </LinearLayout>
 </ScrollView>
