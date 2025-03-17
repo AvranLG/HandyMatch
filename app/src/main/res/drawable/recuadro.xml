@@ -8,8 +8,7 @@
     <!-- Color de fondo -->
     <solid android:color="#E8EDF2"/>
 
-    <!-- Borde del EditText -->
-    <stroke android:width="2dp" android:color="@android:color/darker_gray"/>
+
 
     <!-- Margen interno -->
     <padding android:left="12dp" android:right="12dp" android:top="8dp" android:bottom="8dp"/>
