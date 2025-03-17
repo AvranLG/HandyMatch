@@ -21,8 +21,8 @@
 
             <ImageButton
                 android:id="@+id/imageButton3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 app:srcCompat="?attr/actionModeCloseDrawable"
                 android:background="?attr/selectableItemBackground"
                 android:padding="8dp"
@@ -65,7 +65,8 @@
             android:layout_height="wrap_content"
             android:text="Nombre"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
 
         <!-- Imput Layout de Email -->
         <com.google.android.material.textfield.TextInputLayout
@@ -74,7 +75,7 @@
             android:layout_height="wrap_content"
             android:hint="Nombre"
             android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="outline"
+            app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
@@ -85,20 +86,23 @@
                 android:id="@+id/nombreText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/recuadro"
                 android:inputType="textPersonName"
-                android:background="@drawable/recuadro"/>
+                android:textAlignment="center" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
         <TextView
             android:id="@+id/apellidos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Apellidos"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/apellidosContainer"
@@ -106,7 +110,7 @@
             android:layout_height="wrap_content"
             android:hint="Apellidos"
             android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="outline"
+            app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
@@ -131,14 +135,15 @@
             android:layout_height="wrap_content"
             android:text="Correo electronico"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Correo"
             android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="outline"
+            app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
@@ -150,7 +155,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:background="@drawable/recuadro"/>
+                android:background="@drawable/recuadro"
+                android:textAlignment="center"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -163,7 +169,8 @@
             android:layout_height="wrap_content"
             android:text="Contraseña"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pwdContainer"
@@ -173,7 +180,7 @@
             android:textColorHint="@color/textodeguia"
             app:endIconMode="password_toggle"
             app:startIconCheckable="false"
-            app:boxBackgroundMode="outline"
+            app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
