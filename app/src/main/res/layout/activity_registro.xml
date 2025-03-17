@@ -73,16 +73,15 @@
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
+        <!-- Imput Layout de Email -->
         <TextView
             android:id="@+id/nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nombre"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="20sp"
-            />
+            android:textSize="16sp" />
 
-        <!-- Imput Layout de Email -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nombreContainer"
             android:layout_width="match_parent"
@@ -116,7 +115,7 @@
             android:layout_height="wrap_content"
             android:text="Apellidos"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="20sp"
+            android:textSize="16sp"
              />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -152,7 +151,7 @@
             android:layout_height="wrap_content"
             android:text="Correo electronico"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="20sp"
+            android:textSize="16sp"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailContainer"
@@ -188,7 +187,7 @@
             android:layout_height="wrap_content"
             android:text="Contraseña"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="20sp"
+            android:textSize="16sp"
              />
 
         <com.google.android.material.textfield.TextInputLayout

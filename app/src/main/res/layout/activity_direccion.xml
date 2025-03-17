@@ -275,7 +275,6 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/fondosyletras"
             android:includeFontPadding="true"
-            android:onClick="abrirLogin"
             android:padding="12dp"
             android:text="Terminar registro"
             android:textAllCaps="false"
