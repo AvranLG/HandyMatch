@@ -66,7 +66,7 @@
             android:text="Nombre"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="20sp"
-            android:textStyle="bold|italic" />
+            />
 
         <!-- Imput Layout de Email -->
         <com.google.android.material.textfield.TextInputLayout
@@ -76,7 +76,9 @@
             android:hint="Nombre"
             android:textColorHint="@color/textodeguia"
             app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxBackgroundColor="@color/fondogris"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
@@ -86,9 +88,8 @@
                 android:id="@+id/nombreText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/recuadro"
                 android:inputType="textPersonName"
-                android:textAlignment="center" />
+                android:gravity="left" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -102,7 +103,7 @@
             android:text="Apellidos"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="20sp"
-            android:textStyle="bold|italic" />
+             />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/apellidosContainer"
@@ -112,6 +113,8 @@
             android:textColorHint="@color/textodeguia"
             app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
@@ -136,7 +139,7 @@
             android:text="Correo electronico"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="20sp"
-            android:textStyle="bold|italic" />
+            />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailContainer"
             android:layout_width="match_parent"
@@ -145,6 +148,8 @@
             android:textColorHint="@color/textodeguia"
             app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
@@ -170,7 +175,7 @@
             android:text="Contraseña"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="20sp"
-            android:textStyle="bold|italic" />
+             />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pwdContainer"
@@ -182,6 +187,8 @@
             app:startIconCheckable="false"
             app:boxBackgroundMode="filled"
             app:boxStrokeColor="@android:color/darker_gray"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
