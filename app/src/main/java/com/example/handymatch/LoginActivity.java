@@ -31,4 +31,19 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(this,RegistroActivity.class);
         startActivity(i);
     }
+
+    public void abrirMain(View v){
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
+    }
+
+    public void abrirLogin(View v){
+        Intent i = new Intent(this,LoginActivity.class);
+        startActivity(i);
+    }
+
+    public void abrirDireccion(View v){
+        Intent i = new Intent(this,DireccionActivity.class);
+        startActivity(i);
+    }
 }

@@ -19,10 +19,11 @@
             android:id="@+id/imageButton3"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:srcCompat="?attr/actionModeCloseDrawable"
+            android:layout_gravity="start"
             android:background="?attr/selectableItemBackground"
+            android:onClick="abrirMain"
             android:padding="8dp"
-            android:layout_gravity="start"/>
+            app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <Space
             android:layout_width="match_parent"
@@ -63,7 +64,7 @@
             android:hint="@string/email"
             android:textColorHint="@color/textodeguia"
             app:boxBackgroundMode="filled"
-            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxBackgroundColor="@color/fondogris"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:boxCornerRadiusTopStart="16dp"
