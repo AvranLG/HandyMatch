@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/inicio_background"
+        android:background="#E8EDF2"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
@@ -34,7 +34,8 @@
             android:text="@string/iniciar"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/md_theme_primary"
+            android:backgroundTint="@color/fondosyletras"
+            android:textColor="#F7FAFA"
             app:cornerRadius="16dp" />
 
     </LinearLayout>
