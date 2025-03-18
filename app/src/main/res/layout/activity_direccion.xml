@@ -53,7 +53,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Paso 1 de 2"
+                android:text="Paso 2 de 2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="16dp"/> <!-- Margen opcional -->
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/recuadro"
-                android:inputType="textPostalAddress" />
+                android:inputType="textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -253,17 +253,17 @@
             android:layout_height="wrap_content"
             android:hint="Referencias adicionales"
             android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@android:color/darker_gray"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/fondogris"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:expandedHintEnabled="true">
+            app:boxCornerRadiusBottomEnd="16dp">
 
-            <com.google.android.material.textfield.TextInputEditText
+
+        <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/referenciaText"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
@@ -284,6 +284,7 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/fondosyletras"
             android:includeFontPadding="true"
+            android:onClick="abrirLogin"
             android:padding="12dp"
             android:text="Terminar registro"
             android:textAllCaps="false"
