@@ -37,11 +37,5 @@
             app:backgroundTint="@color/md_theme_primary"
             app:cornerRadius="16dp" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
     </LinearLayout>
 </RelativeLayout>
