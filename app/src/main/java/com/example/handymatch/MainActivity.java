@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         // Cambiar el color de la barra de estado
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(Color.parseColor("#E8EDF2")); // Cambia el color
+        window.setStatusBarColor(Color.parseColor("#2BDB6E")); // Cambia el color
     }
     public void abrirLogin(View v){
         Intent i = new Intent(this,LoginActivity.class);
