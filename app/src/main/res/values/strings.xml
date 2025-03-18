@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">HandyMatch</string>
     <string name="iniciar">Iniciar</string>
+    <string name="descripcion">Conecta habilidades y necesidades en tu comunidad</string>
+    <string name="email">Email</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="registrar">Registro</string>
+    <string name="olvidocontraseña">¿Olvidaste tu contraseña? Has clic aquí</string>
+    <string name="terminos">Aceptar términos y políticas de privacidad</string>
+    <string name="direccion">Dirección</string>
 
 </resources>
