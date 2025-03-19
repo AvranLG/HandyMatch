@@ -104,7 +104,7 @@
                 android:id="@+id/direccionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="text|textPersonName"
                 android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,7 +140,7 @@
                 android:id="@+id/apellidosText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="text|textPersonName"
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -248,7 +248,7 @@
                 android:id="@+id/numeroText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="number|phone"
                 android:maxLength="10"
                 android:digits="0123456789"
                 android:background="@drawable/recuadro"/>
