@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.handymatch"
+    namespace = "com.handymatch.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.handymatch"
+        applicationId = "com.handymatch.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
