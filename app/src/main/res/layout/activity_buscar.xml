@@ -80,35 +80,47 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button1"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ButtonCategoría"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="Categoría"
-                android:textColor="@color/letrasnormales"
-                android:backgroundTint="@color/fondogris"
+                android:layout_marginEnd="8dp"
                 android:textSize="12sp"
-                android:layout_marginEnd="8dp"/>
+                android:backgroundTint="@color/fondogris"
+                android:textColor="@color/letrasnormales"
+                app:cornerRadius="16dp" />
 
-            <Button
-                android:id="@+id/button2"
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ButtonUbicación"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="Ubicación"
-                android:textColor="@color/letrasnormales"
-                android:backgroundTint="@color/fondogris"
+                android:layout_marginEnd="8dp"
                 android:textSize="12sp"
-                android:layout_marginEnd="8dp"/>
+                android:backgroundTint="@color/fondogris"
+                android:textColor="@color/letrasnormales"
+                app:cornerRadius="16dp" />
 
-            <Button
-                android:id="@+id/button3"
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ButtonPresupuesto"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="Presupuesto"
-                android:textColor="@color/letrasnormales"
+                android:layout_marginEnd="8dp"
                 android:textSize="12sp"
                 android:backgroundTint="@color/fondogris"
-                android:layout_marginEnd="8dp"/>
+                android:textColor="@color/letrasnormales"
+                app:cornerRadius="16dp" />
+
         </LinearLayout>
 
         <Space
