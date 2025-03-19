@@ -48,7 +48,6 @@
                     android:id="@+id/buscarText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="12dp"
                     android:layout_toEndOf="@id/buscarIcono"
                     android:hint="Buscar Trabajos"
                     android:gravity="center_vertical"
@@ -73,7 +72,48 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="30dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoría"
+                android:textColor="@color/letrasnormales"
+                android:backgroundTint="@color/fondogris"
+                android:textSize="12sp"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ubicación"
+                android:textColor="@color/letrasnormales"
+                android:backgroundTint="@color/fondogris"
+                android:textSize="12sp"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Presupuesto"
+                android:textColor="@color/letrasnormales"
+                android:textSize="12sp"
+                android:backgroundTint="@color/fondogris"
+                android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -89,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Pintura exterior"
-                android:textColor="@color/md_theme_onBackground"
+                android:textColor="@color/letrasnormales"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,12 +143,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/pintura"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_flechaderecha" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Space
@@ -129,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Instalación de puertas"
-                android:textColor="@color/md_theme_onBackground"
+                android:textColor="@color/letrasnormales"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -143,12 +183,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/instalacion"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_flechaderecha" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Space
@@ -169,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Limpieza de alfombra"
-                android:textColor="@color/md_theme_onBackground"
+                android:textColor="@color/letrasnormales"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,12 +223,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/limpieza"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_flechaderecha" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Space
@@ -209,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Reparación de persianas"
-                android:textColor="@color/md_theme_onBackground"
+                android:textColor="@color/letrasnormales"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
 
@@ -224,12 +264,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/reparacion"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_flechaderecha" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Space
@@ -250,7 +290,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Limpieza de ventanas"
-                android:textColor="@color/md_theme_onBackground"
+                android:textColor="@color/letrasnormales"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -264,12 +304,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/limpiezaVentana"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_flechaderecha" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
