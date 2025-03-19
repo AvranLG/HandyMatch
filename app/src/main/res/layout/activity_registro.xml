@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:gravity="left" />
+                android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -176,8 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:background="@drawable/recuadro"
-                android:textAlignment="center"/>
+                android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
