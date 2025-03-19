@@ -6,6 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
     tools:context=".LoginActivity">
 
     <LinearLayout
@@ -76,8 +78,8 @@
                 android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/recuadro"/>
+                android:inputType="textPersonName"
+                android:gravity="left" />
         </com.google.android.material.textfield.TextInputLayout>
 
 

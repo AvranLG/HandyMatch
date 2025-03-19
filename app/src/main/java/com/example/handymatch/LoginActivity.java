@@ -18,17 +18,6 @@ public class LoginActivity extends AppCompatActivity {
         TextInputLayout emailContainer = findViewById(R.id.emailContainer);
         EditText emailText = findViewById(R.id.emailText);
 
-        emailText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    emailContainer.setHint(null); // Borra el hint al presionar
-                } else {
-                    emailContainer.setHint(getString(R.string.email)); // Restaura el hint si pierde el foco sin texto
-                }
-            }
-        });
-
         // Cambiar el color de la barra de estado
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
