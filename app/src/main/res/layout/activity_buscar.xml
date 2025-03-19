@@ -11,55 +11,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/buscarContainer"
+        <LinearLayout
+            android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundMode="filled"
-            app:boxBackgroundColor="@color/fondogris"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="10dp"
+            android:background="@drawable/recuadro">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/buscarIcono"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/buscar"
+                android:src="@drawable/lupa" />
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent"/>
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/buscarText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/fondogris"
-                android:padding="8dp">
+                android:layout_toEndOf="@id/buscarIcono"
+                android:gravity="center_vertical"
+                android:hint="Buscar trabajos"
+                android:inputType="text"
+                android:background="@drawable/recuadro"
+                android:textSize="16sp" />
 
-                <!-- Imagen de la lupa a la izquierda -->
-                <ImageView
-                    android:id="@+id/buscarIcono"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/lupa"
+        </LinearLayout>
 
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="12dp" />
-
-                <!-- Campo de texto alineado a la derecha de la imagen -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/buscarText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@id/buscarIcono"
-                    android:hint="Buscar Trabajos"
-                    android:gravity="center_vertical"
-                    android:inputType="text" />
-
-            </RelativeLayout>
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -67,12 +61,12 @@
             android:layout_height="wrap_content"
             android:text="Filtrar por"
             android:textColor="@color/letrasnormales"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="20dp" />
 
 
         <LinearLayout
@@ -83,9 +77,10 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ButtonCategoría"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="99dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
+                android:textAllCaps="false"
                 android:text="Categoría"
                 android:layout_marginEnd="8dp"
                 android:textSize="12sp"
@@ -97,10 +92,11 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ButtonUbicación"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="112dp"
+                android:layout_height="37dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Ubicación"
+                android:textAllCaps="false"
                 android:layout_marginEnd="8dp"
                 android:textSize="12sp"
                 android:backgroundTint="@color/fondogris"
@@ -111,10 +107,11 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ButtonPresupuesto"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="118dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Presupuesto"
+                android:textAllCaps="false"
                 android:layout_marginEnd="8dp"
                 android:textSize="12sp"
                 android:backgroundTint="@color/fondogris"
@@ -125,7 +122,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="20dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -139,10 +136,9 @@
                 android:id="@+id/pintura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:text="Pintura exterior"
                 android:textColor="@color/letrasnormales"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -150,8 +146,8 @@
 
             <ImageButton
                 android:id="@+id/flecha1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
@@ -179,10 +175,9 @@
                 android:id="@+id/instalacion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:text="Instalación de puertas"
                 android:textColor="@color/letrasnormales"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -190,8 +185,8 @@
 
             <ImageButton
                 android:id="@+id/flecha2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
@@ -219,10 +214,9 @@
                 android:id="@+id/limpieza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:text="Limpieza de alfombra"
                 android:textColor="@color/letrasnormales"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -230,8 +224,8 @@
 
             <ImageButton
                 android:id="@+id/flecha3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
@@ -259,10 +253,9 @@
                 android:id="@+id/reparacion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:text="Reparación de persianas"
                 android:textColor="@color/letrasnormales"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintStart_toStartOf="parent"
@@ -271,8 +264,8 @@
 
             <ImageButton
                 android:id="@+id/flecha4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
@@ -300,10 +293,9 @@
                 android:id="@+id/limpiezaVentana"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:text="Limpieza de ventanas"
                 android:textColor="@color/letrasnormales"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -311,8 +303,8 @@
 
             <ImageButton
                 android:id="@+id/flecha5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="abrirLogin"
                 android:padding="8dp"
