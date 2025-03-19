@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "567600815541",
+    "project_id": "handy-match-db",
+    "storage_bucket": "handy-match-db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567600815541:android:6ec86c8055f709d6fa8dfc",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxYTtF1v29IIaIJuHLR35ccAc-GBCcde4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
