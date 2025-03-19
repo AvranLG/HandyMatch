@@ -1,4 +1,4 @@
-package com.example.handymatch;
+package com.example.app;
 
 
 import android.content.Intent;
