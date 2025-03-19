@@ -89,7 +89,7 @@
             app:boxCornerRadiusBottomEnd="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nombreText"
+                android:id="@+id/direccionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/recuadro"
@@ -285,7 +285,7 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/fondosyletras"
             android:includeFontPadding="true"
-            android:onClick="abrirLogin"
+            android:onClick="enviarDatosFirebase"
             android:padding="12dp"
             android:text="Terminar registro"
             android:textAllCaps="false"

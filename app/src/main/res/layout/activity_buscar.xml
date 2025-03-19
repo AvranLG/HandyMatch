@@ -16,19 +16,19 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/buscarContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxBackgroundMode="filled"
+            android:layout_height="match_parent"
             app:boxBackgroundColor="@color/fondogris"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
+            app:boxBackgroundMode="filled"
+            app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:background="@color/fondogris"
                 android:padding="8dp">
 
@@ -37,21 +37,22 @@
                     android:id="@+id/buscarIcono"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/lupa"
-
                     android:layout_alignParentStart="true"
+
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="12dp" />
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/lupa" />
 
                 <!-- Campo de texto alineado a la derecha de la imagen -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/buscarText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/buscarIcono"
-                    android:hint="Buscar Trabajos"
-                    android:gravity="center_vertical"
-                    android:inputType="text" />
+                    android:gravity="center_vertical|start"
+                    android:hint="@string/BuscarTrabajos"
+                    android:inputType="text"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
