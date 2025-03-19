@@ -1,8 +1,11 @@
 package com.example.handymatch;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +29,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Cambiar el color de la barra de estado
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(Color.parseColor("#ffffff")); // Cambia el color
     }
+
     public void abrirRegistro(View v){
         Intent i = new Intent(this,RegistroActivity.class);
         startActivity(i);
