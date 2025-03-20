@@ -62,15 +62,36 @@
                 android:layout_marginEnd="16dp"/> <!-- Margen opcional -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+
+            <!-- Contenedor circular -->
+            <ImageView
                 android:id="@+id/profileImage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@android:drawable/ic_menu_gallery"
-                android:background="@drawable/circulo_imagen"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"/>
+                android:layout_width="117dp"
+                android:layout_height="117dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="Logo Circular"
+                android:foregroundGravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/circulo_imagen" />
+
+            <!-- Imagen logo dentro del círculo -->
+            <ImageView
+                android:id="@+id/logoImagen"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="LogoGalería"
+                android:saveEnabled="false"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/icono_galeria" />
+
+        </RelativeLayout>
+
 
         <Space
             android:layout_width="match_parent"
