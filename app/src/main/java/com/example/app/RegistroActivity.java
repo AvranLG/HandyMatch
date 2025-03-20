@@ -1,13 +1,15 @@
 package com.example.app;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.BitmapDrawable;
+
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,9 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
 import java.io.InputStream;
 
 public class RegistroActivity extends AppCompatActivity {
@@ -69,9 +73,37 @@ public class RegistroActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
-            setImageToCircle(imageUri); // Aquí se establece la imagen seleccionada en el ImageView
+            startUCrop(imageUri); // Iniciar UCrop para que el usuario seleccione la parte de la imagen
+        }
+
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            Uri resultUri = UCrop.getOutput(data); // Obtener la imagen recortada
+            setImageToCircle(resultUri); // Establecer la imagen recortada como circular
         }
     }
+
+    private void startUCrop(Uri imageUri) {
+        Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "cropped_image.jpg"));
+
+        // Configuración para UCrop
+        UCrop.of(imageUri, destinationUri)
+                .withAspectRatio(1, 1)  // Mantener la relación de aspecto 1:1 (cuadrado)
+                .withMaxResultSize(800, 800) // Tamaño máximo del resultado
+                .withOptions(getUCropOptions()) // Aplicar opciones personalizadas
+                .start(this);
+    }
+
+    private UCrop.Options getUCropOptions() {
+        UCrop.Options options = new UCrop.Options();
+
+        // Hacer que la zona de recorte sea circular (por defecto es rectangular)
+        options.setCircleDimmedLayer(true); // Usar una capa circular para la selección
+        options.setShowCropFrame(false); // No mostrar el marco de recorte
+        options.setShowCropGrid(true); // Mostrar la cuadrícula de recorte
+
+        return options;
+    }
+
 
     // Método para recortar la imagen y convertirla en un círculo
     private void setImageToCircle(Uri imageUri) {
@@ -91,6 +123,7 @@ public class RegistroActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
         }
     }
 
