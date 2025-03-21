@@ -45,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         ErrCorreo.setVisibility(View.INVISIBLE);
         ErrContra.setVisibility(View.INVISIBLE);
 
+
+
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#ffffff"));

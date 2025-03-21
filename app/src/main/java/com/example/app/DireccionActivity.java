@@ -2,9 +2,12 @@ package com.example.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,6 +54,24 @@ public class DireccionActivity extends AppCompatActivity {
         estadoText = findViewById(R.id.estadoText);
         ciudadText = findViewById(R.id.ciudadText);
         referenciaText = findViewById(R.id.referenciaText);
+
+        referenciaText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                referenciaText.scrollTo(0, 0); // Resetea el scroll al inicio
+            }
+        });
+
+        referenciaText.setOnTouchListener((v, event) -> {
+            if (v.getId() == R.id.referenciaText) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+            }
+            return false;
+        });
     }
 
     // Método para enviar los datos a Firebase
@@ -70,7 +91,7 @@ public class DireccionActivity extends AppCompatActivity {
         } else {
             String fechaRegistro = obtenerFechaHoraActual();
             // Crear un objeto de usuario con los datos
-            Usuario usuario = new Usuario(nombre,correo,telefono,contrasena,fechaRegistro,direccion,codigoPostal,colonia,estado,ciudad,referencia);
+            Usuario usuario = new Usuario(nombre, correo, telefono, contrasena, fechaRegistro, direccion, codigoPostal, colonia, estado, ciudad, referencia);
 
             // Referencia a la base de datos Firebase
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -96,4 +117,56 @@ public class DireccionActivity extends AppCompatActivity {
         // Formatear la fecha y hora y devolverla como un String
         return dateFormat.format(calendar.getTime());
     }
+
+    // Sobrescribir el método onBackPressed para manejar el retroceso
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // Obtener el InputMethodManager
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+            // Verificar si el teclado está visible
+            View view = this.getCurrentFocus();
+            if (view != null && view instanceof EditText) {
+                // Verificamos si el teclado está visible en este momento
+                if (inputMethodManager.isAcceptingText()) {
+                    // Si el teclado está visible, lo cerramos
+                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                    // Además, quitamos el foco de todos los EditText
+                    clearFocusFromAllEditTexts();
+
+                    return true;  // Interceptamos el retroceso para no salir de la actividad
+                }
+            }
+
+            // Si el teclado no está visible, dejamos que se ejecute el comportamiento estándar del retroceso
+            return super.onKeyDown(keyCode, event);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    // Método para quitar el foco de todos los EditTexts
+    private void clearFocusFromAllEditTexts() {
+        if (direccionText.hasFocus()) {
+            direccionText.clearFocus();
+        }
+        if (codigoPostalText.hasFocus()) {
+            codigoPostalText.clearFocus();
+        }
+        if (coloniaText.hasFocus()) {
+            coloniaText.clearFocus();
+        }
+        if (estadoText.hasFocus()) {
+            estadoText.clearFocus();
+        }
+        if (ciudadText.hasFocus()) {
+            ciudadText.clearFocus();
+        }
+        if (referenciaText.hasFocus()) {
+            referenciaText.clearFocus();
+        }
+    }
+
+
 }

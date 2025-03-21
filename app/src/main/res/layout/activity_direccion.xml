@@ -266,13 +266,17 @@
             app:boxCornerRadiusBottomEnd="16dp">
 
 
-        <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/referenciaText"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:inputType="text"
+                android:inputType="textMultiLine"
+                android:minLines="4"
+                android:maxLines="6"
+                android:gravity="top|start"
+                android:scrollbars="vertical"
+                android:overScrollMode="always"
                 android:paddingTop="20dp"
-                android:gravity="top"
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
