@@ -1,47 +1,61 @@
 package com.example.app;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
 import java.io.InputStream;
 
 public class RegistroActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private ImageView profileImage;
+    private ImageView logoImage;
+    private Uri imageUri; // Guardar la URI de la imagen seleccionada
+
+    private EditText nombreText, apellidosText, correoText, contrasenaText, telefonoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registro);
 
-        // Ajuste de insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Inicializar los EditText
+        nombreText = findViewById(R.id.direccionText);
+        apellidosText = findViewById(R.id.apellidosText);
+        correoText = findViewById(R.id.correoText);
+        contrasenaText = findViewById(R.id.passwordText);
+        telefonoText = findViewById(R.id.numeroText);
 
-        // Referencia al ImageView de la foto de perfil
+        // Referencias de ImageView
         profileImage = findViewById(R.id.profileImage);
+        logoImage = findViewById(R.id.logoImagen);
 
-        // Configurar el clic en la imagen para abrir la galería
+        // Restaurar imagen si la actividad se reinicia
+        if (savedInstanceState != null) {
+            imageUri = savedInstanceState.getParcelable("imageUri");
+            if (imageUri != null) {
+                setImageToCircle(imageUri);
+            }
+        }
+
         profileImage.setOnClickListener(view -> openGallery());
     }
 
@@ -54,28 +68,112 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
-            Uri imageUri = data.getData();
-            setImageToCircle(imageUri);
+            imageUri = data.getData();
+            startUCrop(imageUri);
         }
+
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            Uri resultUri = UCrop.getOutput(data);
+            setImageToCircle(resultUri);
+            imageUri = resultUri;
+        }
+    }
+
+    private void startUCrop(Uri imageUri) {
+        Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "cropped_image.jpg"));
+
+        UCrop.of(imageUri, destinationUri)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(800, 800)
+                .withOptions(getUCropOptions())
+                .start(this);
+    }
+
+    private UCrop.Options getUCropOptions() {
+        UCrop.Options options = new UCrop.Options();
+        options.setCircleDimmedLayer(true);
+        options.setShowCropFrame(false);
+        options.setShowCropGrid(true);
+        return options;
     }
 
     private void setImageToCircle(Uri imageUri) {
         try {
             InputStream imageStream = getContentResolver().openInputStream(imageUri);
             Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-            Drawable drawable = new BitmapDrawable(getResources(), selectedImage);
-            profileImage.setImageDrawable(drawable);
+            Bitmap circularImage = getCircularBitmap(selectedImage);
+
+            profileImage.setImageBitmap(circularImage);
+            logoImage.setVisibility(View.GONE);
+
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
         }
     }
-    public void abrirDireccion(View v){
-        Intent i = new Intent(this,DireccionActivity.class);
-        startActivity(i);
+
+    private Bitmap getCircularBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int radius = Math.min(width, height) / 2;
+
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+
+        canvas.drawCircle(width / 2, height / 2, radius, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+
+        return output;
     }
-    public void abrirLogin(View v){
-        Intent i = new Intent(this,LoginActivity.class);
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (imageUri != null) {
+            outState.putParcelable("imageUri", imageUri);
+        }
+    }
+
+    public void abrirDireccion(View v) {
+        // Recoger los datos de los EditText
+        String nombre = nombreText.getText().toString().trim();
+        String apellidos = apellidosText.getText().toString().trim();
+        String correo = correoText.getText().toString().trim();
+        String contrasena = contrasenaText.getText().toString().trim();
+        String telefono = telefonoText.getText().toString().trim();
+
+        // Validar los datos antes de enviarlos
+        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
+            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crear un Intent para abrir la segunda actividad (DireccionActivity)
+        Intent i = new Intent(this, DireccionActivity.class);
+
+        // Convertir la URI de la imagen en String
+        String imageUriString = (imageUri != null) ? imageUri.toString() : "";
+
+        // Pasar los datos al Intent
+        i.putExtra("nombre", nombre);
+        i.putExtra("apellidos", apellidos);
+        i.putExtra("correo", correo);
+        i.putExtra("contrasena", contrasena);
+        i.putExtra("telefono", telefono);
+        i.putExtra("imageUri", imageUriString);  // Enviar la URI de la imagen
+
+        // Abrir la segunda actividad
         startActivity(i);
     }
 
+    public void abrirLogin(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+    }
 }
