@@ -6,9 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
-
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,16 +27,15 @@ public class RegistroActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private ImageView profileImage;
-    private ImageView logoImage; // El ImageView que contiene el logo
+    private ImageView logoImage;
     private Uri imageUri; // Guardar la URI de la imagen seleccionada
 
-    // Declarar las variables EditText
     private EditText nombreText, apellidosText, correoText, contrasenaText, telefonoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registro); // Establecer el layout
+        setContentView(R.layout.activity_registro);
 
         // Inicializar los EditText
         nombreText = findViewById(R.id.direccionText);
@@ -47,19 +44,18 @@ public class RegistroActivity extends AppCompatActivity {
         contrasenaText = findViewById(R.id.passwordText);
         telefonoText = findViewById(R.id.numeroText);
 
-        // Referencia al ImageView de la foto de perfil y al logo
+        // Referencias de ImageView
         profileImage = findViewById(R.id.profileImage);
-        logoImage = findViewById(R.id.logoImagen); // El ImageView con el logo
+        logoImage = findViewById(R.id.logoImagen);
 
-        // Recuperar el estado guardado si la actividad se reinicia (ej. rotación)
+        // Restaurar imagen si la actividad se reinicia
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable("imageUri");
             if (imageUri != null) {
-                setImageToCircle(imageUri); // Restaurar la imagen
+                setImageToCircle(imageUri);
             }
         }
 
-        // Configurar el clic en la imagen para abrir la galería
         profileImage.setOnClickListener(view -> openGallery());
     }
 
@@ -73,53 +69,42 @@ public class RegistroActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
-            startUCrop(imageUri); // Iniciar UCrop para que el usuario seleccione la parte de la imagen
+            startUCrop(imageUri);
         }
 
         if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
-            Uri resultUri = UCrop.getOutput(data); // Obtener la imagen recortada
-            setImageToCircle(resultUri); // Establecer la imagen recortada como circular
+            Uri resultUri = UCrop.getOutput(data);
+            setImageToCircle(resultUri);
+            imageUri = resultUri;
         }
     }
 
     private void startUCrop(Uri imageUri) {
         Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "cropped_image.jpg"));
 
-        // Configuración para UCrop
         UCrop.of(imageUri, destinationUri)
-                .withAspectRatio(1, 1)  // Mantener la relación de aspecto 1:1 (cuadrado)
-                .withMaxResultSize(800, 800) // Tamaño máximo del resultado
-                .withOptions(getUCropOptions()) // Aplicar opciones personalizadas
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(800, 800)
+                .withOptions(getUCropOptions())
                 .start(this);
     }
 
     private UCrop.Options getUCropOptions() {
         UCrop.Options options = new UCrop.Options();
-
-        // Hacer que la zona de recorte sea circular (por defecto es rectangular)
-        options.setCircleDimmedLayer(true); // Usar una capa circular para la selección
-        options.setShowCropFrame(false); // No mostrar el marco de recorte
-        options.setShowCropGrid(true); // Mostrar la cuadrícula de recorte
-
+        options.setCircleDimmedLayer(true);
+        options.setShowCropFrame(false);
+        options.setShowCropGrid(true);
         return options;
     }
 
-
-    // Método para recortar la imagen y convertirla en un círculo
     private void setImageToCircle(Uri imageUri) {
         try {
-            // Obtener el InputStream de la URI de la imagen seleccionada
             InputStream imageStream = getContentResolver().openInputStream(imageUri);
             Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-
-            // Crear un bitmap circular recortado
             Bitmap circularImage = getCircularBitmap(selectedImage);
 
-            // Establecer la imagen circular al ImageView
-            profileImage.setImageBitmap(circularImage); // Esto reemplaza la imagen de perfil
-
-            // Ocultar el logo cuando se seleccione la imagen
-            logoImage.setVisibility(View.GONE); // El logo desaparece
+            profileImage.setImageBitmap(circularImage);
+            logoImage.setVisibility(View.GONE);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,59 +112,53 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
-    // Función para recortar una imagen en forma circular
     private Bitmap getCircularBitmap(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int radius = Math.min(width, height) / 2;
 
-        // Crear una nueva imagen recortada circularmente
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
-        // Dibujar el círculo en el canvas
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
         paint.setDither(true);
 
-        // Crear la forma circular
         canvas.drawCircle(width / 2, height / 2, radius, paint);
-
-        // Recortar la imagen en el círculo
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, 0, 0, paint);
 
         return output;
     }
 
-    // Guardar el estado (imagen seleccionada) antes de la rotación
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (imageUri != null) {
-            outState.putParcelable("imageUri", imageUri); // Guardar la URI de la imagen
+            outState.putParcelable("imageUri", imageUri);
         }
     }
 
-    // Método para abrir la segunda actividad (DireccionActivity)
     public void abrirDireccion(View v) {
         // Recoger los datos de los EditText
-        String nombre = nombreText.getText().toString();
-        String apellidos = apellidosText.getText().toString();
-        String correo = correoText.getText().toString();
-        String contrasena = contrasenaText.getText().toString();
-        String telefono = telefonoText.getText().toString();
+        String nombre = nombreText.getText().toString().trim();
+        String apellidos = apellidosText.getText().toString().trim();
+        String correo = correoText.getText().toString().trim();
+        String contrasena = contrasenaText.getText().toString().trim();
+        String telefono = telefonoText.getText().toString().trim();
 
-        // Validar los datos antes de enviarlos (opcional)
+        // Validar los datos antes de enviarlos
         if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
-            // Mostrar un mensaje de error si algún campo está vacío
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
-            return; // No proceder si hay campos vacíos
+            return;
         }
 
         // Crear un Intent para abrir la segunda actividad (DireccionActivity)
         Intent i = new Intent(this, DireccionActivity.class);
+
+        // Convertir la URI de la imagen en String
+        String imageUriString = (imageUri != null) ? imageUri.toString() : "";
 
         // Pasar los datos al Intent
         i.putExtra("nombre", nombre);
@@ -187,6 +166,7 @@ public class RegistroActivity extends AppCompatActivity {
         i.putExtra("correo", correo);
         i.putExtra("contrasena", contrasena);
         i.putExtra("telefono", telefono);
+        i.putExtra("imageUri", imageUriString);  // Enviar la URI de la imagen
 
         // Abrir la segunda actividad
         startActivity(i);

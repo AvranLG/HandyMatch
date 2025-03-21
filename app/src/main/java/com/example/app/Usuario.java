@@ -14,6 +14,7 @@ public class Usuario {
     private String estado;
     private String ciudad;
     private String referencia;
+    private String imageUrl;
 
     // Constructor vacío para Firebase
     public Usuario() {}
@@ -122,7 +123,6 @@ public class Usuario {
         return referencia;
     }
 
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
+    public void setReferencia(String referencia) {this.referencia = referencia;}
+
 }
