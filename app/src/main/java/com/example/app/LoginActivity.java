@@ -84,9 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                         //Correo encontrado
                         userFound = true;
                         if (dbPassword != null && dbPassword.equals(password)) {
-                            //La contrasñea coincide
+                            //La contrasñea coincide e ingresa
                             Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, BuscarActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
