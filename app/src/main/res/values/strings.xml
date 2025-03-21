@@ -9,5 +9,7 @@
     <string name="terminos">Aceptar términos y políticas de privacidad</string>
     <string name="direccion">Dirección</string>
     <string name="BuscarTrabajos">Buscar Trabajos</string>
+    <string name="ErrorCorreo">Correo inválido*</string>
+    <string name="ErrorContraseña">Contraseña incorrecta*</string>
 
 </resources>

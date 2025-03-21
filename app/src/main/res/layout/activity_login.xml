@@ -56,7 +56,15 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/ErrCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="@string/ErrorCorreo"
+            android:textColor="@color/md_theme_error"
+            android:textSize="13sp" />
 
         <!-- Imput Layout de Email -->
         <com.google.android.material.textfield.TextInputLayout
@@ -83,9 +91,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <Space
+        <TextView
+            android:id="@+id/ErrContra"
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="20dp"
+            android:text="@string/ErrorContraseña"
+            android:textColor="@color/md_theme_error"
+            android:textSize="13sp" />
 
         <!-- Imput Layout de contraseña -->
         <com.google.android.material.textfield.TextInputLayout
