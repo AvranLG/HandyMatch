@@ -45,6 +45,7 @@ dependencies {
     // Agregar la dependencia de UCrop para recortar imágenes
     implementation("com.github.yalantis:uCrop:2.2.9")
 
+
     // Dependencias de prueba
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
