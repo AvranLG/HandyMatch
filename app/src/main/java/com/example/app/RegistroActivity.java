@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -141,6 +142,8 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     public void abrirDireccion(View v) {
+
+        boolean error = false;
         // Recoger los datos de los EditText
         String nombre = nombreText.getText().toString().trim();
         String apellidos = apellidosText.getText().toString().trim();
@@ -148,11 +151,70 @@ public class RegistroActivity extends AppCompatActivity {
         String contrasena = contrasenaText.getText().toString().trim();
         String telefono = telefonoText.getText().toString().trim();
 
+        TextInputLayout nombreContainer = findViewById(R.id.nombreContainer);
+        TextInputLayout apellidosContainer = findViewById(R.id.apellidosContainer);
+        TextInputLayout emailContainer = findViewById(R.id.emailContainer);
+        TextInputLayout pwdContainer = findViewById(R.id.pwdContainer);
+        TextInputLayout numeroContainer = findViewById(R.id.numeroContainer);
+
         // Validar los datos antes de enviarlos
         if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Validar el nombre (Debe comenzar con letra y permitir espacios)
+        if (!nombre.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ][A-Za-zÁÉÍÓÚáéíóúÑñ ]*$")) {
+            nombreContainer.setError("Debe iniciar y contener sólo letras");
+            nombreContainer.setErrorEnabled(true); // Habilita el mensaje de error
+            error = true;
+        } else {
+            // Si el nombre es válido, se elimina el error
+            nombreContainer.setErrorEnabled(false);
+        }
+
+        // Validar los apellidos (Debe comenzar con letra y permitir espacios)
+        if (!apellidos.matches("^[A-Za-zÁÉÍÓÚáéíóúÑñ][A-Za-zÁÉÍÓÚáéíóúÑñ ]*$")) {
+            apellidosContainer.setError("Debe iniciar y contener sólo letras");
+            apellidosContainer.setErrorEnabled(true); // Habilita el mensaje de error
+            error = true;
+        } else {
+            // Si el apellido es válido, se elimina el error
+            apellidosContainer.setErrorEnabled(false);
+        }
+
+        // Validar el correo electrónico
+        if (!correo.matches("^([a-zA-Z0-9]+(?:[._-][a-zA-Z0-9])*)*@(gmail\\.com|hotmail\\.com|yahoo\\.com|outlook\\.com|itocotlan\\.com|ocotlan\\.tecnm\\.mx)$"
+        )) {
+            emailContainer.setError("Formato inválido");
+            emailContainer.setErrorEnabled(true); // Habilita el mensaje de error
+            error = true;
+        } else {
+            // Si el email es válido, se elimina el error
+            emailContainer.setErrorEnabled(false);
+        }
+
+        // Validar la contraseña (mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número)
+        if (contrasena.length() < 8 || !contrasena.matches(".*[A-Z].*") || !contrasena.matches(".*[a-z].*") || !contrasena.matches(".*\\d.*")) {
+            pwdContainer.setError("Mínimo 8 caracteres, 1 mayúscula, 1 minúscula y 1 número");
+            pwdContainer.setErrorEnabled(true); // Habilita el mensaje de error
+            error = true;
+        } else {
+            // Si la contraseña es válida, se elimina el error
+            pwdContainer.setErrorEnabled(false);
+        }
+
+        // Validar el teléfono (verificar que tenga exactamente 10 dígitos)
+        if (telefono.length() != 10 || !telefono.matches("\\d{10}")) {
+            numeroContainer.setError("Debe contener 10 dígitos");
+            numeroContainer.setErrorEnabled(true); // Habilita el mensaje de error
+            error = true;
+        } else {
+            // Si el numero es válido, se elimina el error
+            numeroContainer.setErrorEnabled(false);
+        }
+
+        if(error) return;
 
         // Crear un Intent para abrir la segunda actividad (DireccionActivity)
         Intent i = new Intent(this, DireccionActivity.class);
@@ -171,6 +233,7 @@ public class RegistroActivity extends AppCompatActivity {
         // Abrir la segunda actividad
         startActivity(i);
     }
+
 
     public void abrirLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);
