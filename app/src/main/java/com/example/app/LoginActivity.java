@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout emailContainer;
     private EditText emailText;
     private EditText passwordText;
+    private TextView ErrContra;
+    private TextView ErrCorreo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         emailContainer = findViewById(R.id.emailContainer);
         emailText = findViewById(R.id.emailText);
         passwordText = findViewById(R.id.passwordText);
+        ErrContra = findViewById(R.id.ErrContra);
+        ErrCorreo = findViewById(R.id.ErrCorreo);
+
+        ErrCorreo.setVisibility(View.INVISIBLE);
+        ErrContra.setVisibility(View.INVISIBLE);
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -52,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
+        ErrCorreo.setVisibility(View.INVISIBLE);
+        ErrContra.setVisibility(View.INVISIBLE);
         String email = emailText.getText().toString().trim();
         String password = passwordText.getText().toString().trim();
 
@@ -70,21 +81,25 @@ public class LoginActivity extends AppCompatActivity {
                     String dbPassword = snapshot.child("contrasena").getValue(String.class);
 
                     if (dbEmail != null && dbEmail.equals(email)) {
+                        //Correo encontrado
                         userFound = true;
                         if (dbPassword != null && dbPassword.equals(password)) {
+                            //La contrasñea coincide
                             Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                            //Contraseña incorrecta
+                            ErrContra.setVisibility(View.VISIBLE);
                         }
                         break;
                     }
                 }
 
                 if (!userFound) {
-                    Toast.makeText(LoginActivity.this, "El correo no está registrado", Toast.LENGTH_SHORT).show();
+                    //Correo no encontrado
+                    ErrCorreo.setVisibility(View.VISIBLE);
                 }
             }
 

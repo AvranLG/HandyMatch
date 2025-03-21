@@ -8,5 +8,8 @@
     <string name="olvidocontraseña">¿Olvidaste tu contraseña? Has clic aquí</string>
     <string name="terminos">Aceptar términos y políticas de privacidad</string>
     <string name="direccion">Dirección</string>
-    <string name="buscar">Buscar trabajos</string>
+    <string name="BuscarTrabajos">Buscar Trabajos</string>
+    <string name="ErrorCorreo">Correo inválido*</string>
+    <string name="ErrorContraseña">Contraseña incorrecta*</string>
+
 </resources>
