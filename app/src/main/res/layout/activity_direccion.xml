@@ -280,6 +280,16 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
+        <CheckBox
+            android:id="@+id/terminos3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="@string/terminos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/terminos" />
+
         <Button
             android:id="@+id/btnregistro"
             android:layout_width="match_parent"
@@ -293,5 +303,6 @@
             android:textAllCaps="false"
             android:textColor="#F7FAFA"
             app:layout_constraintTop_toBottomOf="@id/descrpicion" />
+
     </LinearLayout>
 </ScrollView>
