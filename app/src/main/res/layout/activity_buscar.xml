@@ -44,6 +44,7 @@
                 android:background="@drawable/recuadro"
                 android:gravity="center_vertical"
                 android:hint="Buscar trabajos"
+                android:textColor="@color/letrasnormales"
                 android:inputType="text"
                 android:textSize="16sp" />
 
