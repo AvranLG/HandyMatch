@@ -17,7 +17,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DireccionActivity extends AppCompatActivity {
+
+    private RequestQueue queue;
 
     // Declarar los EditText para la dirección
     private EditText direccionText;
@@ -38,6 +50,23 @@ public class DireccionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direccion);
+
+        // Inicializar RequestQueue
+        queue = Volley.newRequestQueue(this);
+
+        // Referencias a los EditText
+        codigoPostalText = findViewById(R.id.postalText);
+        ciudadText = findViewById(R.id.ciudadText);
+
+        // Detectar cuando se pierde el foco en el campo de código postal
+        codigoPostalText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String codigoPostal = codigoPostalText.getText().toString().trim();
+                if (codigoPostal.length() == 5) {
+                    obtenerCiudadPorCodigoPostal(codigoPostal);
+                }
+            }
+        });
 
         // Recibir los datos de la actividad anterior (RegistroActivity)
         Intent intent = getIntent();
@@ -91,7 +120,7 @@ public class DireccionActivity extends AppCompatActivity {
         } else {
             String fechaRegistro = obtenerFechaHoraActual();
             // Crear un objeto de usuario con los datos
-            Usuario usuario = new Usuario(nombre, correo, telefono, contrasena, fechaRegistro, direccion, codigoPostal, colonia, estado, ciudad, referencia);
+            Usuario usuario = new Usuario(nombre, apellidos, correo, telefono, contrasena, fechaRegistro, direccion, codigoPostal, colonia, estado, ciudad, referencia);
 
             // Referencia a la base de datos Firebase
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -166,6 +195,36 @@ public class DireccionActivity extends AppCompatActivity {
         if (referenciaText.hasFocus()) {
             referenciaText.clearFocus();
         }
+    }
+
+    private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
+        String url = "https://api.zippopotam.us/MX/" + codigoPostal;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray places = jsonObject.getJSONArray("places");
+
+                        if (places.length() > 0) {
+                            String estado = places.getJSONObject(0).getString("state");
+                            String ciudad = places.getJSONObject(0).getString("place name");
+                            ciudadText.setText(ciudad); // Mostrar la ciudad en el campo
+                            estadoText.setText(estado); //Mostrar estado en el campo
+                            //Desabilitar los campos añadidos automáticamente
+                            estadoText.setEnabled(false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    ciudadText.setText(""); // Limpiar campo si hay error
+                    estadoText.setText("");
+                    estadoText.setEnabled(true);
+                });
+
+        queue.add(request);
     }
 
 
