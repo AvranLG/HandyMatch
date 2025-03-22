@@ -2,6 +2,7 @@ package com.example.app;
 public class Usuario {
 
     private String nombre;
+    private String apellidos;
     private String email;
     private String telefono;
     private String contrasena;
@@ -20,11 +21,12 @@ public class Usuario {
     public Usuario() {}
 
     // Constructor con parámetros (agregando los campos de la dirección)
-    public Usuario(String nombre, String email, String telefono, String contrasena,
+    public Usuario(String nombre, String apellidos, String email, String telefono, String contrasena,
                    String fecha_registro,
                    String direccion, String codigo_postal, String colonia,
                    String estado, String ciudad, String referencia) {
         this.nombre = nombre;
+        this.apellidos = apellidos;
         this.email = email;
         this.telefono = telefono;
         this.contrasena = contrasena;
@@ -41,6 +43,14 @@ public class Usuario {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getApellidos() {
+        return apellidos;
     }
 
     public void setNombre(String nombre) {
