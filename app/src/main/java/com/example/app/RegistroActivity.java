@@ -184,7 +184,7 @@ public class RegistroActivity extends AppCompatActivity {
         }
 
         // Validar el correo electrónico
-        if (!correo.matches("^([a-zA-Z0-9]+(?:[._-][a-zA-Z0-9])*)*@(gmail\\.com|hotmail\\.com|yahoo\\.com|outlook\\.com|itocotlan\\.com|ocotlan\\.tecnm\\.mx)$"
+        if (!correo.matches("^([a-zA-Z]+(?:[._-][a-zA-Z0-9])*)*@(gmail\\.com|hotmail\\.com|yahoo\\.com|outlook\\.com|itocotlan\\.com|ocotlan\\.tecnm\\.mx)$"
         )) {
             emailContainer.setError("Formato inválido");
             emailContainer.setErrorEnabled(true); // Habilita el mensaje de error
