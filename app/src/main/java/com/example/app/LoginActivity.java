@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,6 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#ffffff"));
+
+        // Manejar el botón de retroceso con OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                mostrarDialogoSalida();
+            }
+        });
+    }
+
+    private void mostrarDialogoSalida() {
+        new AlertDialog.Builder(this)
+                .setTitle("Salir de HandyMatch")
+                .setMessage("¿Seguro que quieres salir de HandyMatch?")
+                .setPositiveButton("Sí", (dialog, which) -> finishAffinity()) // Cierra la app
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss()) // Cancela el cierre
+                .show();
     }
 
     public void abrirRegistro(View v) {
