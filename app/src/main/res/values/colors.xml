@@ -25,5 +25,8 @@
     <color name="fondogris">#E8EDF2</color>
     <color name="letrasnormales">#0D141C</color>
     <color name="fondoazul">#EAFBFF</color>
+    <color name="colorSeleccionado">#017075</color>
+    <color name="colorNormal">#FFFFFF</color>
+
 
 </resources>
