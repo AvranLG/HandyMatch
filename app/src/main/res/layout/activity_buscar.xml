@@ -29,7 +29,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/BuscarTrabajos"
-                android:src="@drawable/lupa" />
+                android:src="@drawable/ic_lupa" />
 
             <Space
                 android:layout_width="5dp"
