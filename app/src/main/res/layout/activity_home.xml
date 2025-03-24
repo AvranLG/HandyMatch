@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fondosyletras"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="HandyMatch"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_notificacion"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.538" />
+
+                <ImageButton
+                    android:id="@+id/btn_notificacion"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="24dp"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Notificaciones"
+                    android:padding="5dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_notificacion"
+                    app:tint="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fondoazul"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btPublicarTrabajo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:padding="12dp"
+                    android:text="Publicar trabajo"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fondosyletras"
+                    android:textStyle="bold"
+                    android:elevation="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:padding="8dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingVertical="4dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Todo"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHogar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hogar"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipMascotas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mascotas"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTecnologia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tecnología"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipEventos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Eventos"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTransporte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Transporte"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSalud"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Salud y Bienestar"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipEducacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Educación"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipNegocios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Negocios"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipReparaciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reparaciones"
+                        android:textColor="@color/fondosyletras"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="8dp"
+                        app:checkedIconVisible="false"/>
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
