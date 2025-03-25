@@ -11,5 +11,6 @@
     <string name="BuscarTrabajos">Buscar trabajos</string>
     <string name="ErrorCorreo">Correo inválido*</string>
     <string name="ErrorContraseña">Contraseña incorrecta*</string>
+    <string name="default_web_client_id">567600815541-a0f8smn9bqkr5kv9hqll7gd0g0rnsh6a.apps.googleusercontent.com</string>
 
 </resources>

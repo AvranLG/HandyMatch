@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "567600815541",
+    "firebase_url": "https://handy-match-db-default-rtdb.firebaseio.com",
     "project_id": "handy-match-db",
     "storage_bucket": "handy-match-db.firebasestorage.app"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.example.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "567600815541-a0f8smn9bqkr5kv9hqll7gd0g0rnsh6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAxYTtF1v29IIaIJuHLR35ccAc-GBCcde4"
@@ -20,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567600815541-a0f8smn9bqkr5kv9hqll7gd0g0rnsh6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
