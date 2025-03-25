@@ -173,6 +173,7 @@
             android:text="@string/olvidocontraseña"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="16sp"
+            android:onClick="abrirRetrive"
             android:textStyle="bold" />
 
         <Space

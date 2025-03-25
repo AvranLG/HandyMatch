@@ -145,4 +145,14 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
+
+
+    public void abrirRetrive(View v) {
+        Intent i = new Intent(this, Retrieve_Password.class);
+        startActivity(i);
+    }
+
+
+
+
 }
