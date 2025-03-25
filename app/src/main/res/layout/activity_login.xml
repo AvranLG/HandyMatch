@@ -170,10 +170,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:onClick="abrirRetrieve"
             android:text="@string/olvidocontraseña"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="16sp"
-            android:onClick="abrirRetrieve"
             android:textStyle="bold" />
 
         <Space
