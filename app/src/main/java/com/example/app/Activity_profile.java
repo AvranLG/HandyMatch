@@ -33,7 +33,7 @@ public class Activity_profile extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+     /*  binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -41,7 +41,13 @@ public class Activity_profile extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
+      */
     }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {

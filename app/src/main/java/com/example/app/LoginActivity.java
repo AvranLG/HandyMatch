@@ -170,8 +170,8 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void abrirHome(View v) {
-        Intent i = new Intent(this, HomeActivity.class);
+    public void abrirRetrieve(View v) {
+        Intent i = new Intent(this, Retrieve_Password.class);
         startActivity(i);
     }
     // Método de autenticación con Google
