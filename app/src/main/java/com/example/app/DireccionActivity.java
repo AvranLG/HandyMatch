@@ -133,8 +133,10 @@ public class DireccionActivity extends AppCompatActivity {
             Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
 
             // Opcional: Redirigir a otra actividad, por ejemplo LoginActivity
-            Intent i = new Intent(this, LoginActivity.class);
-            startActivity(i);
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish(); // Finaliza la actividad actual para que no pueda volver con el botón de retroceso
         }
     }
 

@@ -24,8 +24,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -38,7 +41,7 @@ dependencies {
     // Firebase - Dependencias esenciales
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-firestore:25.1.3")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
 
@@ -47,6 +50,11 @@ dependencies {
 
     // Dependencia para consultas HTTP necesario para las API
     implementation("com.android.volley:volley:1.2.1")
+    implementation("androidx.navigation:navigation-fragment:2.6.0")
+    implementation("androidx.navigation:navigation-ui:2.6.0")
+
+    implementation("com.google.firebase:firebase-auth:23.2.0")  // Dependencia de Firebase Authentication
+    implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
 
     // Dependencias de prueba
     testImplementation("junit:junit:4.13.2")
