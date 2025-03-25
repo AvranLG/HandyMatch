@@ -15,6 +15,9 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
             android:name=".Retrieve_Password"
             android:exported="false" />
         <activity
