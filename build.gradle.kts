@@ -1,4 +1,6 @@
 // build.gradle.kts de nivel raíz (Project-level)
+
+
 plugins {
     id("com.android.application") version "8.2.2" apply false
     id("com.android.library") version "8.2.2" apply false

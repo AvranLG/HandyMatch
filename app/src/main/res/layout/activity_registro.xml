@@ -125,7 +125,7 @@
                 android:id="@+id/direccionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textPersonName"
+                android:inputType="text|textPersonName|textCapWords"
                 android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 

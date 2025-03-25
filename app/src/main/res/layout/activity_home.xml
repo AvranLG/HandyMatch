@@ -96,7 +96,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
+                android:layout_height="10dp" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -109,107 +109,119 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="8dp"
-                    app:chipSpacingVertical="4dp">
+                    app:chipSpacingVertical="4dp"
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTodo"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Todo"
-                        android:textColor="@color/fondosyletras"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        android:textColor="@color/chip_text_selector"
+                        android:textStyle="bold"
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"
+                        app:chipCornerRadius="8dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipHogar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hogar"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipMascotas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mascotas"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTecnologia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tecnología"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipEventos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Eventos"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTransporte"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Transporte"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipSalud"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Salud y Bienestar"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipEducacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Educación"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipNegocios"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Negocios"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipReparaciones"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Reparaciones"
-                        android:textColor="@color/fondosyletras"
+                        android:textColor="@color/chip_text_selector"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"/>
+                        app:checkedIconVisible="false"
+                        app:chipBackgroundColor="@color/chip_selector"/>
 
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
