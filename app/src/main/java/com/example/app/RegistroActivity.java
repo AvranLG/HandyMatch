@@ -220,7 +220,7 @@ public class RegistroActivity extends AppCompatActivity {
         Intent i = new Intent(this, DireccionActivity.class);
 
         // Convertir la URI de la imagen en String
-        String imageUriString = (imageUri != null) ? imageUri.toString() : "";
+        String imagenUriString = (imageUri != null) ? imageUri.toString() : "";
 
         // Pasar los datos al Intent
         i.putExtra("nombre", nombre);
@@ -228,7 +228,7 @@ public class RegistroActivity extends AppCompatActivity {
         i.putExtra("correo", correo);
         i.putExtra("contrasena", contrasena);
         i.putExtra("telefono", telefono);
-        i.putExtra("imageUri", imageUriString);  // Enviar la URI de la imagen
+        i.putExtra("imagenUri", imagenUriString);  // Enviar la URI de la imagen
 
         // Abrir la segunda actividad
         startActivity(i);

@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services") // 🔹 Agregado para Firebase
+
+
+
 }
 
 android {
@@ -55,6 +58,25 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth:23.2.0")  // Dependencia de Firebase Authentication
     implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
+
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+
+    // Dependencias de red
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+
+
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:0.7.6")
+
+    // Opcional: Para manejo de JSON
+    implementation("com.google.code.gson:gson:2.8.9")
 
     // Dependencias de prueba
     testImplementation("junit:junit:4.13.2")
