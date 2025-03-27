@@ -173,9 +173,14 @@ public class DireccionActivity extends AppCompatActivity {
             return;
         }
 
-        // Construir URL completa de Supabase
-        String url = SUPABASE_URL + "/storage/v1/object/" + STORAGE_BUCKET_NAME + "/" +
-                "imagen_" + System.currentTimeMillis() + ".jpg";
+        // Nombre de archivo único
+        String nombreArchivo = "imagen_" + System.currentTimeMillis() + ".jpg";
+
+        // Construir URL de subida de Supabase
+        String url = SUPABASE_URL + "/storage/v1/object/" + STORAGE_BUCKET_NAME + "/" + nombreArchivo;
+
+        // Construir URL pública de la imagen
+        String imagenUrlPublica = SUPABASE_URL + "/storage/v1/object/public/" + STORAGE_BUCKET_NAME + "/" + nombreArchivo;
 
         try {
             // Leer bytes de la imagen
@@ -193,16 +198,16 @@ public class DireccionActivity extends AppCompatActivity {
 
             // Crear cliente OkHttp con timeouts más largos
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)   // Aumentar tiempo de conexión
-                    .writeTimeout(60, TimeUnit.SECONDS)     // Aumentar tiempo de escritura
-                    .readTimeout(60, TimeUnit.SECONDS)      // Aumentar tiempo de lectura
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
                     .build();
 
             // Crear cuerpo de la solicitud
             RequestBody fileBody = RequestBody.create(imageBytes, MediaType.parse("image/jpeg"));
             MultipartBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", "imagen_" + System.currentTimeMillis() + ".jpg", fileBody)
+                    .addFormDataPart("file", nombreArchivo, fileBody)
                     .build();
 
             // Crear solicitud POST
@@ -214,17 +219,6 @@ public class DireccionActivity extends AppCompatActivity {
                     .post(requestBody)
                     .build();
 
-            // Verificar tamaño de la imagen
-            long imageSizeKB = imageBytes.length / 1024;
-            Log.d("Supabase", "Tamaño de imagen: " + imageSizeKB + " KB");
-
-            // Si la imagen es muy grande, mostrar advertencia
-            if (imageSizeKB > 5 * 1024) {  // Más de 5MB
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "La imagen es muy grande. Intentando subir...", Toast.LENGTH_LONG).show();
-                });
-            }
-
             // Ejecutar solicitud de forma asíncrona
             client.newCall(request).enqueue(new Callback() {
                 @Override
@@ -233,22 +227,12 @@ public class DireccionActivity extends AppCompatActivity {
                     Log.d("Supabase", "Respuesta completa de Supabase: " + responseString);
 
                     if (response.isSuccessful()) {
-                        try {
-                            // Parsear respuesta de Supabase (esto puede variar según su API)
-                            JSONObject jsonObject = new JSONObject(responseString);
-
-                            // Ajustar según la estructura real de respuesta de Supabase
-                            String imagenUrl = url;  // Usar la URL original como fallback
-
-                            runOnUiThread(() -> {
-                                usuario.setImagenUrl(imagenUrl);
-                                subirDatosAFirebase(usuario);
-                                Toast.makeText(DireccionActivity.this, "Imagen subida con éxito", Toast.LENGTH_SHORT).show();
-                            });
-                        } catch (JSONException e) {
-                            Log.e("Supabase", "Error procesando respuesta JSON", e);
-                            mostrarErrorEnUI("Error al procesar la respuesta");
-                        }
+                        runOnUiThread(() -> {
+                            // Guardar la URL pública en el usuario
+                            usuario.setImagenUrl(imagenUrlPublica);
+                            subirDatosAFirebase(usuario);
+                            Toast.makeText(DireccionActivity.this, "Imagen subida con éxito", Toast.LENGTH_SHORT).show();
+                        });
                     } else {
                         Log.e("Supabase", "Error en la respuesta: " + response.code() + " - " + responseString);
                         mostrarErrorEnUI("Error al subir la imagen: " + response.code());
