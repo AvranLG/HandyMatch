@@ -170,10 +170,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:onClick="abrirRetrieve"
             android:text="@string/olvidocontraseña"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="16sp"
-            android:onClick="abrirRetrive"
             android:textStyle="bold" />
 
         <Space
@@ -193,11 +194,12 @@
             android:layout_marginTop="12dp">
 
             <ImageView
+                android:id="@+id/google_login"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity=""
-                android:src="@drawable/ic_google"
-                android:layout_marginEnd="12dp"/>
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_google" />
 
             <ImageView
                 android:layout_width="40dp"

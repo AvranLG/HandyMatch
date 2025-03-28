@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "567600815541",
+    "firebase_url": "https://handy-match-db-default-rtdb.firebaseio.com",
     "project_id": "handy-match-db",
     "storage_bucket": "handy-match-db.firebasestorage.app"
   },
@@ -12,7 +13,28 @@
           "package_name": "com.example.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "567600815541-cvtatb0vcsk65hrqs6p7ocnamndp1goq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app",
+            "certificate_hash": "94293856eca5e1270ad6de8af75dfd8be28ef35d"
+          }
+        },
+        {
+          "client_id": "567600815541-o8i129eipk8nuk1vs9ielhg36g5m66ip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app",
+            "certificate_hash": "17eda44dfc3e236519702c475054631639350d48"
+          }
+        },
+        {
+          "client_id": "567600815541-a0f8smn9bqkr5kv9hqll7gd0g0rnsh6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAxYTtF1v29IIaIJuHLR35ccAc-GBCcde4"
@@ -20,7 +42,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567600815541-a0f8smn9bqkr5kv9hqll7gd0g0rnsh6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
