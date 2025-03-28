@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,9 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -204,6 +208,14 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Si la autenticación es exitosa
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        // Verificar si el usuario existe en la base de datos
+                        if (user != null) {
+                            String userId = user.getUid();
+                            checkUserExistsAndSave(userId, acct);
+                        }
+
                         Toast.makeText(LoginActivity.this, "Inicio de sesión con Google exitoso", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
@@ -211,6 +223,54 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(LoginActivity.this, "Autenticación fallida", Toast.LENGTH_SHORT).show();
                     }
+                });
+    }
+
+    // Método para verificar si el usuario existe y guardarlo si no
+    private void checkUserExistsAndSave(String userId, GoogleSignInAccount acct) {
+        DatabaseReference userRef = databaseReference.child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    // El usuario no existe, crear uno nuevo
+                    saveUserData(userId, acct);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(LoginActivity.this, "Error al verificar usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Método para guardar los datos del usuario en la base de datos
+    private void saveUserData(String userId, GoogleSignInAccount acct) {
+        // Obtener datos del usuario
+        String email = acct.getEmail();
+        String nombre = acct.getGivenName(); // Nombre
+        String apellidos = acct.getFamilyName(); // Apellidos
+
+        // Crear mapa de datos
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("email", email);
+        userData.put("nombre", nombre != null ? nombre : "");
+        userData.put("apellidos", apellidos != null ? apellidos : "");
+        userData.put("googleId", acct.getId());
+        userData.put("uid", userId); // Guardamos el UID de Firebase Authentication
+        userData.put("tipoLogin", "google"); // Para diferenciar el tipo de inicio de sesión
+
+        // Guardar en la base de datos usando el UID como clave
+        databaseReference.child(userId).setValue(userData)
+                .addOnSuccessListener(aVoid -> {
+                    // Datos guardados exitosamente
+                    Toast.makeText(LoginActivity.this, "Perfil creado con éxito", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Error al guardar los datos
+                    Toast.makeText(LoginActivity.this, "Error al crear perfil", Toast.LENGTH_SHORT).show();
                 });
     }
 

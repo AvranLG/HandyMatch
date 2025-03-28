@@ -249,64 +249,34 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usuariosRef = database.getReference("usuarios");
 
-        mAuth.fetchSignInMethodsForEmail(correo)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        SignInMethodQueryResult result = task.getResult();
-                        if (result != null) {
-                            List<String> signInMethods = result.getSignInMethods();
-
-                            // Verificación más específica
-                            boolean emailAlreadyExists = signInMethods != null &&
-                                    !signInMethods.isEmpty() &&
-                                    (signInMethods.contains("password") ||
-                                            signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD));
-
-                            if (emailAlreadyExists) {
-                                // Correo ya registrado en Authentication
-                                progressDialog.dismiss();
-                                correoText.setError("El correo electrónico ya está registrado");
-                                return;
-                            }
-
-                            // Si no está registrado en Authentication, verificar en Realtime Database
-                            usuariosRef.orderByChild("email").equalTo(correo)
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            progressDialog.dismiss();
-                                            if (snapshot.exists()) {
-                                                // Correo encontrado en la base de datos
-                                                correoText.setError("El correo electrónico ya está en uso");
-                                            } else {
-                                                // Correo no registrado, continuar con el registro
-                                                continuarRegistro();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            progressDialog.dismiss();
-                                            Log.e("RegistroActivity", "Error al verificar correo", error.toException());
-                                            Toast.makeText(RegistroActivity.this,
-                                                    "Error al verificar el correo",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            // No se encontraron resultados
-                            progressDialog.dismiss();
-                            Toast.makeText(RegistroActivity.this,
-                                    "No se pudieron verificar las credenciales",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        // Error al verificar el correo
+        usuariosRef.orderByChild("email").equalTo(correo)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
                         progressDialog.dismiss();
+
+                        // Log para verificar existencia en Realtime Database
+                        Log.d("RegistroActivitydepu", "Snapshot existe: " + snapshot.exists());
+
+                        if (snapshot.exists()) {
+                            // Correo encontrado en la base de datos
+                            correoText.setError("El correo electrónico ya está en uso");
+                            Log.w("RegistroActivitydepu", "Correo encontrado en Realtime Database");
+                        } else {
+                            // Correo no registrado, continuar con el registro
+                            Log.i("RegistroActivitydepu", "Correo válido, continuando registro");
+                            continuarRegistro();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        progressDialog.dismiss();
+                        Log.e("RegistroActivitydepu", "Error al verificar correo en Realtime Database", error.toException());
                         Toast.makeText(RegistroActivity.this,
                                 "Error al verificar el correo",
                                 Toast.LENGTH_SHORT).show();

@@ -43,7 +43,6 @@ dependencies {
 
     // Firebase - Dependencias esenciales
     implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
-    implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore:25.1.3")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
