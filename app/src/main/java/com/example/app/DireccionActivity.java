@@ -1,56 +1,36 @@
 package com.example.app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.util.Base64;
+
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.MotionEvent;
 import android.view.View;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.MultipartBody;
-import okhttp3.MediaType;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 import android.widget.EditText;
 import android.widget.Toast;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import okhttp3.*;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -176,6 +156,11 @@ public class DireccionActivity extends AppCompatActivity {
 
     // Metodo para enviar los datos a Firebase
     public void enviarDatosFirebase(View v) {
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Registrando...");
+        progressDialog.show();
+
         // Recoger los datos de los campos de dirección
         String direccion = direccionText.getText().toString();
         String codigoPostal = codigoPostalText.getText().toString();
@@ -193,6 +178,7 @@ public class DireccionActivity extends AppCompatActivity {
         // Validar si algún campo está vacío
         if (direccion.isEmpty() || codigoPostal.isEmpty() || colonia.isEmpty() || estado.isEmpty() || ciudad.isEmpty() || referencia.isEmpty()) {
             // Mostrar un Toast con el mensaje de error
+            progressDialog.dismiss();
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
         } else {
 
@@ -251,6 +237,7 @@ public class DireccionActivity extends AppCompatActivity {
 
             // Si hay algún error, no continuar
             if (!todosLosCamposValidos) {
+                progressDialog.dismiss();
                 return;
             }
 
@@ -269,7 +256,7 @@ public class DireccionActivity extends AppCompatActivity {
                                 user.sendEmailVerification()
                                         .addOnCompleteListener(verificationTask -> {
                                             if (verificationTask.isSuccessful()) {
-                                                // Preparar objeto de usuario con el UID de Firebase Auth
+                                                // Preparar objeto de usuario
                                                 String fechaRegistro = obtenerFechaHoraActual();
                                                 Usuario usuario = new Usuario(
                                                         nombre,
@@ -290,21 +277,17 @@ public class DireccionActivity extends AppCompatActivity {
                                                 // Establecer el UID de Firebase Auth en el usuario
                                                 usuario.setUid(user.getUid());
 
-                                                // Subir la imagen a Supabase (tu método existente)
-                                                if (imagenUri != null && !imagenUri.isEmpty()) {
-                                                    Uri imageUri = Uri.parse(imagenUri);
-                                                    subirImagenASupabase(imageUri, usuario);
-                                                } else {
-                                                    // Si no hay imagen, subir datos directamente
-                                                    subirDatosAFirebase(usuario);
-                                                }
+                                                // Redirigir a una pantalla de verificación de correo
+                                                Intent intent = new Intent(this, VerificacionCorreoActivity.class);
+                                                intent.putExtra("usuario", usuario);
+                                                intent.putExtra("imagenUri", imagenUri);
+                                                startActivity(intent);
 
-                                                // Mostrar mensaje de verificación
-                                                Toast.makeText(DireccionActivity.this,
-                                                        "Registro exitoso. Por favor verifica tu correo electrónico.",
-                                                        Toast.LENGTH_LONG).show();
+                                                progressDialog.dismiss();
+                                                finish();
                                             } else {
                                                 // Error al enviar correo de verificación
+                                                progressDialog.dismiss();
                                                 Toast.makeText(DireccionActivity.this,
                                                         "Error al enviar correo de verificación",
                                                         Toast.LENGTH_SHORT).show();
@@ -313,6 +296,7 @@ public class DireccionActivity extends AppCompatActivity {
                             }
                         } else {
                             // Error en el registro de Authentication
+                            progressDialog.dismiss();
                             Toast.makeText(DireccionActivity.this,
                                     "Error en el registro: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
@@ -321,117 +305,6 @@ public class DireccionActivity extends AppCompatActivity {
 
 
         }
-    }
-
-    private void subirImagenASupabase(Uri imageUri, Usuario usuario) {
-        // Verificar que las credenciales estén configuradas
-        if (TextUtils.isEmpty(SUPABASE_URL) || TextUtils.isEmpty(STORAGE_BUCKET_NAME) || TextUtils.isEmpty(API_KEY)) {
-            Log.e("Supabase", "Credenciales de Supabase no configuradas correctamente");
-            return;
-        }
-
-        // Nombre de archivo único
-        String nombreArchivo = "imagen_" + System.currentTimeMillis() + ".jpg";
-
-        // Construir URL de subida de Supabase
-        String url = SUPABASE_URL + "/storage/v1/object/" + STORAGE_BUCKET_NAME + "/" + nombreArchivo;
-
-        // Construir URL pública de la imagen
-        String imagenUrlPublica = SUPABASE_URL + "/storage/v1/object/public/" + STORAGE_BUCKET_NAME + "/" + nombreArchivo;
-
-        try {
-            // Leer bytes de la imagen
-            InputStream inputStream = getContentResolver().openInputStream(imageUri);
-            if (inputStream == null) {
-                Log.e("Supabase", "No se pudo abrir el InputStream de la imagen");
-                return;
-            }
-
-            // Comprimir la imagen para reducir tamaño
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-            byte[] imageBytes = baos.toByteArray();
-
-            // Crear cliente OkHttp con timeouts más largos
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .build();
-
-            // Crear cuerpo de la solicitud
-            RequestBody fileBody = RequestBody.create(imageBytes, MediaType.parse("image/jpeg"));
-            MultipartBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", nombreArchivo, fileBody)
-                    .build();
-
-            // Crear solicitud POST
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("apikey", API_KEY)
-                    .addHeader("Authorization", "Bearer " + API_KEY)
-                    .addHeader("Content-Type", "multipart/form-data")
-                    .post(requestBody)
-                    .build();
-
-            // Ejecutar solicitud de forma asíncrona
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String responseString = response.body().string();
-                    Log.d("Supabase", "Respuesta completa de Supabase: " + responseString);
-
-                    if (response.isSuccessful()) {
-                        runOnUiThread(() -> {
-                            // Guardar la URL pública en el usuario
-                            usuario.setImagenUrl(imagenUrlPublica);
-                            subirDatosAFirebase(usuario);
-                            Toast.makeText(DireccionActivity.this, "Imagen subida con éxito", Toast.LENGTH_SHORT).show();
-                        });
-                    } else {
-                        Log.e("Supabase", "Error en la respuesta: " + response.code() + " - " + responseString);
-                        mostrarErrorEnUI("Error al subir la imagen: " + response.code());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e("Supabase", "Error en la solicitud", e);
-                    mostrarErrorEnUI("Fallo al subir la imagen: " + e.getMessage());
-                }
-
-                private void mostrarErrorEnUI(String mensaje) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(DireccionActivity.this, mensaje, Toast.LENGTH_SHORT).show();
-                    });
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("Supabase", "Error general al subir imagen", e);
-            Toast.makeText(this, "Error al procesar la imagen", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private void subirDatosAFirebase(Usuario usuario) {
-        // Referencia a la base de datos Firebase
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("usuarios");
-
-        // Subir los datos del usuario a Firebase con su clave única de push
-        myRef.push().setValue(usuario);
-
-        // Mostrar un mensaje de éxito
-        Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
-
-        // Opcional: Redirigir a otra actividad, por ejemplo LoginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish(); // Finaliza la actividad actual para que no pueda volver con el botón de retroceso
     }
 
     private String obtenerFechaHoraActual() {

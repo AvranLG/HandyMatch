@@ -1,11 +1,13 @@
 package com.example.app;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -44,6 +47,7 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -164,6 +168,10 @@ public class RegistroActivity extends AppCompatActivity {
 
     public void abrirDireccion(View v) {
 
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Procesando...");
+        progressDialog.show();
+
         boolean error = false;
         // Recoger los datos de los EditText
         String nombre = nombreText.getText().toString().trim();
@@ -180,6 +188,7 @@ public class RegistroActivity extends AppCompatActivity {
 
         // Validar los datos antes de enviarlos
         if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
+            progressDialog.dismiss();
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -235,34 +244,72 @@ public class RegistroActivity extends AppCompatActivity {
             numeroContainer.setErrorEnabled(false);
         }
 
-        if(error) return;
+        if(error){
+            progressDialog.dismiss();
+            return;
+        }
 
-        // Obtener la instancia de FirebaseAuth
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usuariosRef = database.getReference("usuarios");
 
-        // En lugar de consultar en Realtime Database, usar fetchSignInMethodsForEmail
         mAuth.fetchSignInMethodsForEmail(correo)
-                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                        if (task.isSuccessful()) {
-                            SignInMethodQueryResult result = task.getResult();
-                            if (result != null && result.getSignInMethods() != null &&
-                                    !result.getSignInMethods().isEmpty()) {
-                                // El correo ya está registrado
-                                Toast.makeText(RegistroActivity.this,
-                                        "El correo electrónico ya está registrado",
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                // Correo no registrado, continuar con el registro
-                                continuarRegistro();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        SignInMethodQueryResult result = task.getResult();
+                        if (result != null) {
+                            List<String> signInMethods = result.getSignInMethods();
+
+                            // Verificación más específica
+                            boolean emailAlreadyExists = signInMethods != null &&
+                                    !signInMethods.isEmpty() &&
+                                    (signInMethods.contains("password") ||
+                                            signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD));
+
+                            if (emailAlreadyExists) {
+                                // Correo ya registrado en Authentication
+                                progressDialog.dismiss();
+                                correoText.setError("El correo electrónico ya está registrado");
+                                return;
                             }
+
+                            // Si no está registrado en Authentication, verificar en Realtime Database
+                            usuariosRef.orderByChild("email").equalTo(correo)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            progressDialog.dismiss();
+                                            if (snapshot.exists()) {
+                                                // Correo encontrado en la base de datos
+                                                correoText.setError("El correo electrónico ya está en uso");
+                                            } else {
+                                                // Correo no registrado, continuar con el registro
+                                                continuarRegistro();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            progressDialog.dismiss();
+                                            Log.e("RegistroActivity", "Error al verificar correo", error.toException());
+                                            Toast.makeText(RegistroActivity.this,
+                                                    "Error al verificar el correo",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         } else {
-                            // Error al verificar el correo
+                            // No se encontraron resultados
+                            progressDialog.dismiss();
                             Toast.makeText(RegistroActivity.this,
-                                    "Error al verificar el correo",
+                                    "No se pudieron verificar las credenciales",
                                     Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        // Error al verificar el correo
+                        progressDialog.dismiss();
+                        Toast.makeText(RegistroActivity.this,
+                                "Error al verificar el correo",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
 
