@@ -42,11 +42,13 @@ dependencies {
     implementation("androidx.activity:activity:1.10.1")
 
     // Firebase - Dependencias esenciales
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore:25.1.3")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation("com.google.firebase:firebase-auth-ktx:23.2.0")
 
     // Agregar la dependencia de UCrop para recortar imágenes
     implementation("com.github.yalantis:uCrop:2.2.9")

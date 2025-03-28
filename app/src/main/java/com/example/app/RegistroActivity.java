@@ -6,6 +6,27 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -215,6 +236,46 @@ public class RegistroActivity extends AppCompatActivity {
         }
 
         if(error) return;
+
+        // Obtener la instancia de FirebaseAuth
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        // En lugar de consultar en Realtime Database, usar fetchSignInMethodsForEmail
+        mAuth.fetchSignInMethodsForEmail(correo)
+                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        if (task.isSuccessful()) {
+                            SignInMethodQueryResult result = task.getResult();
+                            if (result != null && result.getSignInMethods() != null &&
+                                    !result.getSignInMethods().isEmpty()) {
+                                // El correo ya está registrado
+                                Toast.makeText(RegistroActivity.this,
+                                        "El correo electrónico ya está registrado",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Correo no registrado, continuar con el registro
+                                continuarRegistro();
+                            }
+                        } else {
+                            // Error al verificar el correo
+                            Toast.makeText(RegistroActivity.this,
+                                    "Error al verificar el correo",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+    private void continuarRegistro() {
+        // Metodo para continuar con el proceso de registro
+        // Recoger los datos de los EditText
+        String nombre = nombreText.getText().toString().trim();
+        String apellidos = apellidosText.getText().toString().trim();
+        String correo = correoText.getText().toString().trim();
+        String contrasena = contrasenaText.getText().toString().trim();
+        String telefono = telefonoText.getText().toString().trim();
 
         // Crear un Intent para abrir la segunda actividad (DireccionActivity)
         Intent i = new Intent(this, DireccionActivity.class);

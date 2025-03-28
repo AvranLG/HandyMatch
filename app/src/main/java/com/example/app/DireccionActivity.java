@@ -32,6 +32,8 @@ import okhttp3.*;
 import com.android.volley.AuthFailureError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -252,18 +254,72 @@ public class DireccionActivity extends AppCompatActivity {
                 return;
             }
 
-            String fechaRegistro = obtenerFechaHoraActual();
-            // Crear un objeto de usuario con los datos
-            Usuario usuario = new Usuario(nombre, apellidos, correo, telefono, contrasena, fechaRegistro, direccion, codigoPostal, colonia, estado, ciudad, referencia, imagenUri);
+            // Obtener instancia de FirebaseAuth
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-            // Subir la imagen a Supabase y obtener la URL
-            if (imagenUri != null && !imagenUri.isEmpty()) {
-                Uri imageUri = Uri.parse(imagenUri);
-                subirImagenASupabase(imageUri, usuario);
-            } else {
-                // Si no hay imagen, solo subimos los demás datos a Firebase
-                subirDatosAFirebase(usuario);
-            }
+            // Crear usuario en Firebase Authentication
+            mAuth.createUserWithEmailAndPassword(correo, contrasena)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // Registro exitoso en Authentication
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            // Enviar correo de verificación
+                            if (user != null) {
+                                user.sendEmailVerification()
+                                        .addOnCompleteListener(verificationTask -> {
+                                            if (verificationTask.isSuccessful()) {
+                                                // Preparar objeto de usuario con el UID de Firebase Auth
+                                                String fechaRegistro = obtenerFechaHoraActual();
+                                                Usuario usuario = new Usuario(
+                                                        nombre,
+                                                        apellidos,
+                                                        correo,
+                                                        telefono,
+                                                        contrasena,
+                                                        fechaRegistro,
+                                                        direccion,
+                                                        codigoPostal,
+                                                        colonia,
+                                                        estado,
+                                                        ciudad,
+                                                        referencia,
+                                                        imagenUri
+                                                );
+
+                                                // Establecer el UID de Firebase Auth en el usuario
+                                                usuario.setUid(user.getUid());
+
+                                                // Subir la imagen a Supabase (tu método existente)
+                                                if (imagenUri != null && !imagenUri.isEmpty()) {
+                                                    Uri imageUri = Uri.parse(imagenUri);
+                                                    subirImagenASupabase(imageUri, usuario);
+                                                } else {
+                                                    // Si no hay imagen, subir datos directamente
+                                                    subirDatosAFirebase(usuario);
+                                                }
+
+                                                // Mostrar mensaje de verificación
+                                                Toast.makeText(DireccionActivity.this,
+                                                        "Registro exitoso. Por favor verifica tu correo electrónico.",
+                                                        Toast.LENGTH_LONG).show();
+                                            } else {
+                                                // Error al enviar correo de verificación
+                                                Toast.makeText(DireccionActivity.this,
+                                                        "Error al enviar correo de verificación",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        } else {
+                            // Error en el registro de Authentication
+                            Toast.makeText(DireccionActivity.this,
+                                    "Error en el registro: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
         }
     }
 

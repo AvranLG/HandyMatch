@@ -1,6 +1,6 @@
 package com.example.app;
 public class Usuario {
-
+    private String uid;
     private String nombre;
     private String apellidos;
     private String email;
@@ -25,6 +25,7 @@ public class Usuario {
                    String fecha_registro,
                    String direccion, String codigo_postal, String colonia,
                    String estado, String ciudad, String referencia, String imagenUrl) {
+
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -41,7 +42,13 @@ public class Usuario {
     }
 
     // Getters y Setters
+    public String getUid() {
+        return uid;
+    }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getNombre() {
         return nombre;
     }
