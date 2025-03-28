@@ -31,6 +31,7 @@ import okhttp3.*;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -136,7 +137,42 @@ public class DireccionActivity extends AppCompatActivity {
         });
     }
 
-    // Método para enviar los datos a Firebase
+    // Metodo para validar dirección
+    private boolean validarDireccion(String direccion) {
+        // Permite letras (mayúsculas y minúsculas), números, espacios, guiones, puntos y #
+        String regex = "^[a-zA-Z0-9\\s\\-\\.#]+$";
+        return direccion.matches(regex) && direccion.length() >= 5 && direccion.length() <= 100;
+    }
+
+    // Metodo para validar código postal
+    private boolean validarCodigoPostal(String codigoPostal) {
+        // Valida que sean exactamente 5 dígitos
+        String regex = "^\\d{5}$";
+        return codigoPostal.matches(regex);
+    }
+
+    // Metodo para validar colonia
+    private boolean validarColonia(String colonia) {
+        // Permite solo letras y espacios
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+        return colonia.matches(regex) && colonia.length() >= 2 && colonia.length() <= 50;
+    }
+
+    // Metodo para validar ciudad
+    private boolean validarCiudad(String ciudad) {
+        // Permite solo letras y espacios, incluyendo acentos
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+        return ciudad.matches(regex) && ciudad.length() >= 2 && ciudad.length() <= 50;
+    }
+
+    // Metodo para validar referencia (opcional, pero recomendado)
+    private boolean validarReferencia(String referencia) {
+        // Permite letras, números, espacios, guiones, puntos y #
+        String regex = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-\\.#]+$";
+        return referencia.length() <= 200; // Opcional, pero con límite de longitud
+    }
+
+    // Metodo para enviar los datos a Firebase
     public void enviarDatosFirebase(View v) {
         // Recoger los datos de los campos de dirección
         String direccion = direccionText.getText().toString();
@@ -146,11 +182,76 @@ public class DireccionActivity extends AppCompatActivity {
         String ciudad = ciudadText.getText().toString();
         String referencia = referenciaText.getText().toString();
 
+        TextInputLayout direccionContainer = findViewById(R.id.direccionContainer);
+        TextInputLayout postalContainer = findViewById(R.id.postalContainer);
+        TextInputLayout coloniaContainer = findViewById(R.id.coloniaContainer);
+        TextInputLayout ciudadContainer = findViewById(R.id.ciudadContainer);
+        TextInputLayout referenciaContainer = findViewById(R.id.referenciaContainer);
+
         // Validar si algún campo está vacío
         if (direccion.isEmpty() || codigoPostal.isEmpty() || colonia.isEmpty() || estado.isEmpty() || ciudad.isEmpty() || referencia.isEmpty()) {
             // Mostrar un Toast con el mensaje de error
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
         } else {
+
+            // Bandera para rastrear validación general
+            boolean todosLosCamposValidos = true;
+
+            // Validar dirección
+            if (!validarDireccion(direccion)) {
+                direccionContainer.setErrorEnabled(true);
+                direccionContainer.setError("Dirección inválida. Use letras, números, espacios, -,.#");
+                todosLosCamposValidos = false;
+            } else {
+                direccionContainer.setErrorEnabled(false);
+                direccionContainer.setError(null);
+            }
+
+            // Validar código postal
+            if (!validarCodigoPostal(codigoPostal)) {
+                postalContainer.setErrorEnabled(true);
+                postalContainer.setError("Código postal inválido. Debe contener 5 dígitos.");
+                todosLosCamposValidos = false;
+            } else {
+                postalContainer.setErrorEnabled(false);
+                postalContainer.setError(null);
+            }
+
+            // Validar colonia
+            if (!validarColonia(colonia)) {
+                coloniaContainer.setErrorEnabled(true);
+                coloniaContainer.setError("Colonia inválida. Solo letras y espacios");
+                todosLosCamposValidos = false;
+            } else {
+                coloniaContainer.setErrorEnabled(false);
+                coloniaContainer.setError(null);
+            }
+
+            // Validar ciudad
+            if (!validarCiudad(ciudad)) {
+                ciudadContainer.setErrorEnabled(true);
+                ciudadContainer.setError("Ciudad inválida. Solo letras y espacios");
+                todosLosCamposValidos = false;
+            } else {
+                ciudadContainer.setErrorEnabled(false);
+                ciudadContainer.setError(null);
+            }
+
+            // Validar referencia
+            if (!validarReferencia(referencia)) {
+                referenciaContainer.setErrorEnabled(true);
+                referenciaContainer.setError("Referencia inválida. Caracteres no permitidos");
+                todosLosCamposValidos = false;
+            } else {
+                referenciaContainer.setErrorEnabled(false);
+                referenciaContainer.setError(null);
+            }
+
+            // Si hay algún error, no continuar
+            if (!todosLosCamposValidos) {
+                return;
+            }
+
             String fechaRegistro = obtenerFechaHoraActual();
             // Crear un objeto de usuario con los datos
             Usuario usuario = new Usuario(nombre, apellidos, correo, telefono, contrasena, fechaRegistro, direccion, codigoPostal, colonia, estado, ciudad, referencia, imagenUri);
