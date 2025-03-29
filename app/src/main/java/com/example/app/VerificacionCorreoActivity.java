@@ -5,6 +5,7 @@ package com.example.app;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.app.ProgressDialog;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,19 +57,23 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
     private TextView timerTextView;
     private Button continuarButton;
     private CountDownTimer countDownTimer;
-    private static final long TIEMPO_VERIFICACION = 1 * 60 * 1000; // minutos
+    private static final long TIEMPO_VERIFICACION = 3 * 60 * 1000; // minutos
     private static final long INTERVALO_TICK = 1000; // 1 segundo
 
     private static final String SUPABASE_URL = "https://yyaepcxpedvbkxsjldtf.supabase.co";
     private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWVwY3hwZWR2Ymt4c2psZHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjY5NTQsImV4cCI6MjA1ODUwMjk1NH0.B8WbrpGjiMWQxR2cNGKsJ_DXOQbmdA-DW8ygNfCbl_8";  // Coloca tu API key de Supabase aquí
     private static final String STORAGE_BUCKET_NAME = "imagenes-usuarios";  // Nombre del bucket en Supabase
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verificacion_correo);
 
         mAuth = FirebaseAuth.getInstance();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Validando datos...");  // Mensaje que se mostrará
+        progressDialog.setCancelable(false);  // No permite cancelar el ProgressDialog tocando fuera de él
 
         // Recuperar datos del intent
         Intent intent = getIntent();
@@ -124,6 +129,7 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
     }
 
     private void verificarCorreo() {
+        progressDialog.show();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             user.reload().addOnCompleteListener(task -> {
@@ -133,16 +139,18 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
                         countDownTimer.cancel();
                     }
 
-                    // Subir la imagen a Supabase (tu método existente)
+                    // Subir la imagen a Supabase
                     if (imagenUri != null && !imagenUri.isEmpty()) {
                         Uri imageUri = Uri.parse(imagenUri);
                         subirImagenASupabase(imageUri, usuario);
                     } else {
                         // Si no hay imagen, subir datos directamente
                         subirDatosAFirebase(usuario);
+                        progressDialog.dismiss();
                     }
                 } else {
                     Toast.makeText(this, "Por favor, verifica tu correo electrónico", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             });
         }
