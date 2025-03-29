@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.app.ProgressDialog;  // Importa la clase ProgressDialog
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001; // Código de solicitud para Google Sign-In
 
+    private ProgressDialog progressDialog;  // Variable para el ProgressDialog
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,11 @@ public class LoginActivity extends AppCompatActivity {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#ffffff"));
+
+        // Inicializar el ProgressDialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Iniciando sesión...");  // Mensaje que se mostrará
+        progressDialog.setCancelable(false);  // No permite cancelar el ProgressDialog tocando fuera de él
 
         // Manejar el botón de retroceso con OnBackPressedDispatcher
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -126,6 +134,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Mostrar el ProgressDialog mientras se realiza el login
+        progressDialog.show();
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -144,9 +155,11 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
+                            progressDialog.dismiss();  // Cerrar el ProgressDialog cuando se haya hecho login exitoso
                         } else {
                             //Contraseña incorrecta
                             ErrContra.setVisibility(View.VISIBLE);
+                            progressDialog.dismiss();  // Cerrar el ProgressDialog si hay error en la contraseña
                         }
                         break;
                     }
@@ -155,12 +168,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (!userFound) {
                     //Correo no encontrado
                     ErrCorreo.setVisibility(View.VISIBLE);
+                    progressDialog.dismiss();  // Cerrar el ProgressDialog si no se encuentra el correo
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(LoginActivity.this, "Error al conectar con la base de datos", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();  // Cerrar el ProgressDialog si ocurre un error
             }
         });
     }
@@ -179,8 +194,12 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(this, Retrieve_Password.class);
         startActivity(i);
     }
+
     // Método de autenticación con Google
     private void signInWithGoogle() {
+        // Mostrar el ProgressDialog cuando el usuario haga click en el botón de Google Sign-In
+        progressDialog.show();
+
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -196,7 +215,8 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-               Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();  // Cerrar el ProgressDialog en caso de fallo
             }
         }
     }
@@ -220,13 +240,15 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
+                        progressDialog.dismiss();  // Cerrar el ProgressDialog cuando se haya hecho login exitoso
                     } else {
                         Toast.makeText(LoginActivity.this, "Autenticación fallida", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();  // Cerrar el ProgressDialog si hay fallo
                     }
                 });
     }
 
-    // Método para verificar si el usuario existe y guardarlo si no
+    // Metodo para verificar si el usuario existe y guardarlo si no
     private void checkUserExistsAndSave(String userId, GoogleSignInAccount acct) {
         DatabaseReference userRef = databaseReference.child(userId);
 
@@ -242,11 +264,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(LoginActivity.this, "Error al verificar usuario", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();  // Cerrar el ProgressDialog si ocurre un error
             }
         });
     }
 
-    // Método para guardar los datos del usuario en la base de datos
+    // Metodo para guardar los datos del usuario en la base de datos
     private void saveUserData(String userId, GoogleSignInAccount acct) {
         // Obtener datos del usuario
         String email = acct.getEmail();
@@ -271,6 +294,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     // Error al guardar los datos
                     Toast.makeText(LoginActivity.this, "Error al crear perfil", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();  // Cerrar el ProgressDialog si hay error al guardar datos
                 });
     }
 

@@ -59,6 +59,8 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth:23.2.0")  // Dependencia de Firebase Authentication
     implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
+    implementation ("com.facebook.android:facebook-android-sdk:18.0.2")
+
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.cloudinary:cloudinary-android:2.3.1")
