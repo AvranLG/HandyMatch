@@ -1,26 +1,36 @@
 package com.example.app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.view.KeyEvent;
+
+import android.util.Log;
+
 import android.view.MotionEvent;
 import android.view.View;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 import android.widget.EditText;
 import android.widget.Toast;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.IOException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -45,6 +55,11 @@ public class DireccionActivity extends AppCompatActivity {
     private String correo;
     private String contrasena;
     private String telefono;
+    private String imagenUri;
+
+    private static final String SUPABASE_URL = "https://yyaepcxpedvbkxsjldtf.supabase.co";
+    private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWVwY3hwZWR2Ymt4c2psZHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjY5NTQsImV4cCI6MjA1ODUwMjk1NH0.B8WbrpGjiMWQxR2cNGKsJ_DXOQbmdA-DW8ygNfCbl_8";  // Coloca tu API key de Supabase aquí
+    private static final String STORAGE_BUCKET_NAME = "imagenes-usuarios";  // Nombre del bucket en Supabase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +90,7 @@ public class DireccionActivity extends AppCompatActivity {
         correo = intent.getStringExtra("correo");
         contrasena = intent.getStringExtra("contrasena");
         telefono = intent.getStringExtra("telefono");
+        imagenUri = intent.getStringExtra("imagenUri");
 
         // Inicializar los EditText
         direccionText = findViewById(R.id.direccionText);
@@ -103,8 +119,48 @@ public class DireccionActivity extends AppCompatActivity {
         });
     }
 
-    // Método para enviar los datos a Firebase
+    // Metodo para validar dirección
+    private boolean validarDireccion(String direccion) {
+        // Permite letras (mayúsculas y minúsculas), números, espacios, guiones, puntos y #
+        String regex = "^[a-zA-Z0-9\\s\\-\\.#]+$";
+        return direccion.matches(regex) && direccion.length() >= 5 && direccion.length() <= 100;
+    }
+
+    // Metodo para validar código postal
+    private boolean validarCodigoPostal(String codigoPostal) {
+        // Valida que sean exactamente 5 dígitos
+        String regex = "^\\d{5}$";
+        return codigoPostal.matches(regex);
+    }
+
+    // Metodo para validar colonia
+    private boolean validarColonia(String colonia) {
+        // Permite solo letras y espacios
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+        return colonia.matches(regex) && colonia.length() >= 2 && colonia.length() <= 50;
+    }
+
+    // Metodo para validar ciudad
+    private boolean validarCiudad(String ciudad) {
+        // Permite solo letras y espacios, incluyendo acentos
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+        return ciudad.matches(regex) && ciudad.length() >= 2 && ciudad.length() <= 50;
+    }
+
+    // Metodo para validar referencia (opcional, pero recomendado)
+    private boolean validarReferencia(String referencia) {
+        // Permite letras, números, espacios, guiones, puntos y #
+        String regex = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-\\.#]+$";
+        return referencia.length() <= 200; // Opcional, pero con límite de longitud
+    }
+
+    // Metodo para enviar los datos a Firebase
     public void enviarDatosFirebase(View v) {
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Registrando...");
+        progressDialog.show();
+
         // Recoger los datos de los campos de dirección
         String direccion = direccionText.getText().toString();
         String codigoPostal = codigoPostalText.getText().toString();
@@ -113,30 +169,141 @@ public class DireccionActivity extends AppCompatActivity {
         String ciudad = ciudadText.getText().toString();
         String referencia = referenciaText.getText().toString();
 
+        TextInputLayout direccionContainer = findViewById(R.id.direccionContainer);
+        TextInputLayout postalContainer = findViewById(R.id.postalContainer);
+        TextInputLayout coloniaContainer = findViewById(R.id.coloniaContainer);
+        TextInputLayout ciudadContainer = findViewById(R.id.ciudadContainer);
+        TextInputLayout referenciaContainer = findViewById(R.id.referenciaContainer);
+
         // Validar si algún campo está vacío
         if (direccion.isEmpty() || codigoPostal.isEmpty() || colonia.isEmpty() || estado.isEmpty() || ciudad.isEmpty() || referencia.isEmpty()) {
             // Mostrar un Toast con el mensaje de error
+            progressDialog.dismiss();
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
         } else {
-            String fechaRegistro = obtenerFechaHoraActual();
-            // Crear un objeto de usuario con los datos
-            Usuario usuario = new Usuario(nombre, apellidos, correo, telefono, contrasena, fechaRegistro, direccion, codigoPostal, colonia, estado, ciudad, referencia);
 
-            // Referencia a la base de datos Firebase
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("usuarios");
+            // Bandera para rastrear validación general
+            boolean todosLosCamposValidos = true;
 
-            // Subir los datos del usuario a Firebase con su clave única de push
-            myRef.push().setValue(usuario);
+            // Validar dirección
+            if (!validarDireccion(direccion)) {
+                direccionContainer.setErrorEnabled(true);
+                direccionContainer.setError("Dirección inválida. Use letras, números, espacios, -,.#");
+                todosLosCamposValidos = false;
+            } else {
+                direccionContainer.setErrorEnabled(false);
+                direccionContainer.setError(null);
+            }
 
-            // Mostrar un mensaje de éxito
-            Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
+            // Validar código postal
+            if (!validarCodigoPostal(codigoPostal)) {
+                postalContainer.setErrorEnabled(true);
+                postalContainer.setError("Código postal inválido. Debe contener 5 dígitos.");
+                todosLosCamposValidos = false;
+            } else {
+                postalContainer.setErrorEnabled(false);
+                postalContainer.setError(null);
+            }
 
-            // Opcional: Redirigir a otra actividad, por ejemplo LoginActivity
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish(); // Finaliza la actividad actual para que no pueda volver con el botón de retroceso
+            // Validar colonia
+            if (!validarColonia(colonia)) {
+                coloniaContainer.setErrorEnabled(true);
+                coloniaContainer.setError("Colonia inválida. Solo letras y espacios");
+                todosLosCamposValidos = false;
+            } else {
+                coloniaContainer.setErrorEnabled(false);
+                coloniaContainer.setError(null);
+            }
+
+            // Validar ciudad
+            if (!validarCiudad(ciudad)) {
+                ciudadContainer.setErrorEnabled(true);
+                ciudadContainer.setError("Ciudad inválida. Solo letras y espacios");
+                todosLosCamposValidos = false;
+            } else {
+                ciudadContainer.setErrorEnabled(false);
+                ciudadContainer.setError(null);
+            }
+
+            // Validar referencia
+            if (!validarReferencia(referencia)) {
+                referenciaContainer.setErrorEnabled(true);
+                referenciaContainer.setError("Referencia inválida. Caracteres no permitidos");
+                todosLosCamposValidos = false;
+            } else {
+                referenciaContainer.setErrorEnabled(false);
+                referenciaContainer.setError(null);
+            }
+
+            // Si hay algún error, no continuar
+            if (!todosLosCamposValidos) {
+                progressDialog.dismiss();
+                return;
+            }
+
+            // Obtener instancia de FirebaseAuth
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+            // Crear usuario en Firebase Authentication
+            mAuth.createUserWithEmailAndPassword(correo, contrasena)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // Registro exitoso en Authentication
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            // Enviar correo de verificación
+                            if (user != null) {
+                                user.sendEmailVerification()
+                                        .addOnCompleteListener(verificationTask -> {
+                                            if (verificationTask.isSuccessful()) {
+                                                // Preparar objeto de usuario
+                                                String fechaRegistro = obtenerFechaHoraActual();
+                                                Usuario usuario = new Usuario(
+                                                        nombre,
+                                                        apellidos,
+                                                        correo,
+                                                        telefono,
+                                                        contrasena,
+                                                        fechaRegistro,
+                                                        direccion,
+                                                        codigoPostal,
+                                                        colonia,
+                                                        estado,
+                                                        ciudad,
+                                                        referencia,
+                                                        imagenUri
+                                                );
+
+                                                // Establecer el UID de Firebase Auth en el usuario
+                                                usuario.setUid(user.getUid());
+
+                                                // Redirigir a una pantalla de verificación de correo
+                                                Intent intent = new Intent(this, VerificacionCorreoActivity.class);
+                                                intent.putExtra("usuario", usuario);
+                                                intent.putExtra("imagenUri", imagenUri);
+                                                startActivity(intent);
+
+                                                progressDialog.dismiss();
+                                                finish();
+                                            } else {
+                                                // Error al enviar correo de verificación
+                                                progressDialog.dismiss();
+                                                Toast.makeText(DireccionActivity.this,
+                                                        "Error al enviar correo de verificación",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        } else {
+                            // Error en el registro de Authentication
+                            progressDialog.dismiss();
+                            Toast.makeText(DireccionActivity.this,
+                                    "Error en el registro: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
         }
     }
 
@@ -147,34 +314,6 @@ public class DireccionActivity extends AppCompatActivity {
 
         // Formatear la fecha y hora y devolverla como un String
         return dateFormat.format(calendar.getTime());
-    }
-
-    // Sobrescribir el método onBackPressed para manejar el retroceso
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // Obtener el InputMethodManager
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
-            // Verificar si el teclado está visible
-            View view = this.getCurrentFocus();
-            if (view != null && view instanceof EditText) {
-                // Verificamos si el teclado está visible en este momento
-                if (inputMethodManager.isAcceptingText()) {
-                    // Si el teclado está visible, lo cerramos
-                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-                    // Además, quitamos el foco de todos los EditText
-                    clearFocusFromAllEditTexts();
-
-                    return true;  // Interceptamos el retroceso para no salir de la actividad
-                }
-            }
-
-            // Si el teclado no está visible, dejamos que se ejecute el comportamiento estándar del retroceso
-            return super.onKeyDown(keyCode, event);
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     // Método para quitar el foco de todos los EditTexts
@@ -202,32 +341,69 @@ public class DireccionActivity extends AppCompatActivity {
     private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
         String url = "https://api.zippopotam.us/MX/" + codigoPostal;
 
-        StringRequest request = new StringRequest(Request.Method.GET, url,
-                response -> {
+        // Crear cliente OkHttp
+        OkHttpClient client = new OkHttpClient();
+
+        // Crear solicitud GET
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        // Ejecutar solicitud de forma asíncrona
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+
                     try {
-                        JSONObject jsonObject = new JSONObject(response);
+                        JSONObject jsonObject = new JSONObject(responseBody);
                         JSONArray places = jsonObject.getJSONArray("places");
 
                         if (places.length() > 0) {
                             String estado = places.getJSONObject(0).getString("state");
                             String ciudad = places.getJSONObject(0).getString("place name");
-                            ciudadText.setText(ciudad); // Mostrar la ciudad en el campo
-                            estadoText.setText(estado); //Mostrar estado en el campo
-                            //Desabilitar los campos añadidos automáticamente
-                            estadoText.setEnabled(false);
+
+                            // Actualizar UI en el hilo principal
+                            runOnUiThread(() -> {
+                                ciudadText.setText(ciudad);
+                                estadoText.setText(estado);
+                                estadoText.setEnabled(false);
+                            });
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("ObtenerCiudad", "Error parseando JSON", e);
+
+                        // Manejar error en el hilo principal
+                        runOnUiThread(() -> {
+                            ciudadText.setText("");
+                            estadoText.setText("");
+                            estadoText.setEnabled(true);
+                        });
                     }
-                },
-                error -> {
-                    ciudadText.setText(""); // Limpiar campo si hay error
+                } else {
+                    // Manejar errores de respuesta
+                    Log.e("ObtenerCiudad", "Error en la respuesta: " + response.code());
+
+                    runOnUiThread(() -> {
+                        ciudadText.setText("");
+                        estadoText.setText("");
+                        estadoText.setEnabled(true);
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Manejar errores de red
+                Log.e("ObtenerCiudad", "Error de red", e);
+
+                runOnUiThread(() -> {
+                    ciudadText.setText("");
                     estadoText.setText("");
                     estadoText.setEnabled(true);
                 });
-
-        queue.add(request);
+            }
+        });
     }
-
-
 }

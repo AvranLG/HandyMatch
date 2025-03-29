@@ -1,6 +1,9 @@
 package com.example.app;
-public class Usuario {
 
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
+    private String uid;
     private String nombre;
     private String apellidos;
     private String email;
@@ -15,7 +18,7 @@ public class Usuario {
     private String estado;
     private String ciudad;
     private String referencia;
-    private String imageUrl;
+    private String imagenUrl;
 
     // Constructor vacío para Firebase
     public Usuario() {}
@@ -24,7 +27,8 @@ public class Usuario {
     public Usuario(String nombre, String apellidos, String email, String telefono, String contrasena,
                    String fecha_registro,
                    String direccion, String codigo_postal, String colonia,
-                   String estado, String ciudad, String referencia) {
+                   String estado, String ciudad, String referencia, String imagenUrl) {
+
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -37,10 +41,17 @@ public class Usuario {
         this.estado = estado;
         this.ciudad = ciudad;
         this.referencia = referencia;
+        this.imagenUrl = imagenUrl;
     }
 
     // Getters y Setters
+    public String getUid() {
+        return uid;
+    }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getNombre() {
         return nombre;
     }
@@ -134,5 +145,13 @@ public class Usuario {
     }
 
     public void setReferencia(String referencia) {this.referencia = referencia;}
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
 
 }
