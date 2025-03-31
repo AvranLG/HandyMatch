@@ -17,6 +17,7 @@ buildscript {
         maven { url = uri("https://jitpack.io") }
     }
     dependencies {
+        implementation 'com.google.android.gms:play-services-auth:20.7.0'
         classpath("com.android.tools.build:gradle:8.9.1")
         classpath("com.google.gms:google-services:4.4.2")
 

@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.adservices.topics.EncryptedTopic;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -286,29 +287,32 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void continuarRegistro() {
-        // Metodo para continuar con el proceso de registro
-        // Recoger los datos de los EditText
         String nombre = nombreText.getText().toString().trim();
         String apellidos = apellidosText.getText().toString().trim();
         String correo = correoText.getText().toString().trim();
         String contrasena = contrasenaText.getText().toString().trim();
         String telefono = telefonoText.getText().toString().trim();
 
-        // Crear un Intent para abrir la segunda actividad (DireccionActivity)
+
+        String encryptedPassword = EncryptionUtils.encrypt(contrasena);
+        String encryptedEmail = EncryptionUtils.encrypt(correo);
+        String encryptedPhone = EncryptionUtils.encrypt(telefono);
+
+
+        if (encryptedPassword == null || encryptedEmail == null || encryptedPhone == null) {
+            Toast.makeText(this, "Error al cifrar los datos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         Intent i = new Intent(this, DireccionActivity.class);
-
-        // Convertir la URI de la imagen en String
-        String imagenUriString = (imageUri != null) ? imageUri.toString() : "";
-
-        // Pasar los datos al Intent
         i.putExtra("nombre", nombre);
         i.putExtra("apellidos", apellidos);
-        i.putExtra("correo", correo);
-        i.putExtra("contrasena", contrasena);
-        i.putExtra("telefono", telefono);
-        i.putExtra("imagenUri", imagenUriString);  // Enviar la URI de la imagen
+        i.putExtra("correo", encryptedEmail);
+        i.putExtra("contrasena", encryptedPassword);
+        i.putExtra("telefono", encryptedPhone);
+        i.putExtra("imagenUri", (imageUri != null) ? imageUri.toString() : "");
 
-        // Abrir la segunda actividad
         startActivity(i);
     }
 
