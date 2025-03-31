@@ -43,7 +43,6 @@ dependencies {
 
     // Firebase - Dependencias esenciales
     implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
-    implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore:25.1.3")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
@@ -60,6 +59,8 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth:23.2.0")  // Dependencia de Firebase Authentication
     implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
+    implementation ("com.facebook.android:facebook-android-sdk:18.0.2")
+
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.cloudinary:cloudinary-android:2.3.1")
