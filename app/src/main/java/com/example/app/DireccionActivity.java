@@ -247,6 +247,7 @@ public class DireccionActivity extends AppCompatActivity {
             // Crear usuario en Firebase Authentication
             mAuth.createUserWithEmailAndPassword(correo, contrasena)
                     .addOnCompleteListener(this, task -> {
+                        Log.d("correoenviado", "El correo enviado es: "+correo);
                         if (task.isSuccessful()) {
                             // Registro exitoso en Authentication
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -316,7 +317,7 @@ public class DireccionActivity extends AppCompatActivity {
         return dateFormat.format(calendar.getTime());
     }
 
-    // Método para quitar el foco de todos los EditTexts
+    // Metodo para quitar el foco de todos los EditTexts
     private void clearFocusFromAllEditTexts() {
         if (direccionText.hasFocus()) {
             direccionText.clearFocus();

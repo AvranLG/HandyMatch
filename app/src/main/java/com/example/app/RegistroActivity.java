@@ -295,11 +295,10 @@ public class RegistroActivity extends AppCompatActivity {
 
 
         String encryptedPassword = EncryptionUtils.encrypt(contrasena);
-        String encryptedEmail = EncryptionUtils.encrypt(correo);
         String encryptedPhone = EncryptionUtils.encrypt(telefono);
 
 
-        if (encryptedPassword == null || encryptedEmail == null || encryptedPhone == null) {
+        if (encryptedPassword == null || encryptedPhone == null) {
             Toast.makeText(this, "Error al cifrar los datos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -308,7 +307,7 @@ public class RegistroActivity extends AppCompatActivity {
         Intent i = new Intent(this, DireccionActivity.class);
         i.putExtra("nombre", nombre);
         i.putExtra("apellidos", apellidos);
-        i.putExtra("correo", encryptedEmail);
+        i.putExtra("correo", correo);
         i.putExtra("contrasena", encryptedPassword);
         i.putExtra("telefono", encryptedPhone);
         i.putExtra("imagenUri", (imageUri != null) ? imageUri.toString() : "");
