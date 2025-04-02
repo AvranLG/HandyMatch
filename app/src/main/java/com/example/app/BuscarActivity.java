@@ -2,7 +2,9 @@ package com.example.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class BuscarActivity extends AppCompatActivity {
 
@@ -12,3 +14,4 @@ public class BuscarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buscar);
     }
 }
+

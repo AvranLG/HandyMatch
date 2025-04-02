@@ -1,231 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+    <!-- Contenedor Principal -->
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Contenido Desplazable -->
+        <ScrollView
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/fondosyletras"
-            android:padding="10dp"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:text="HandyMatch"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_notificacion"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.538" />
-
-                <ImageButton
-                    android:id="@+id/btn_notificacion"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="24dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="Notificaciones"
-                    android:padding="5dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_notificacion"
-                    app:tint="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/fondoazul"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btPublicarTrabajo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:padding="12dp"
-                    android:text="Publicar trabajo"
-                    android:textAllCaps="false"
-                    android:textColor="@color/fondosyletras"
-                    android:textStyle="bold"
-                    android:elevation="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <HorizontalScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                android:padding="8dp">
+                android:orientation="vertical">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:layout_width="wrap_content"
+                <!-- Encabezado -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:chipSpacingHorizontal="8dp"
-                    app:chipSpacingVertical="4dp"
-                    app:singleSelection="true">
+                    android:background="@color/fondosyletras"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipTodo"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:text="HandyMatch"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/btn_notificacion"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="24dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Notificaciones"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_notificacion"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@android:color/white"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <!-- Sección Principal -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fondoazul"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btPublicarTrabajo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="32dp"
+                            android:backgroundTint="#FFFFFF"
+                            android:elevation="8dp"
+                            android:padding="12dp"
+                            android:text="Publicar trabajo"
+                            android:textAllCaps="false"
+                            android:textColor="@color/fondosyletras"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <!-- Categorías -->
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Todo"
-                        android:textColor="@color/chip_text_selector"
-                        android:textStyle="bold"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"
-                        app:chipCornerRadius="8dp" />
+                        android:overScrollMode="never"
+                        android:padding="8dp"
+                        android:scrollbars="none">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipHogar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hogar"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="4dp"
+                            app:singleSelection="true">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipMascotas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mascotas"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTodo"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Todo"
+                                android:textColor="@color/chip_text_selector"
+                                android:textStyle="bold"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipTecnologia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tecnología"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipHogar"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hogar"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipEventos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Eventos"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipMascotas"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mascotas"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipTransporte"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Transporte"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTecnologia"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tecnología"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipSalud"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Salud y Bienestar"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipEventos"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Eventos"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipEducacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Educación"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTransporte"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Transporte"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipNegocios"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Negocios"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipSalud"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Salud y Bienestar"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipReparaciones"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reparaciones"
-                        android:textColor="@color/chip_text_selector"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="8dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_selector"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipEducacion"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Educación"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipNegocios"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Negocios"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
 
-        </LinearLayout>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipReparaciones"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Reparaciones"
+                                android:textColor="@color/chip_text_selector"
+                                app:checkedIconVisible="false"
+                                app:chipBackgroundColor="@color/chip_selector"
+                                app:chipCornerRadius="8dp" />
+
+                        </com.google.android.material.chip.ChipGroup>
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Barra de Navegación Inferior -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@color/fondosyletras"
+            app:itemTextColor="@color/fondosyletras"
+            app:labelVisibilityMode="labeled"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:menu="@menu/menu_nav" />
+
     </LinearLayout>
-</ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

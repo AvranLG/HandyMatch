@@ -17,6 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="Verifica tu correo electrónico"
             android:textSize="24sp"
             android:layout_marginBottom="16dp"/>
@@ -33,7 +34,7 @@
             android:id="@+id/timerTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tiempo restante: 10:00"
+            android:text="Tiempo restante: 03:00"
             android:textColor="@android:color/holo_red_dark"
             android:layout_marginBottom="16dp"/>
 
@@ -41,13 +42,27 @@
             android:id="@+id/reenviarCorreoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#E0EBFF"
+            android:padding="12dp"
+            android:textColor="#000000"
             android:text="Reenviar correo de verificación"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/continuarButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/fondosyletras"
+            android:includeFontPadding="true"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:textColor="#F7FAFA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:text="Ya verifiqué mi correo"/>
 
     </LinearLayout>

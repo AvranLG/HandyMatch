@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/nav_home_selector"
+        android:title="@string/inicio"/>
+
+    <item
+        android:id="@+id/nav_lupa"
+        android:icon="@drawable/nav_lupa_selector"
+        android:title="@string/busqueda" />
+
+    <item
+        android:id="@+id/nav_ubicacion"
+        android:icon="@drawable/nav_ubicacion_selector"
+        android:title="@string/mapa"/>
+
+    <item
+        android:id="@+id/nav_mensaje"
+        android:icon="@drawable/nav_mensaje_selector"
+        android:title="@string/matches"/>
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@drawable/nav_perfil_selector"
+        android:title="@string/perfil"/>
+</menu>
