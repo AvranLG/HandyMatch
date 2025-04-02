@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.app"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,6 +66,8 @@ dependencies {
     implementation("com.cloudinary:cloudinary-android:2.3.1")
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
 
 
     // Dependencias de red
