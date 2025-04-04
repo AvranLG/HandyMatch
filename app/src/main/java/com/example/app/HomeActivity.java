@@ -2,7 +2,6 @@ package com.example.app;
 
 import android.os.Bundle;
 import android.view.WindowManager;
-
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private int lastSelectedIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +52,38 @@ public class HomeActivity extends AppCompatActivity {
 
         // Cargar fragment inicial (Home)
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
+            loadFragment(new HomeFragment(), false);
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
+            lastSelectedIndex = 0; // Inicializar con la posición del Home
         }
 
         // Configurar listener para la navegación
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
+            int currentIndex = getIndexFromItemId(id);
+
+            // Determina la dirección basada en la posición del ítem en el menú
+            boolean isGoingToRight = lastSelectedIndex != -1 && currentIndex > lastSelectedIndex;
+
             if (id == R.id.nav_home) {
-                loadFragment(new HomeFragment());
+                loadFragment(new HomeFragment(), isGoingToRight);
+                lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_lupa) {
-                loadFragment(new BuscarFragment());
+                loadFragment(new BuscarFragment(), isGoingToRight);
+                lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_ubicacion) {
-                //loadFragment(new UbicacionFragment());
+                // loadFragment(new UbicacionFragment(), isGoingToRight);
+                lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_perfil) {
-                //loadFragment(new PerfilFragment());
+                // loadFragment(new PerfilFragment(), isGoingToRight);
+                lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_mensaje) {
-                //loadFragment(new MensajesFragment());
+                // loadFragment(new MensajesFragment(), isGoingToRight);
+                lastSelectedIndex = currentIndex;
                 return true;
             }
             return false;
@@ -79,25 +91,51 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
+     * Obtiene el índice basado en el ID del ítem seleccionado
+     * @param itemId ID del ítem del menú
+     * @return índice que representa la posición del ítem en el menú
+     */
+    private int getIndexFromItemId(int itemId) {
+        if (itemId == R.id.nav_home) return 0;
+        if (itemId == R.id.nav_lupa) return 1;
+        if (itemId == R.id.nav_ubicacion) return 2;
+        if (itemId == R.id.nav_perfil) return 3;
+        if (itemId == R.id.nav_mensaje) return 4;
+        return -1;
+    }
+
+    /**
      * Carga un fragmento en el contenedor principal
      * @param fragment Fragmento a cargar
      */
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment, boolean isGoingToRight) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         // Aplica las animaciones de transición (deslizar)
-        transaction.setCustomAnimations(
-                R.anim.slide_in_right,  // Animación para el fragmento que entra
-                R.anim.slide_out_left   // Animación para el fragmento que sale
-        );
+        if (isGoingToRight) {
+            // Si la navegación es hacia la derecha
+            transaction.setCustomAnimations(
+                    R.anim.slide_in_right,  // Fragmento que entra desde la izquierda
+                    R.anim.slide_out_left   // Fragmento que sale hacia la derecha
+            );
+        } else {
+            // Si la navegación es hacia la izquierda
+            transaction.setCustomAnimations(
+                    R.anim.slide_in_left,   // Fragmento que entra desde la derecha
+                    R.anim.slide_out_right  // Fragmento que sale hacia la izquierda
+            );
+        }
 
         // Reemplazar el fragmento actual con el nuevo fragmento
         transaction.replace(R.id.fragmentContainer, fragment);
-        transaction.addToBackStack(null); // Opcional: Añadir al back stack si deseas soportar el botón de retroceso
         transaction.commit();
     }
 
+    // Sobrecarga del metodo para cargar el fragmento inicial sin animación
+    private void loadFragment(Fragment fragment) {
+        loadFragment(fragment, false);
+    }
 
     private void mostrarDialogoSalida() {
         new AlertDialog.Builder(this)
