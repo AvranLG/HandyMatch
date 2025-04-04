@@ -29,6 +29,23 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setItemIconTintList(ContextCompat.getColorStateList(this, R.color.fondosyletras));
         bottomNavigationView.setItemTextColor(ContextCompat.getColorStateList(this, R.color.fondosyletras));
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, HomeActivity.class));
+                return true;
+            } else if (id == R.id.nav_lupa) {
+                startActivity(new Intent(this, BuscarActivity.class));
+                return true;
+            }
+            return false;
+        });
+
+
+
+
     }
 
     public void abrirHome(View v) {

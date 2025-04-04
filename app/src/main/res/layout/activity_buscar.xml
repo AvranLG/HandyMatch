@@ -1,337 +1,347 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <!-- Contenido principal con Scroll -->
-    <ScrollView
+    tools:context=".BuscarActivity">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView">
+        android:orientation="vertical">
 
-
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
 
             <LinearLayout
-                android:id="@+id/headerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/recuadro"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:paddingVertical="10dp">
+                android:orientation="vertical"
+                android:padding="12dp">
 
-                <ImageView
-                    android:id="@+id/buscarIcono"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/BuscarTrabajos"
-                    android:src="@drawable/ic_lupa" />
-
-                <Space
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/buscarText"
+                <LinearLayout
+                    android:id="@+id/headerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/buscarIcono"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/recuadro"
-                    android:gravity="center_vertical"
-                    android:hint="Buscar trabajos"
-                    android:inputType="text"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="16sp" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:paddingVertical="10dp">
 
+                    <ImageView
+                        android:id="@+id/buscarIcono"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/BuscarTrabajos"
+                        android:src="@drawable/ic_lupa" />
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent" />
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/buscarText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/buscarIcono"
+                        android:background="@drawable/recuadro"
+                        android:gravity="center_vertical"
+                        android:hint="Buscar trabajos"
+                        android:inputType="text"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Filtrar por"
+                    android:textColor="@color/letrasnormales"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/ButtonCategoría"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="99dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/fondogris"
+                        android:text="Categoría"
+                        android:textAllCaps="false"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="12sp"
+                        app:cornerRadius="16dp" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/ButtonUbicación"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="112dp"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/fondogris"
+                        android:text="Ubicación"
+                        android:textAllCaps="false"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="12sp"
+                        app:cornerRadius="16dp" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/ButtonPresupuesto"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="118dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="8dp"
+                        android:backgroundTint="@color/fondogris"
+                        android:text="Presupuesto"
+                        android:textAllCaps="false"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="12sp"
+                        app:cornerRadius="16dp" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Texto centrado -->
+
+                    <!-- Botón de imagen alineado después del texto -->
+
+                    <TextView
+                        android:id="@+id/pintura"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pintura exterior"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.521" />
+
+                    <ImageButton
+                        android:id="@+id/flecha1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_flechaderecha" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Texto centrado -->
+
+                    <!-- Botón de imagen alineado después del texto -->
+
+                    <TextView
+                        android:id="@+id/instalacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Instalación de puertas"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.521" />
+
+                    <ImageButton
+                        android:id="@+id/flecha2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_flechaderecha" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Texto centrado -->
+
+                    <!-- Botón de imagen alineado después del texto -->
+
+                    <TextView
+                        android:id="@+id/limpieza"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Limpieza de alfombra"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.521" />
+
+                    <ImageButton
+                        android:id="@+id/flecha3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_flechaderecha" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Texto centrado -->
+
+                    <!-- Botón de imagen alineado después del texto -->
+
+                    <TextView
+                        android:id="@+id/reparacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reparación de persianas"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.521" />
+
+                    <ImageButton
+                        android:id="@+id/flecha4"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_flechaderecha" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Texto centrado -->
+
+                    <!-- Botón de imagen alineado después del texto -->
+
+                    <TextView
+                        android:id="@+id/limpiezaVentana"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Limpieza de ventanas"
+                        android:textColor="@color/letrasnormales"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.521" />
+
+                    <ImageButton
+                        android:id="@+id/flecha5"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_flechaderecha" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
+        </ScrollView>
+
+        <!-- Barra de Navegación Inferior (fuera del ScrollView) -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@color/fondosyletras"
+            app:itemTextColor="@color/fondosyletras"
+            app:labelVisibilityMode="labeled"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+            app:menu="@menu/menu_nav" />
+
+    </LinearLayout>
 
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Filtrar por"
-                android:textColor="@color/letrasnormales"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/ButtonCategoría"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="99dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="@color/fondogris"
-                    android:text="Categoría"
-                    android:textAllCaps="false"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="12sp"
-                    app:cornerRadius="16dp" />
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/ButtonUbicación"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="112dp"
-                    android:layout_height="37dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="@color/fondogris"
-                    android:text="Ubicación"
-                    android:textAllCaps="false"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="12sp"
-                    app:cornerRadius="16dp" />
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/ButtonPresupuesto"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="118dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="@color/fondogris"
-                    android:text="Presupuesto"
-                    android:textAllCaps="false"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="12sp"
-                    app:cornerRadius="16dp" />
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- Texto centrado -->
-
-                <!-- Botón de imagen alineado después del texto -->
-
-                <TextView
-                    android:id="@+id/pintura"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pintura exterior"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
-
-                <ImageButton
-                    android:id="@+id/flecha1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:onClick="abrirLogin"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_flechaderecha" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- Texto centrado -->
-
-                <!-- Botón de imagen alineado después del texto -->
-
-                <TextView
-                    android:id="@+id/instalacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Instalación de puertas"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
-
-                <ImageButton
-                    android:id="@+id/flecha2"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:onClick="abrirLogin"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_flechaderecha" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- Texto centrado -->
-
-                <!-- Botón de imagen alineado después del texto -->
-
-                <TextView
-                    android:id="@+id/limpieza"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Limpieza de alfombra"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
-
-                <ImageButton
-                    android:id="@+id/flecha3"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:onClick="abrirLogin"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_flechaderecha" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- Texto centrado -->
-
-                <!-- Botón de imagen alineado después del texto -->
-
-                <TextView
-                    android:id="@+id/reparacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reparación de persianas"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
-
-                <ImageButton
-                    android:id="@+id/flecha4"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:onClick="abrirLogin"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_flechaderecha" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- Texto centrado -->
-
-                <!-- Botón de imagen alineado después del texto -->
-
-                <TextView
-                    android:id="@+id/limpiezaVentana"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Limpieza de ventanas"
-                    android:textColor="@color/letrasnormales"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
-
-                <ImageButton
-                    android:id="@+id/flecha5"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:onClick="abrirLogin"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_flechaderecha" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Barra de Navegación Inferior (fuera del ScrollView) -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemIconTint="@color/fondosyletras"
-        app:itemTextColor="@color/fondosyletras"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_nav" />
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
