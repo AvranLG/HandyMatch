@@ -39,11 +39,6 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".BuscarActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
-        <activity
             android:name=".DireccionActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
