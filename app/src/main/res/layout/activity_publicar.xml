@@ -77,7 +77,7 @@
                 android:orientation="vertical"
                 android:padding="20dp"> <!-- Agregado para mejor distribución -->
 
-                <!-- Campo de Correo con tamaño ajustado -->
+                <!-- Campo de Título con tamaño ajustado -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dequetrata"
                     android:layout_width="match_parent"
@@ -104,6 +104,42 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="10dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/categoriaLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Categoría"
+                    android:textColorHint="@color/fondosyletras"
+                    app:boxBackgroundMode="filled"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxStrokeColor="@android:color/transparent"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:boxBackgroundColor="@android:color/white">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinnerCategoria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:inputType="none"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
 
                 <!-- Campo de Descripción -->
                 <com.google.android.material.textfield.TextInputLayout

@@ -2,6 +2,8 @@ package com.example.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.libraries.places.api.Places;
@@ -71,6 +73,30 @@ public class Publicar extends AppCompatActivity {
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
             datePickerDialog.show();
         });
+
+        //Codigo para la lista seleccionable
+        AutoCompleteTextView spinnerCategoria = findViewById(R.id.spinnerCategoria);
+
+        String[] categorias = {"Hogar", "Mascotas", "Eventos", "Clases", "Reparaciones", "Otros"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                categorias
+        );
+
+        spinnerCategoria.setAdapter(adapter);
+
+// Forzar la apertura del dropdown al primer clic
+        spinnerCategoria.setOnTouchListener((v, event) -> {
+            spinnerCategoria.showDropDown();  // Forzar la apertura del dropdown
+            return false;  // Deja que el clic pase al comportamiento por defecto
+        });
+
+
+
+
+
     }
 
     // Recibir el resultado de la ubicación
