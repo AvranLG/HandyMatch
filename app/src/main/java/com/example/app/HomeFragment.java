@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,12 @@ public class HomeFragment extends Fragment {
         // Configurar listeners
         btnPublicarTrabajo.setOnClickListener(v -> {
             // Acción para publicar trabajo
-            Intent intent = new Intent(getActivity(), Publicar.class);
-            startActivity(intent);
+            if (getActivity() != null) {
+                Intent intent = new Intent(getActivity(), Publicar.class);
+                startActivity(intent);
+            } else {
+                Log.e("Error", "El fragment no está adjunto a una actividad.");
+            }
 
             // Por ejemplo, navegar a otro fragmento:
             // requireActivity().getSupportFragmentManager().beginTransaction()
