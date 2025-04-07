@@ -48,6 +48,9 @@ public class HomeFragment extends Fragment {
         // Configurar listeners
         btnPublicarTrabajo.setOnClickListener(v -> {
             // Acción para publicar trabajo
+            Intent intent = new Intent(getActivity(), Publicar.class);
+            startActivity(intent);
+
             // Por ejemplo, navegar a otro fragmento:
             // requireActivity().getSupportFragmentManager().beginTransaction()
             //     .replace(R.id.fragmentContainer, new PublicarTrabajoFragment())
