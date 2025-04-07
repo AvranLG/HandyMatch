@@ -82,6 +82,7 @@ dependencies {
 
     // Opcional: Para manejo de JSON
     implementation("com.google.code.gson:gson:2.8.9")
+    implementation ("com.google.android.libraries.places:places:3.3.0")
 
     // Dependencias de prueba
     testImplementation("junit:junit:4.13.2")
