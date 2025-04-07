@@ -246,7 +246,25 @@
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+                <Button
+                    android:id="@+id/btnregistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/fondosyletras"
+                    android:includeFontPadding="true"
+                    android:padding="12dp"
+                    android:text="Publicar"
+                    android:textAllCaps="false"
+                    android:textColor="#F7FAFA" />
+
             </LinearLayout>
         </ScrollView>
+
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
