@@ -1,10 +1,32 @@
 package com.example.app;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -28,15 +50,14 @@ public class Publicar extends AppCompatActivity {
     private TextInputEditText ubicacionEditText;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1001;
 
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+
+    private MapView map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publicar);
-
-        // Inicializar Places
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "TU_API_KEY_DE_GOOGLE_MAPS");
-        }
 
         fechaHoraEditText = findViewById(R.id.fechaHora);
         ubicacionEditText = findViewById(R.id.ubicacion);
@@ -94,10 +115,9 @@ public class Publicar extends AppCompatActivity {
         });
 
 
-
-
-
     }
+
+
 
     // Recibir el resultado de la ubicación
     @Override

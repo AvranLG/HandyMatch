@@ -1,11 +1,15 @@
 package com.example.app;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.WindowManager;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,12 +22,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class HomeActivity extends AppCompatActivity {
 
     private int lastSelectedIndex = -1;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        // Verificar permisos para el mapa
+        checkAndRequestPermissions();
 
         // Para evitar que la barra de navegación se sobreponga al contenido
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -74,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                 lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_ubicacion) {
-                // loadFragment(new UbicacionFragment(), isGoingToRight);
+                loadFragment(new UbicacionFragment(), isGoingToRight);  // Ahora cargamos el MapFragment
                 lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_perfil) {
@@ -88,6 +96,40 @@ public class HomeActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    /**
+     * Verifica y solicita los permisos necesarios para el mapa
+     */
+    private void checkAndRequestPermissions() {
+        String[] permissions = {
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        };
+
+        boolean allPermissionsGranted = true;
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (!allPermissionsGranted) {
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            // Aquí puedes manejar el resultado de la solicitud de permisos si es necesario
+            // Por ejemplo, mostrar un mensaje si se deniegan permisos críticos
+        }
     }
 
     /**
