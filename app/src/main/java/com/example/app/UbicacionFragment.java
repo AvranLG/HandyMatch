@@ -72,6 +72,7 @@ public class UbicacionFragment extends Fragment implements LocationListener {
 
         // Añadir overlay de ubicación (requiere permisos de ubicación)
         myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireActivity()), mapView);
+        myLocationOverlay.setPersonIcon(null);
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.enableFollowLocation(); // Seguir la ubicación del usuario
         mapView.getOverlays().add(myLocationOverlay);
