@@ -291,6 +291,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:text="@string/terminos"
+            android:textColor="#03A9F4"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button

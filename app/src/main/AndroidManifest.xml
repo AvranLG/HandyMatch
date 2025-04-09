@@ -16,6 +16,9 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
+            android:name=".activity_mapa"
+            android:exported="false" />
+        <activity
             android:name=".Publicar"
             android:exported="false" />
         <activity
