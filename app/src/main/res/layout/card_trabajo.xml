@@ -25,9 +25,9 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_perfil"
-                android:tint="@color/fondosyletras"
+                app:tint="@color/fondosyletras"
                 android:scaleType="centerCrop"
-                android:background="@drawable/circulo_imagen"
+                android:background="@drawable/usuario"
                 android:layout_marginEnd="8dp" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_ubicacion"
-                android:tint="@color/fondosyletras"
+                app:tint="@color/fondosyletras"
                 android:layout_marginEnd="4dp" />
 
             <TextView
@@ -104,7 +104,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/calendario"
-                android:tint="@color/fondosyletras"
+                app:tint="@color/fondosyletras"
                 android:layout_marginEnd="4dp" />
 
             <TextView
