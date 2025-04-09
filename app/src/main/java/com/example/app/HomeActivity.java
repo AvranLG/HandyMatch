@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
                 lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_perfil) {
-                // loadFragment(new PerfilFragment(), isGoingToRight);
+                loadFragment(new PerfilFragment(), isGoingToRight);
                 lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_mensaje) {
