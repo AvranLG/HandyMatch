@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Perfil y nombre -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="Logo Circular"
+                android:foregroundGravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/usuario"
+                app:tint="@color/fondosyletras"/>
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nombre de usuario"
+                android:textColor="@color/fondosyletras"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvPrecio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ 500 mxn"
+                android:textColor="#009688"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/tvDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Titulo del trabajo"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginBottom="6dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipHogar"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Etiqueta"
+            android:textColor="@color/letrasnormales"
+            app:chipBackgroundColor="@color/quantum_orange"
+            app:chipCornerRadius="8dp" />
+
+        <!-- Ubicación -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_ubicacion"
+                app:tint="@color/fondosyletras"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ubicacion"
+                android:textColor="#00796B"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Fecha -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/calendario"
+                app:tint="@color/fondosyletras"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fecha y hora 2025/01/22 a las 02:30"
+                android:textColor="#424242"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripcion del problema"
+            android:textColor="#424242"
+            android:textSize="13sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <!-- Botones -->
+        <Button
+            android:id="@+id/btnVerMas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver mas ..."
+            android:backgroundTint="@color/fondoazul"
+            android:textColor="#000"
+            android:layout_marginBottom="6dp" />
+
+        <Button
+            android:id="@+id/btnHandymatch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Handymatch!"
+            android:backgroundTint="@color/fondosyletras"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos necesarios para Mapbox -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
+
+        <!-- Definición de las actividades de la app -->
         <activity
             android:name=".activity_mapa"
             android:exported="false" />
@@ -30,10 +36,7 @@
         <activity
             android:name=".Retrieve_Password"
             android:exported="false" />
-        <activity
-            android:name=".Activity_profile"
-            android:exported="false"
-            android:theme="@style/Theme.HandyMatch" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false"
@@ -41,10 +44,6 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".BuscarActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".DireccionActivity"
             android:exported="false"
@@ -67,7 +66,6 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

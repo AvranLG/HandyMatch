@@ -18,6 +18,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["allowBackup"] = "true"
+
     }
 
     buildTypes {
@@ -33,10 +36,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.7.0")
+
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.activity:activity:1.10.1")
@@ -54,8 +59,12 @@ dependencies {
 
     // Dependencia para consultas HTTP necesario para las API
     implementation("com.android.volley:volley:1.2.1")
-    implementation("androidx.navigation:navigation-fragment:2.6.0")
-    implementation("androidx.navigation:navigation-ui:2.6.0")
+
+    implementation("androidx.core:core:1.15.0")
+    implementation("androidx.core:core-ktx:1.15.0")
+
+    implementation("androidx.navigation:navigation-fragment:2.8.9")
+    implementation("androidx.navigation:navigation-ui:2.8.9")
 
     implementation("com.google.firebase:firebase-auth:23.2.0")  // Dependencia de Firebase Authentication
     implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
@@ -82,6 +91,15 @@ dependencies {
 
     // Opcional: Para manejo de JSON
     implementation("com.google.code.gson:gson:2.8.9")
+    implementation ("com.google.android.libraries.places:places:3.3.0")
+
+    //Dependencia necesaria para mapa
+    // OSMDroid - biblioteca principal
+    implementation ("org.osmdroid:osmdroid-android:6.1.16")
+
+    // Para soporte de localización (opcional)
+    //implementation ("org.osmdroid:osmdroid-geopackage:6.1.16")
+
 
     // Dependencias de prueba
     testImplementation("junit:junit:4.13.2")

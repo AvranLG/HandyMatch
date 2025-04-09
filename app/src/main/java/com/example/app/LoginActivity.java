@@ -196,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    // Método de autenticación con Google
+    // Metodo de autenticación con Google
     private void signInWithGoogle() {
         // Mostrar el ProgressDialog cuando el usuario haga click en el botón de Google Sign-In
         progressDialog.show();

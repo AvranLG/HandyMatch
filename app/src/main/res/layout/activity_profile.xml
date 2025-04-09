@@ -58,6 +58,27 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+
+                <!-- Contenedor circular -->
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="117dp"
+                    android:layout_height="117dp"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="Logo Circular"
+                    android:foregroundGravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/usuario"
+                    app:tint="@color/fondogris"/>
+
+
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

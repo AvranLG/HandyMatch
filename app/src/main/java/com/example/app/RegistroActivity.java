@@ -1,18 +1,11 @@
 package com.example.app;
 
-import android.adservices.topics.EncryptedTopic;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 
 import android.content.Intent;
@@ -28,27 +21,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.List;
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -67,7 +52,7 @@ public class RegistroActivity extends AppCompatActivity {
         // Inicializar los EditText
         nombreText = findViewById(R.id.direccionText);
         apellidosText = findViewById(R.id.apellidosText);
-        correoText = findViewById(R.id.correoText);
+        correoText = findViewById(R.id.tituloText);
         contrasenaText = findViewById(R.id.passwordText);
         telefonoText = findViewById(R.id.numeroText);
 
