@@ -98,7 +98,7 @@ public class DireccionActivity extends AppCompatActivity {
         coloniaText = findViewById(R.id.coloniaText);
         estadoText = findViewById(R.id.estadoText);
         ciudadText = findViewById(R.id.ciudadText);
-        referenciaText = findViewById(R.id.referenciaText);
+        referenciaText = findViewById(R.id.descripcionText);
 
         referenciaText.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -107,7 +107,7 @@ public class DireccionActivity extends AppCompatActivity {
         });
 
         referenciaText.setOnTouchListener((v, event) -> {
-            if (v.getId() == R.id.referenciaText) {
+            if (v.getId() == R.id.descripcionText) {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
