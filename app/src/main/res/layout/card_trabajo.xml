@@ -20,15 +20,16 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginBottom="6dp">
-
             <ImageView
+                android:id="@+id/profileImage"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_perfil"
-                app:tint="@color/fondosyletras"
+                android:layout_centerInParent="true"
+                android:contentDescription="Logo Circular"
+                android:foregroundGravity="center"
                 android:scaleType="centerCrop"
-                android:background="@drawable/usuario"
-                android:layout_marginEnd="8dp" />
+                android:src="@drawable/usuario"
+                app:tint="@color/fondosyletras"/>
 
             <TextView
                 android:id="@+id/tvNombre"
@@ -64,7 +65,7 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hogar"
+            android:text="Etiqueta"
             android:textColor="@color/letrasnormales"
             app:chipBackgroundColor="@color/quantum_orange"
             app:chipCornerRadius="8dp" />
