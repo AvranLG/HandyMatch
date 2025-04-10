@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:text="Etiqueta"
             android:textColor="@color/letrasnormales"
+            android:textStyle="bold"
             android:textSize="14sp"
             app:chipBackgroundColor="@color/quantum_orange"
             app:chipCornerRadius="8dp" />

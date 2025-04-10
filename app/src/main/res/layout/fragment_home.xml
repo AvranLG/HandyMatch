@@ -110,7 +110,8 @@
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="8dp"
                     app:chipSpacingVertical="4dp"
-                    app:singleSelection="true">
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chipTodo"
