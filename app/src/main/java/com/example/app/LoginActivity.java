@@ -299,4 +299,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    public void abrirTerminos(View view) {
+        Intent i = new Intent(this, activity_terminos.class);
+        startActivity(i);
+    }
+
 }
