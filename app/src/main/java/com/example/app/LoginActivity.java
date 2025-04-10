@@ -135,51 +135,31 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Cerrar sesión de Google si está activa
+        FirebaseAuth.getInstance().signOut();
+
         // Mostrar el ProgressDialog mientras se realiza el login
         progressDialog.show();
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean userFound = false;
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String dbEmail = snapshot.child("email").getValue(String.class);
-                    String dbPassword = snapshot.child("contrasena").getValue(String.class);
-
-                    if (dbEmail != null && dbEmail.equals(email)) {
-                        //Correo encontrado
-                        userFound = true;
-                        if (dbPassword != null && dbPassword.equals(password)) {
-                            //La contrasñea coincide e ingresa
-                            Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                            progressDialog.dismiss();  // Cerrar el ProgressDialog cuando se haya hecho login exitoso
-                        } else {
-                            //Contraseña incorrecta
-                            ErrContra.setVisibility(View.VISIBLE);
-                            progressDialog.dismiss();  // Cerrar el ProgressDialog si hay error en la contraseña
-                        }
-                        break;
+        // Iniciar sesión con Firebase Authentication
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Si la autenticación es exitosa
+                        Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Si la autenticación falla (por ejemplo, correo o contraseña incorrectos)
+                        Toast.makeText(LoginActivity.this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                        ErrContra.setVisibility(View.VISIBLE);
                     }
-                }
-
-                if (!userFound) {
-                    //Correo no encontrado
-                    ErrCorreo.setVisibility(View.VISIBLE);
-                    progressDialog.dismiss();  // Cerrar el ProgressDialog si no se encuentra el correo
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(LoginActivity.this, "Error al conectar con la base de datos", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();  // Cerrar el ProgressDialog si ocurre un error
-            }
-        });
+                    progressDialog.dismiss();  // Cerrar el ProgressDialog
+                });
     }
+
+
 
     public void abrirLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);

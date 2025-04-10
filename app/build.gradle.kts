@@ -78,6 +78,10 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
 
+    // Glide para cargar imágenes desde URLs
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
 
     // Dependencias de red
     implementation("com.squareup.okhttp3:okhttp:4.10.0")

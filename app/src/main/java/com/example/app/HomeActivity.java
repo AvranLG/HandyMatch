@@ -60,7 +60,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Cargar fragment inicial (Home)
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment(), false);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, new HomeFragment(), "HOME_FRAGMENT_TAG") // Usamos un tag para identificar el fragmento
+                    .commit();
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
             lastSelectedIndex = 0; // Inicializar con la posición del Home
         }
@@ -141,8 +143,9 @@ public class HomeActivity extends AppCompatActivity {
         if (itemId == R.id.nav_home) return 0;
         if (itemId == R.id.nav_lupa) return 1;
         if (itemId == R.id.nav_ubicacion) return 2;
-        if (itemId == R.id.nav_perfil) return 3;
-        if (itemId == R.id.nav_mensaje) return 4;
+        if (itemId == R.id.nav_mensaje) return 3;
+        if (itemId == R.id.nav_perfil) return 4;
+
         return -1;
     }
 

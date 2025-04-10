@@ -28,8 +28,7 @@
                 android:contentDescription="Logo Circular"
                 android:foregroundGravity="center"
                 android:scaleType="centerCrop"
-                android:src="@drawable/usuario"
-                app:tint="@color/fondosyletras"/>
+                android:src="@drawable/usuario"/>
 
             <TextView
                 android:id="@+id/tvNombre"
@@ -52,7 +51,7 @@
 
         <!-- Descripción -->
         <TextView
-            android:id="@+id/tvDescripcion"
+            android:id="@+id/tvTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Titulo del trabajo"
@@ -61,7 +60,7 @@
             android:layout_marginBottom="6dp" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipHogar"
+            android:id="@+id/tvCategoria"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,6 +85,7 @@
                 android:layout_marginEnd="4dp" />
 
             <TextView
+                android:id="@+id/tvUbicacion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ubicacion"
@@ -109,6 +109,7 @@
                 android:layout_marginEnd="4dp" />
 
             <TextView
+                android:id="@+id/tvFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="fecha y hora 2025/01/22 a las 02:30"
@@ -118,6 +119,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvDescripcionLarga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Descripcion del problema"

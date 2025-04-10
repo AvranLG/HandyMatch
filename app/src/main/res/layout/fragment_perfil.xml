@@ -16,19 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:tint="@color/cardview_light_background"
-            android:src="@drawable/baseline_arrow_back"
-            android:contentDescription="Go to Password" />
 
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/cardview_dark_background"
-            android:contentDescription="Back" />
 
         <TextView
             android:id="@+id/profileTitle"
@@ -66,10 +54,12 @@
                     android:layout_height="117dp"
                     android:layout_centerInParent="true"
                     android:contentDescription="Logo Circular"
-                    android:foregroundGravity="center"
                     android:scaleType="centerCrop"
                     android:src="@drawable/usuario"
-                    app:tint="@color/fondogris"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
             </RelativeLayout>
 
             <TextView
@@ -81,32 +71,36 @@
                 android:layout_marginBottom="8dp"/>
 
             <TextView
+                android:id="@+id/nombreText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
                 android:text="Nombre"
-                android:textSize="16sp"
-                android:paddingVertical="8dp"/>
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/apellidosText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre de Usuario"
-                android:textSize="16sp"
-                android:paddingVertical="8dp"/>
+                android:paddingVertical="8dp"
+                android:text="Apellidos"
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/telefonoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
                 android:text="Número de teléfono"
-                android:textSize="16sp"
-                android:paddingVertical="8dp"/>
+                android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
                 android:text="Email"
-                android:textSize="16sp"
-                android:paddingVertical="8dp"/>
+                android:textSize="16sp" />
 
             <!-- Contraseña -->
             <LinearLayout
@@ -134,13 +128,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
+
                 <TextView
+                    android:id="@+id/notificaciones"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingVertical="8dp"
                     android:text="Notificaciones"
-                    android:textSize="16sp"
-                    android:paddingVertical="8dp"/>
+                    android:textSize="16sp" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
+    tools:context=".Publicar"
     android:fitsSystemWindows="true">
 
     <!-- Fondo azul en toda la pantalla excepto la parte superior -->
@@ -306,6 +306,7 @@
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/fondosyletras"
                     android:includeFontPadding="true"
+                    android:onClick="publicarTrabajo"
                     android:padding="12dp"
                     android:text="Publicar"
                     android:textAllCaps="false"

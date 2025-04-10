@@ -47,6 +47,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,8 +75,8 @@ public class Publicar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("DEBUG_TAG", "onCreate iniciado");
-
         setContentView(R.layout.activity_publicar);
+
         Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         Log.d("DEBUG_TAG", "onCreate: layout de la actividad cargado");
 
@@ -220,22 +223,64 @@ public class Publicar extends AppCompatActivity {
         Log.d("DEBUG_TAG", "onCreate finalizado");
     }
 
-    // Recibir el resultado de la ubicación
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("DEBUG_TAG", "onActivityResult iniciado");
+    public void publicarTrabajo(View v) {
+        // Obtener los datos de los campos
+        String titulo = ((TextInputEditText) findViewById(R.id.tituloText)).getText().toString().trim();
+        String categoria = ((AutoCompleteTextView) findViewById(R.id.spinnerCategoria)).getText().toString().trim();
+        String descripcion = ((TextInputEditText) findViewById(R.id.descripcionText)).getText().toString().trim();
+        String fechaHora = ((TextInputEditText) findViewById(R.id.fechaHora)).getText().toString().trim();
+        String pago = ((TextInputEditText) findViewById(R.id.pagoText)).getText().toString().trim();
+        String ubicacion = ((TextInputEditText) findViewById(R.id.ubicacion)).getText().toString().trim();
 
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                ubicacionEditText.setText(place.getAddress()); // o place.getName()
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                Log.e("DEBUG_TAG", "Error al seleccionar ubicación");
-                Toast.makeText(this, "Error al seleccionar ubicación", Toast.LENGTH_SHORT).show();
-            }
+        // Verificar que todos los campos estén llenos
+        if (titulo.isEmpty() || categoria.isEmpty() || descripcion.isEmpty() || fechaHora.isEmpty() || pago.isEmpty() || ubicacion.isEmpty()) {
+            Toast.makeText(this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
+            return;  // Detener la ejecución si algún campo está vacío
         }
 
-        Log.d("DEBUG_TAG", "onActivityResult finalizado");
+        // Si tienes latitud y longitud
+        double latitud = this.latitudSeleccionada;
+        double longitud = this.longitudSeleccionada;
+
+        // Verificar que el usuario esté autenticado
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Debe iniciar sesión", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Obtener el ID del usuario autenticado
+        String idUsuario = user.getUid();
+
+        // Crear el objeto de publicación
+        Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario);
+
+        // Guardar en la base de datos de Firebase Realtime Database
+        FirebaseDatabase.getInstance().getReference("publicaciones")
+                .push() // Crear un nuevo nodo con una clave única
+                .setValue(publicacion)
+                .addOnSuccessListener(aVoid -> {
+                    // Acción después de guardar con éxito
+                    Toast.makeText(this, "Trabajo publicado", Toast.LENGTH_SHORT).show();
+
+                    // Obtener la instancia de HomeFragment y llamar agregarPublicacion()
+                    HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HOME_FRAGMENT_TAG");
+                    if (homeFragment != null) {
+                        homeFragment.agregarPublicacion(publicacion); // Agregar la nueva publicación
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Acción en caso de error
+                    Toast.makeText(this, "Error al publicar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+        // Redirigir a HomeActivity
+        Intent intent = new Intent(Publicar.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Para cerrar esta actividad y evitar volver con el botón "atrás"
     }
+
+
+
 }

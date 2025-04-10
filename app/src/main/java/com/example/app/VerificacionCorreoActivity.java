@@ -13,6 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -292,21 +295,36 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
 
 
     private void subirDatosAFirebase(Usuario usuario) {
-        // Referencia a la base de datos Firebase
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("usuarios");
+        // Obtener el usuario actual de Firebase Authentication
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
-        // Subir los datos del usuario a Firebase con su clave única de push
-        myRef.push().setValue(usuario);
+        if (firebaseUser != null) {
+            String uid = firebaseUser.getUid();
 
-        // Mostrar un mensaje de éxito
-        Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
+            // Referencia a la base de datos Firebase
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("usuarios");
 
-        // Opcional: Redirigir a otra actividad, por ejemplo LoginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish(); // Finaliza la actividad actual para que no pueda volver con el botón de retroceso
+            // Subir los datos del usuario usando su UID como clave
+            myRef.child(uid).setValue(usuario)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
+
+                        // Redirigir a LoginActivity
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                        progressDialog.dismiss();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Error al registrar datos: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    });
+        } else {
+            Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+        }
     }
 
 }
