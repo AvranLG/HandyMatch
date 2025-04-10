@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Titulo principal -->
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TÉRMINOS Y CONDICIONES DE HANDYMATCH"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Secciones -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1. INTRODUCCIÓN"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bienvenido a HandyMatch. Estos Términos y Condiciones regulan el acceso y uso de nuestra plataforma digital, disponible a través de nuestra aplicación móvil y sitio web. HandyMatch proporciona un servicio que conecta a personas que requieren asistencia en tareas específicas ('Clientes') con personas dispuestas y capacitadas para realizarlas ('Proveedores')."
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Al registrarse, acceder o utilizar HandyMatch, usted acepta cumplir con estos términos y condiciones en su totalidad. Si no está de acuerdo con alguna de las disposiciones aquí establecidas, le solicitamos que se abstenga de utilizar la plataforma."
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Repite esto para cada sección -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2. REGISTRO Y CUENTAS DE USUARIO"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n2.1 Elegibilidad\n\nPara utilizar HandyMatch, debe ser mayor de 18 años..."
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n2.2 Proceso de Registro\n\n
+Al crear una cuenta, se le solicitará proporcionar información veraz, precisa y actualizada, incluyendo su nombre completo, dirección de correo electrónico y número de teléfono.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n2.3 Responsabilidades del Usuario\n\n
+Usted es responsable de mantener la confidencialidad de su cuenta y contraseña, y acepta notificar a HandyMatch de inmediato sobre cualquier uso no autorizado de su cuenta.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n2.4 Verificación de Identidad\n\n
+HandyMatch puede solicitar documentación o información adicional para verificar su identidad como parte de nuestros procedimientos de seguridad.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n2.5 Suspensión o Cancelación de Cuentas\n\n
+HandyMatch se reserva el derecho de suspender o eliminar cuentas que violen estos términos, proporcionen información falsa o realicen actividades fraudulentas.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+
+
+
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3. FUNCIONAMIENTO DE HANDYMATCH"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n3.1 Publicación de Servicios\n\n
+Los Clientes pueden publicar anuncios detallando el servicio requerido, especificando la naturaleza de la tarea, ubicación, tiempo estimado y cualquier otro detalle relevante.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n3.2 Búsqueda y Postulación\n\n
+Los Proveedores pueden buscar y postularse a servicios que coincidan con sus habilidades y disponibilidad.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n3.3 Selección y Contratación\n\n
+Los Clientes revisan las postulaciones y seleccionan al Proveedor que consideren más adecuado. Una vez seleccionado, ambas partes acuerdan los términos específicos del servicio, incluyendo el precio y el cronograma.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n3.4 Pago y Facturación\n\n
+HandyMatch facilita herramientas de pago seguras para procesar transacciones entre Clientes y Proveedores. Los pagos se retendrán hasta la finalización satisfactoria del servicio.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n3.5 Calificación y Reseñas\n\n
+Al finalizar el servicio, tanto Clientes como Proveedores tienen la oportunidad de evaluarse mutuamente, proporcionando retroalimentación que contribuye a la confianza y calidad dentro de la comunidad.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Y así sucesivamente... Puedes repetir bloques según lo necesites -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11. CONTACTO\nPara cualquier duda sobre estos términos, puede contactarnos a: soporte.handymatch@gmail.com"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nAl registrarse y usar HandyMatch, usted acepta estos términos y condiciones en su totalidad."
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+</ScrollView>

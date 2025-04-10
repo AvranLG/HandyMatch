@@ -284,14 +284,32 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <CheckBox
-            android:id="@+id/terminos3"
+        <!-- LinearLayout para CheckBox y TextView -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="@string/terminos"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- CheckBox para los términos -->
+            <CheckBox
+                android:id="@+id/terminos3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:textColor="#03A9F4" />
+
+            <!-- TextView que muestra los términos -->
+            <TextView
+                android:id="@+id/aceptar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="abrirTerminos"
+                android:text="@string/terminos"
+                android:textColor="#03A9F4" />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btnregistro"

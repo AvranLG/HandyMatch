@@ -407,4 +407,8 @@ public class DireccionActivity extends AppCompatActivity {
             }
         });
     }
+    public void abrirTerminos(View v) {
+        Intent i = new Intent(this, activity_terminos.class);
+        startActivity(i);
+    }
 }
