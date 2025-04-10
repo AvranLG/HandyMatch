@@ -231,6 +231,7 @@ public class Publicar extends AppCompatActivity {
         String fechaHora = ((TextInputEditText) findViewById(R.id.fechaHora)).getText().toString().trim();
         String pago = ((TextInputEditText) findViewById(R.id.pagoText)).getText().toString().trim();
         String ubicacion = ((TextInputEditText) findViewById(R.id.ubicacion)).getText().toString().trim();
+        String estadoPublicacion = "Publicada";
 
         // Verificar que todos los campos estén llenos
         if (titulo.isEmpty() || categoria.isEmpty() || descripcion.isEmpty() || fechaHora.isEmpty() || pago.isEmpty() || ubicacion.isEmpty()) {
@@ -253,7 +254,7 @@ public class Publicar extends AppCompatActivity {
         String idUsuario = user.getUid();
 
         // Crear el objeto de publicación
-        Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario);
+        Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario, estadoPublicacion);
 
         // Guardar en la base de datos de Firebase Realtime Database
         FirebaseDatabase.getInstance().getReference("publicaciones")

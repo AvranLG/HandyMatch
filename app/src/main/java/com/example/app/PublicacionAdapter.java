@@ -69,16 +69,16 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
                     holder.tvNombre.setText(nombreUsuario);
 
                     if ("google".equals(tipoLogin)) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if (user != null && user.getPhotoUrl() != null) {
-                            Glide.with(context)
-                                    .load(user.getPhotoUrl())
-                                    .placeholder(R.drawable.usuario)
-                                    .error(R.drawable.usuario)
-                                    .circleCrop()
-                                    .into(holder.profileImage);
-                        }
+                        // Si el usuario se autenticó con Google, usamos la URL de Google guardada en imagenUrl
+                        String googlePhotoUrl = dataSnapshot.child("imagenUrl").getValue(String.class);
+                        Glide.with(context)
+                                .load(googlePhotoUrl)
+                                .placeholder(R.drawable.usuario)
+                                .error(R.drawable.usuario)
+                                .circleCrop()
+                                .into(holder.profileImage);
                     } else {
+                        // Usuario autenticado con correo/contraseña → imagen en Supabase
                         Glide.with(context)
                                 .load(fotoUrl)
                                 .placeholder(R.drawable.usuario)
@@ -86,6 +86,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
                                 .circleCrop()
                                 .into(holder.profileImage);
                     }
+
                 }
             }
 
