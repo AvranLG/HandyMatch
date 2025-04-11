@@ -7,24 +7,38 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UbicacionFragment extends Fragment implements LocationListener {
 
@@ -48,13 +62,9 @@ public class UbicacionFragment extends Fragment implements LocationListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Crear una vista simple para el mapa
-        mapView = new MapView(requireActivity());
-        mapView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-
-        return mapView;
+        View root = inflater.inflate(R.layout.fragment_ubicacion, container, false);
+        mapView = root.findViewById(R.id.map);
+        return root;
     }
 
     @Override
@@ -66,15 +76,10 @@ public class UbicacionFragment extends Fragment implements LocationListener {
         mapView.setMultiTouchControls(true);
         mapView.getController().setZoom(16.0); // Zoom más cercano para mostrar ubicación
 
-        // Punto temporal mientras se obtiene la ubicación real
-        GeoPoint startPoint = new GeoPoint(20.65953820, -103.349437603); // Jalisco como respaldo
-        mapView.getController().setCenter(startPoint);
-
         // Añadir overlay de ubicación (requiere permisos de ubicación)
         myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireActivity()), mapView);
         myLocationOverlay.setPersonIcon(null);
         myLocationOverlay.enableMyLocation();
-        myLocationOverlay.enableFollowLocation(); // Seguir la ubicación del usuario
         mapView.getOverlays().add(myLocationOverlay);
 
         // Añadir brújula
@@ -137,9 +142,52 @@ public class UbicacionFragment extends Fragment implements LocationListener {
         Marker marker = new Marker(mapView);
         marker.setPosition(new GeoPoint(latitude, longitude));
         marker.setTitle(title);
+        marker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         mapView.getOverlays().add(marker);
-        mapView.invalidate(); // Redibujar el mapa
+        mapView.postInvalidate(); // Redibujar el mapa
+    }
+
+    private void limpiarMarcadores() {
+        // Borra solo los marcadores, deja otros overlays como la brújula y ubicación
+        List<Overlay> overlaysParaEliminar = new ArrayList<>();
+        for (Overlay overlay : mapView.getOverlays()) {
+            if (overlay instanceof Marker) {
+                overlaysParaEliminar.add(overlay);
+            }
+        }
+        mapView.getOverlays().removeAll(overlaysParaEliminar);
+    }
+
+    private void cargarMarcadoresDeTrabajos() {
+        limpiarMarcadores();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("publicaciones");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot publicacionSnap : snapshot.getChildren()) {
+                    Publicacion publicacion = publicacionSnap.getValue(Publicacion.class);
+
+                    if (publicacion != null && publicacion.getLatitud() != null && publicacion.getLongitud() != null) {
+                        try {
+                            double lat = publicacion.getLatitud();
+                            double lon = publicacion.getLongitud();
+                            String titulo = publicacion.getTitulo();
+
+                            addMarker(lat, lon, titulo);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(requireContext(), "Error al cargar publicaciones", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -155,6 +203,9 @@ public class UbicacionFragment extends Fragment implements LocationListener {
 
             // Opcional: añadir un marcador en tu posición actual
             addMarker(location.getLatitude(), location.getLongitude(), "Mi ubicación");
+
+            // Llamar a cargar los marcadores después de que se haya fijado la ubicación
+            cargarMarcadoresDeTrabajos();
         }
     }
 
@@ -178,21 +229,49 @@ public class UbicacionFragment extends Fragment implements LocationListener {
         }
     }
 
+    private void inicializarOverlays() {
+        mapView.getOverlays().clear();
+
+        // Brújula
+        compassOverlay = new CompassOverlay(requireContext(), new InternalCompassOrientationProvider(requireContext()), mapView);
+        compassOverlay.enableCompass();
+        mapView.getOverlays().add(compassOverlay);
+
+        // Ubicación
+        myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireActivity()), mapView);
+        myLocationOverlay.setPersonIcon(null);
+        myLocationOverlay.enableMyLocation();
+        myLocationOverlay.enableFollowLocation();
+        mapView.getOverlays().add(myLocationOverlay);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         // Reiniciar las actualizaciones de ubicación cuando se reanuda el fragmento
         mapView.onResume();
         startLocationUpdates();
+        inicializarOverlays(); // <- Esto se vuelve a aplicar siempre
+        cargarMarcadoresDeTrabajos();
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            cargarMarcadoresDeTrabajos();
+        }, 2000); // dos segundo después de onResume
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // Detener las actualizaciones de ubicación cuando se pausa el fragmento
         mapView.onPause();
         if (locationManager != null) {
             locationManager.removeUpdates(this);
+        }
+
+        if (myLocationOverlay != null) {
+            myLocationOverlay.disableMyLocation();
+        }
+        if (compassOverlay != null) {
+            compassOverlay.disableCompass();
         }
     }
 
