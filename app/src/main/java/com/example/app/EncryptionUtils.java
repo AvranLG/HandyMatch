@@ -31,4 +31,22 @@ public class EncryptionUtils {
             return null;
         }
     }
+
+    public static String desencrypt(String value) {
+        try {
+            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes(StandardCharsets.UTF_8));
+            SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "AES");
+
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+
+            byte[] decodedValue = Base64.getDecoder().decode(value);
+            byte[] decrypted = cipher.doFinal(decodedValue);
+
+            return new String(decrypted, StandardCharsets.UTF_8);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
