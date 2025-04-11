@@ -9,13 +9,14 @@ public class Publicacion {
     private double latitud;
     private double longitud;
     private String idUsuario;
+    private String estadoPublicacion;
 
     // Constructor vacío (requerido por Firebase)
     public Publicacion() {}
 
     // Constructor con todos los campos
     public Publicacion(String titulo, String categoria, String descripcion, String fechaHora,
-                       String pago, String ubicacion, double latitud, double longitud, String idUsuario) {
+                       String pago, String ubicacion, double latitud, double longitud, String idUsuario, String estadoPublicacion) {
         this.titulo = titulo;
         this.categoria = categoria;
         this.descripcion = descripcion;
@@ -25,6 +26,7 @@ public class Publicacion {
         this.latitud = latitud;
         this.longitud = longitud;
         this.idUsuario = idUsuario;
+        this.estadoPublicacion = estadoPublicacion;
     }
 
     // Getters y Setters
@@ -98,5 +100,13 @@ public class Publicacion {
 
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getEstadoPublicacion() {
+        return estadoPublicacion;
+    }
+
+    public void setEstadoPublicacion(String estadoPublicacion) {
+        this.estadoPublicacion = estadoPublicacion;
     }
 }

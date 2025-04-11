@@ -1,20 +1,18 @@
 package com.example.app;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +34,6 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
     }
 
     @NonNull
-
     @Override
     public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.card_trabajo, parent, false);
@@ -48,17 +45,17 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
         Log.d("PublicacionAdapter", "Vinculando elemento en posición: " + position);
         Publicacion publicacion = listaPublicaciones.get(position);
 
-        // Configurar los campos de la publicación
         holder.tvTitulo.setText(publicacion.getTitulo());
         holder.tvDescripcion.setText(publicacion.getDescripcion());
         holder.tvFechaHora.setText(publicacion.getFechaHora());
         holder.tvUbicacion.setText(publicacion.getUbicacion());
+        holder.tvPrecio.setText("$" + publicacion.getPago()); // Agregar signo de pesos
+        holder.tvCategoria.setText(publicacion.getCategoria()); // Mostrar categoría en el chip
 
-        // Añadir signo de pesos al precio
-        String precioConSimbolo = "$" + publicacion.getPago();
-        holder.tvPrecio.setText(precioConSimbolo);
+        int colorCategoria = getColorForCategoria(publicacion.getCategoria());
+        holder.tvCategoria.setChipBackgroundColor(android.content.res.ColorStateList.valueOf(colorCategoria));
 
-        // Obtener el usuario para cargar su nombre y foto
+
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(publicacion.getIdUsuario());
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,32 +63,30 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String nombreUsuario = dataSnapshot.child("nombre").getValue(String.class);
-                    String tipoLogin = dataSnapshot.child("tipoLogin").getValue(String.class); // Verificar tipoLogin
-                    String fotoUrl = dataSnapshot.child("imagenUrl").getValue(String.class); // URL de la imagen en Supabase
+                    String tipoLogin = dataSnapshot.child("tipoLogin").getValue(String.class);
+                    String fotoUrl = dataSnapshot.child("imagenUrl").getValue(String.class);
 
                     holder.tvNombre.setText(nombreUsuario);
 
-                    // Si el usuario se registró con Google
                     if ("google".equals(tipoLogin)) {
-                        // Obtener la foto de perfil de Google usando el FirebaseUser
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if (user != null && user.getPhotoUrl() != null) {
-                            Glide.with(context)
-                                    .load(user.getPhotoUrl())  // Foto de perfil de Google
-                                    .placeholder(R.drawable.usuario)  // Icono por defecto mientras se carga la imagen
-                                    .error(R.drawable.usuario)       // Icono por defecto si falla la carga de la imagen
-                                    .circleCrop()                   // Redondear la imagen
-                                    .into(holder.profileImage);
-                        }
-                    } else {
-                        // Si no es de Google, usar la foto de Supabase
+                        // Si el usuario se autenticó con Google, usamos la URL de Google guardada en imagenUrl
+                        String googlePhotoUrl = dataSnapshot.child("imagenUrl").getValue(String.class);
                         Glide.with(context)
-                                .load(fotoUrl)  // Foto de perfil de Supabase
-                                .placeholder(R.drawable.usuario)  // Icono por defecto mientras se carga la imagen
-                                .error(R.drawable.usuario)       // Icono por defecto si falla la carga de la imagen
-                                .circleCrop()                   // Redondear la imagen
+                                .load(googlePhotoUrl)
+                                .placeholder(R.drawable.usuario)
+                                .error(R.drawable.usuario)
+                                .circleCrop()
+                                .into(holder.profileImage);
+                    } else {
+                        // Usuario autenticado con correo/contraseña → imagen en Supabase
+                        Glide.with(context)
+                                .load(fotoUrl)
+                                .placeholder(R.drawable.usuario)
+                                .error(R.drawable.usuario)
+                                .circleCrop()
                                 .into(holder.profileImage);
                     }
+
                 }
             }
 
@@ -102,29 +97,20 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
         });
     }
 
-
-
-
-
-
-
     @Override
     public int getItemCount() {
-        int count = listaPublicaciones.size();
-        Log.d("PublicacionAdapter", "getItemCount llamado: " + count + " elementos");
-        return count;
+        return listaPublicaciones.size();
     }
 
-    // Metodo para agregar una nueva publicación a la lista y notificar al adaptador
     public void agregarPublicacion(Publicacion publicacion) {
         listaPublicaciones.add(publicacion);
-        notifyItemInserted(listaPublicaciones.size() - 1); // Notificar que se insertó un nuevo ítem
+        notifyItemInserted(listaPublicaciones.size() - 1);
     }
 
     public static class PublicacionViewHolder extends RecyclerView.ViewHolder {
-
         TextView tvTitulo, tvDescripcion, tvFechaHora, tvUbicacion, tvPrecio, tvNombre;
         ImageView profileImage;
+        Chip tvCategoria; // <-- Chip para categoría
 
         public PublicacionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -135,6 +121,32 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             profileImage = itemView.findViewById(R.id.profileImage);
+            tvCategoria = itemView.findViewById(R.id.tvCategoria); // <-- Asignación del chip
         }
     }
+    private int getColorForCategoria(String categoria) {
+        switch (categoria.toLowerCase()) {
+            case "hogar":
+                return android.graphics.Color.parseColor("#FFE5B4");
+            case "mascotas":
+                return android.graphics.Color.parseColor("#C1E1C1");
+            case "tecnología":
+                return android.graphics.Color.parseColor("#B3E5FC");
+            case "eventos":
+                return android.graphics.Color.parseColor("#FFD1DC");
+            case "transporte":
+                return android.graphics.Color.parseColor("#D1C4E9");
+            case "salud y bienestar":
+                return android.graphics.Color.parseColor("#C8E6C9");
+            case "educación":
+                return android.graphics.Color.parseColor("#FFF9C4");
+            case "negocios":
+                return android.graphics.Color.parseColor("#D7CCC8");
+            case "reparaciones":
+                return android.graphics.Color.parseColor("#FFCCBC");
+            default:
+                return android.graphics.Color.parseColor("#E0E0E0"); // gris por defecto
+        }
+    }
+
 }

@@ -34,6 +34,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private PublicacionAdapter publicacionAdapter;
     private List<Publicacion> listaPublicaciones;
+    private List<Publicacion> listaOriginal = new ArrayList<>();
+
 
     public HomeFragment() {
         // Constructor vacío requerido
@@ -80,7 +82,7 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Publicacion publicacion = snapshot.getValue(Publicacion.class);
                     if (publicacion != null) {
-                        listaPublicaciones.add(publicacion);
+                        listaOriginal.add(publicacion);
                         Log.d("HomeFragment", "Publicación cargada: " + publicacion.toString());
                     } else {
                         Log.e("HomeFragment", "Error al convertir publicación: " + snapshot.getKey());
@@ -89,8 +91,8 @@ public class HomeFragment extends Fragment {
 
                 Log.d("HomeFragment", "Total publicaciones cargadas: " + listaPublicaciones.size());
 
-                // Actualizar el adaptador con las nuevas publicaciones
-                publicacionAdapter.notifyDataSetChanged();
+                // Aplicar el filtro actualmente seleccionado
+                filtrarPorCategoria(getCategoriaSeleccionada());
             }
 
             @Override
@@ -119,17 +121,11 @@ public class HomeFragment extends Fragment {
         Chip chipTodo = view.findViewById(R.id.chipTodo);
         chipTodo.setChecked(true);
 
-        // Configurar listener para los chips
+        //Manejar el chip seleccionado
         chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            // Manejar la selección de categoría
-            // Por ejemplo:
-            if (checkedId == R.id.chipTodo) {
-                // Filtrar por "Todo"
-            } else if (checkedId == R.id.chipHogar) {
-                // Filtrar por "Hogar"
-            }
-            // etc.
+            filtrarPorCategoria(getCategoriaSeleccionada());
         });
+
     }
 
     // Metodo para agregar una nueva publicación
@@ -137,4 +133,30 @@ public class HomeFragment extends Fragment {
         listaPublicaciones.add(publicacion);
         publicacionAdapter.notifyItemInserted(listaPublicaciones.size() - 1); // Notificar que se insertó un nuevo ítem
     }
+
+    private void filtrarPorCategoria(String categoria) {
+        listaPublicaciones.clear();
+        if (categoria.equals("todo")) {
+            listaPublicaciones.addAll(listaOriginal);
+        } else {
+            for (Publicacion pub : listaOriginal) {
+                if (pub.getCategoria() != null && pub.getCategoria().toLowerCase().equals(categoria)) {
+                    listaPublicaciones.add(pub);
+                }
+            }
+        }
+        publicacionAdapter.notifyDataSetChanged();
+    }
+
+
+    private String getCategoriaSeleccionada() {
+        int chipId = chipGroup.getCheckedChipId();
+        if (chipId == View.NO_ID || chipId == R.id.chipTodo) {
+            return "todo";
+        } else {
+            Chip chipSeleccionado = chipGroup.findViewById(chipId);
+            return chipSeleccionado.getText().toString().toLowerCase();
+        }
+    }
+
 }

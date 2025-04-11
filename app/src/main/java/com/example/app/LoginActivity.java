@@ -256,6 +256,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = acct.getEmail();
         String nombre = acct.getGivenName(); // Nombre
         String apellidos = acct.getFamilyName(); // Apellidos
+        String photoUrl = acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : ""; // URL de la foto
 
         // Crear mapa de datos
         Map<String, Object> userData = new HashMap<>();
@@ -265,6 +266,7 @@ public class LoginActivity extends AppCompatActivity {
         userData.put("googleId", acct.getId());
         userData.put("uid", userId); // Guardamos el UID de Firebase Authentication
         userData.put("tipoLogin", "google"); // Para diferenciar el tipo de inicio de sesión
+        userData.put("imagenUrl", photoUrl); // Guardar la URL de la foto de perfil
 
         // Guardar en la base de datos usando el UID como clave
         databaseReference.child(userId).setValue(userData)
@@ -278,6 +280,7 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.dismiss();  // Cerrar el ProgressDialog si hay error al guardar datos
                 });
     }
+
 
     public void abrirTerminos(View view) {
         Intent i = new Intent(this, activity_terminos.class);

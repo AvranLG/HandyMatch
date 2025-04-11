@@ -30,6 +30,10 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/usuario"/>
 
+            <Space
+                android:layout_width="2dp"
+                android:layout_height="match_parent" />
+
             <TextView
                 android:id="@+id/tvNombre"
                 android:layout_width="0dp"
@@ -66,6 +70,8 @@
             android:layout_height="wrap_content"
             android:text="Etiqueta"
             android:textColor="@color/letrasnormales"
+            android:textStyle="bold"
+            android:textSize="14sp"
             app:chipBackgroundColor="@color/quantum_orange"
             app:chipCornerRadius="8dp" />
 
