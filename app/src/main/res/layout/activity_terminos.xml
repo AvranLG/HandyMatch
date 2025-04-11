@@ -159,12 +159,226 @@ Al finalizar el servicio, tanto Clientes como Proveedores tienen la oportunidad 
 
         <!-- Y así sucesivamente... Puedes repetir bloques según lo necesites -->
 
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11. CONTACTO\nPara cualquier duda sobre estos términos, puede contactarnos a: soporte.handymatch@gmail.com"
-            android:textSize="14sp"
+            android:text="4. OBLIGACIONES Y RESPONSABILIDADES DE LOS USUARIOS"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n4.1 Para Clientes
+\n•	Proporcionar descripciones claras, precisas y completas de los servicios requeridos.
+\n\n•	Respetar los acuerdos establecidos con los Proveedores, incluyendo términos de pago y condiciones del servicio.
+\n\n•	Realizar los pagos en los tiempos establecidos y a través de los canales proporcionados por HandyMatch.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n4.2 Para Proveedores
+\n\n•	Ofrecer servicios de alta calidad, cumpliendo con los estándares profesionales y éticos.
+\n\n•	Cumplir con los plazos y condiciones acordados con los Clientes.
+\n\n•	Mantener la confidencialidad y privacidad de la información recibida de los Clientes.
+\n\n•	Poseer las licencias, permisos o certificaciones necesarias para ofrecer los servicios cuando corresponda.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5. POLÍTICA DE PAGOS Y COMISIONES"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n5.1 Comisiones de HandyMatch
+\n\nHandyMatch puede aplicar una comisión sobre cada transacción realizada a través de la plataforma. Las tarifas específicas se detallan en el momento de la contratación del servicio."
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n5.2 Procesamiento de Pagos
+\n\nLos pagos se procesarán a través de pasarelas de pago seguras. HandyMatch no almacena información financiera sensible de los usuarios.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n5.3 Responsabilidad Financiera
+\n\nHandyMatch no se hace responsable por incumplimientos de pago entre usuarios. Sin embargo, se implementarán medidas para mediar y resolver disputas relacionadas con pagos.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n5.4 Retención de Fondos
+\n\nEn caso de disputas o investigaciones, HandyMatch se reserva el derecho de retener fondos hasta que se resuelva el asunto.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6. CANCELACIONES Y REEMBOLSOS"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n6.1 Cancelación por Parte del Cliente
+\n\nLos Clientes pueden cancelar servicios antes de la aceptación por parte del Proveedor sin penalización. Si la cancelación ocurre después de la aceptación, se aplicarán políticas de reembolso específicas, que pueden incluir tarifas por cancelación tardía.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n6.2 Cancelación por Parte del Proveedor
+\n\nLos Proveedores que cancelen servicios después de haberlos aceptado pueden enfrentar sanciones, incluyendo la suspensión o eliminación de su cuenta.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n6.3 Reembolsos
+\n\nLos reembolsos se evaluarán caso por caso. HandyMatch se reserva el derecho de retener comisiones en casos de cancelaciones injustificadas.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7. CONDUCTA Y USO ADECUADO DE LA PLATAFORMA"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n7.1 Uso Legal y Ético
+\n\nLos usuarios se comprometen a utilizar HandyMatch únicamente para fines legales y de manera que no infrinja los derechos de terceros.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n7.2 Prohibiciones
+\n\nEstá estrictamente prohibido:
+\n\n•	Utilizar la plataforma para actividades fraudulentas, ilegales o no autorizadas.
+\n\n•	Publicar contenido ofensivo, difamatorio, obsceno o discriminatorio.
+\n\n•	Utilizar HandyMatch para contactar a otros usuarios con fines comerciales no relacionados con la plataforma.
+\n\n•	Intentar manipular el sistema de calificaciones o comentarios.
+\n\n•	Crear múltiples cuentas con fines de abuso o fraude.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8. RESPONSABILIDAD Y EXONERACIÓN DE GARANTÍAS"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\n- HandyMatch solo facilita la conexión entre usuarios, pero no garantiza la calidad de los servicios ofrecidos.
+\n\n-HandyMatch no se hace responsable por daños, pérdidas o fraudes entre usuarios.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9. RESOLUCIÓN DE DISPUTAS"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nHandyMatch ofrece un sistema de mediación en caso de conflictos.
+Si no se resuelve una disputa dentro de la plataforma, los usuarios pueden recurrir a instancias legales.
+"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10. MODIFICACIONES A LOS TÉRMINOS Y CONDICIONES"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nHandyMatch podrá modificar estos términos en cualquier momento. Los cambios serán notificados a los usuarios con anticipación."
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Continúa agregando secciones siguientes en el mismo formato -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11. CONTACTO"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nPara cualquier duda sobre estos términos, puede contactarnos a: "
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nsoporte.handymatch@gmail.com "
+            android:textSize="14sp"
+            android:textColor="@color/com_facebook_blue"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:layout_width="wrap_content"

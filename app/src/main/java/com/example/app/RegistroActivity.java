@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -235,7 +233,6 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usuariosRef = database.getReference("usuarios");
 
@@ -268,7 +265,6 @@ public class RegistroActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     private void continuarRegistro() {
@@ -278,33 +274,19 @@ public class RegistroActivity extends AppCompatActivity {
         String contrasena = contrasenaText.getText().toString().trim();
         String telefono = telefonoText.getText().toString().trim();
 
-
-        String encryptedPassword = EncryptionUtils.encrypt(contrasena);
-        String encryptedPhone = EncryptionUtils.encrypt(telefono);
-
-
-        if (encryptedPassword == null || encryptedPhone == null) {
-            Toast.makeText(this, "Error al cifrar los datos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
         Intent i = new Intent(this, DireccionActivity.class);
         i.putExtra("nombre", nombre);
         i.putExtra("apellidos", apellidos);
         i.putExtra("correo", correo);
-        i.putExtra("contrasena", encryptedPassword);
-        i.putExtra("telefono", encryptedPhone);
+        i.putExtra("contrasena", contrasena);
+        i.putExtra("telefono", telefono);
         i.putExtra("imagenUri", (imageUri != null) ? imageUri.toString() : "");
 
         startActivity(i);
     }
 
-
     public void abrirLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
-
-
 }
