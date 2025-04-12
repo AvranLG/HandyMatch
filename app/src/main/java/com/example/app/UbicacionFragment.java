@@ -1,14 +1,10 @@
 package com.example.app;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,273 +12,132 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.compass.CompassOverlay;
-import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
-import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+public class UbicacionFragment extends Fragment implements OnMapReadyCallback {
 
-public class UbicacionFragment extends Fragment implements LocationListener {
+    private static final String TAG = "UbicacionFragment";
 
-    private MapView mapView;
-    private MyLocationNewOverlay myLocationOverlay;
-    private CompassOverlay compassOverlay;
-    private LocationManager locationManager;
-    private boolean hasSetInitialPosition = false;
-
-    public UbicacionFragment() {
-        // Constructor vacío requerido
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Configurar el User-Agent para OSMDroid (obligatorio)
-        Configuration.getInstance().setUserAgentValue(requireActivity().getPackageName());
-    }
+    private GoogleMap googleMap;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: Iniciando fragmento");
+
         View root = inflater.inflate(R.layout.fragment_ubicacion, container, false);
-        mapView = root.findViewById(R.id.map);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        Log.d(TAG, "onCreateView: Cliente de ubicación inicializado");
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        if (mapFragment != null) {
+            Log.d(TAG, "onCreateView: MapFragment encontrado, llamando a getMapAsync");
+            mapFragment.getMapAsync(this);
+        } else {
+            Log.e(TAG, "onCreateView: MapFragment es null");
+        }
+
         return root;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady: Mapa listo");
+        this.googleMap = googleMap;
 
-        // Configuración básica del mapa
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
-        mapView.setMultiTouchControls(true);
-        mapView.getController().setZoom(16.0); // Zoom más cercano para mostrar ubicación
-
-        // Añadir overlay de ubicación (requiere permisos de ubicación)
-        myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireActivity()), mapView);
-        myLocationOverlay.setPersonIcon(null);
-        myLocationOverlay.enableMyLocation();
-        mapView.getOverlays().add(myLocationOverlay);
-
-        // Añadir brújula
-        compassOverlay = new CompassOverlay(requireActivity(), new InternalCompassOrientationProvider(requireActivity()), mapView);
-        compassOverlay.enableCompass();
-        mapView.getOverlays().add(compassOverlay);
-
-        // Permitir rotación con gestos
-        RotationGestureOverlay rotationGestureOverlay = new RotationGestureOverlay(mapView);
-        rotationGestureOverlay.setEnabled(true);
-        mapView.getOverlays().add(rotationGestureOverlay);
-
-        // Intentar obtener la ubicación actual
-        startLocationUpdates();
-    }
-
-    private void startLocationUpdates() {
-        // Verificar permisos de ubicación
-        if (ContextCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            try {
-                // Obtener el servicio de ubicación
-                locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-
-                // Intentar obtener la última ubicación conocida primero
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (lastKnownLocation != null) {
-                    onLocationChanged(lastKnownLocation);
-                }
-
-                // Solicitar actualizaciones de ubicación
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        1000,   // Milisegundos entre actualizaciones
-                        10,     // Metros de cambio mínimo para actualizar
-                        this);
-
-                // También escuchar el proveedor de red como respaldo
-                locationManager.requestLocationUpdates(
-                        LocationManager.NETWORK_PROVIDER,
-                        1000,
-                        10,
-                        this);
-
-            } catch (Exception e) {
-                Toast.makeText(requireContext(),
-                        "No se pudo acceder a la ubicación: " + e.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(requireContext(),
-                    "Se requieren permisos de ubicación para mostrar tu posición actual",
-                    Toast.LENGTH_LONG).show();
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "onMapReady: Permisos de ubicación no otorgados, solicitando...");
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            return;
         }
-    }
 
-    // Metodo para añadir un marcador al mapa
-    public void addMarker(double latitude, double longitude, String title) {
-        Marker marker = new Marker(mapView);
-        marker.setPosition(new GeoPoint(latitude, longitude));
-        marker.setTitle(title);
-        marker.setIcon(getResources().getDrawable(R.drawable.ic_marker));
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mapView.getOverlays().add(marker);
-        mapView.postInvalidate(); // Redibujar el mapa
-    }
+        googleMap.setMyLocationEnabled(true);
+        Log.d(TAG, "onMapReady: Permisos concedidos, ubicación habilitada");
 
-    private void limpiarMarcadores() {
-        // Borra solo los marcadores, deja otros overlays como la brújula y ubicación
-        List<Overlay> overlaysParaEliminar = new ArrayList<>();
-        for (Overlay overlay : mapView.getOverlays()) {
-            if (overlay instanceof Marker) {
-                overlaysParaEliminar.add(overlay);
-            }
-        }
-        mapView.getOverlays().removeAll(overlaysParaEliminar);
+        Log.d(TAG, "onMapReady: Obteniendo última ubicación...");
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(requireActivity(), location -> {
+                    if (location != null) {
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
+                        LatLng miUbicacion = new LatLng(lat, lon);
+                        Log.d(TAG, "Ubicación obtenida: " + lat + ", " + lon);
+
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miUbicacion, 15));
+                        googleMap.addMarker(new MarkerOptions().position(miUbicacion).title("Mi ubicación"));
+
+                        Log.d(TAG, "onMapReady: Cámara centrada y marcador añadido");
+
+                        cargarMarcadoresDeTrabajos();
+                    } else {
+                        Log.e(TAG, "onMapReady: Ubicación obtenida es null");
+                        Toast.makeText(requireContext(), "No se pudo obtener tu ubicación actual", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "onMapReady: Error al obtener la ubicación", e);
+                    Toast.makeText(requireContext(), "Error al obtener ubicación", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void cargarMarcadoresDeTrabajos() {
-        limpiarMarcadores();
+        if (googleMap == null) {
+            Log.e(TAG, "cargarMarcadoresDeTrabajos: El mapa aún no está listo.");
+            return;
+        }
+
+        Log.d(TAG, "cargarMarcadoresDeTrabajos: Cargando publicaciones desde Firebase...");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("publicaciones");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Se recibieron " + snapshot.getChildrenCount() + " publicaciones");
+
                 for (DataSnapshot publicacionSnap : snapshot.getChildren()) {
                     Publicacion publicacion = publicacionSnap.getValue(Publicacion.class);
 
-                    if (publicacion != null && publicacion.getLatitud() != null && publicacion.getLongitud() != null) {
-                        try {
-                            double lat = publicacion.getLatitud();
-                            double lon = publicacion.getLongitud();
-                            String titulo = publicacion.getTitulo();
+                    if (publicacion != null) {
+                        Log.d(TAG, "Publicación encontrada: " + publicacion.getTitulo());
 
-                            addMarker(lat, lon, titulo);
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
+                        if (publicacion.getLatitud() != null && publicacion.getLongitud() != null) {
+                            LatLng position = new LatLng(publicacion.getLatitud(), publicacion.getLongitud());
+                            googleMap.addMarker(new MarkerOptions().position(position).title(publicacion.getTitulo()));
+                            Log.d(TAG, "Marcador añadido: " + publicacion.getTitulo() + " en " + position);
+                        } else {
+                            Log.w(TAG, "Publicación sin coordenadas: " + publicacion.getTitulo());
                         }
+                    } else {
+                        Log.w(TAG, "Publicación null encontrada en el snapshot");
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error al cargar publicaciones", error.toException());
                 Toast.makeText(requireContext(), "Error al cargar publicaciones", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        // Cuando se obtiene la ubicación, centrar el mapa allí
-        GeoPoint myPosition = new GeoPoint(location.getLatitude(), location.getLongitude());
-
-        // Solo centrar automáticamente la primera vez que obtenemos la ubicación
-        if (!hasSetInitialPosition) {
-            mapView.getController().animateTo(myPosition);
-            mapView.getController().setZoom(16.0);
-            hasSetInitialPosition = true;
-
-            // Opcional: añadir un marcador en tu posición actual
-            addMarker(location.getLatitude(), location.getLongitude(), "Mi ubicación");
-
-            // Llamar a cargar los marcadores después de que se haya fijado la ubicación
-            cargarMarcadoresDeTrabajos();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // Metodo requerido por LocationListener pero deprecado en API más recientes
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-        // Se activa cuando el usuario habilita el GPS
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-        // Se activa cuando el usuario deshabilita el GPS
-        if (provider.equals(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(requireContext(),
-                    "Por favor activa el GPS para ver tu ubicación",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void inicializarOverlays() {
-        mapView.getOverlays().clear();
-
-        // Brújula
-        compassOverlay = new CompassOverlay(requireContext(), new InternalCompassOrientationProvider(requireContext()), mapView);
-        compassOverlay.enableCompass();
-        mapView.getOverlays().add(compassOverlay);
-
-        // Ubicación
-        myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireActivity()), mapView);
-        myLocationOverlay.setPersonIcon(null);
-        myLocationOverlay.enableMyLocation();
-        myLocationOverlay.enableFollowLocation();
-        mapView.getOverlays().add(myLocationOverlay);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Reiniciar las actualizaciones de ubicación cuando se reanuda el fragmento
-        mapView.onResume();
-        startLocationUpdates();
-        inicializarOverlays(); // <- Esto se vuelve a aplicar siempre
-        cargarMarcadoresDeTrabajos();
-
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            cargarMarcadoresDeTrabajos();
-        }, 2000); // dos segundo después de onResume
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-        if (locationManager != null) {
-            locationManager.removeUpdates(this);
-        }
-
-        if (myLocationOverlay != null) {
-            myLocationOverlay.disableMyLocation();
-        }
-        if (compassOverlay != null) {
-            compassOverlay.disableCompass();
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (myLocationOverlay != null) {
-            myLocationOverlay.disableMyLocation();
-        }
-        if (locationManager != null) {
-            locationManager.removeUpdates(this);
-        }
     }
 }

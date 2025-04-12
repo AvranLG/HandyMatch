@@ -37,6 +37,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -142,15 +144,13 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
                         countDownTimer.cancel();
                     }
 
-                    // Subir la imagen a Supabase
                     if (imagenUri != null && !imagenUri.isEmpty()) {
                         Uri imageUri = Uri.parse(imagenUri);
-                        subirImagenASupabase(imageUri, usuario);
+                        subirImagenAFirebaseStorage(imageUri, usuario);
                     } else {
-                        // Si no hay imagen, subir datos directamente
                         subirDatosAFirebase(usuario);
-                        progressDialog.dismiss();
                     }
+
                 } else {
                     Toast.makeText(this, "Por favor, verifica tu correo electrónico", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -201,97 +201,34 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
         }
     }
 
-    private void subirImagenASupabase(Uri imageUri, Usuario usuario) {
-        // Verificar que las credenciales estén configuradas
-        if (TextUtils.isEmpty(SUPABASE_URL) || TextUtils.isEmpty(STORAGE_BUCKET_NAME) || TextUtils.isEmpty(API_KEY)) {
-            Log.e("Supabase", "Credenciales de Supabase no configuradas correctamente");
-            return;
-        }
+    private void subirImagenAFirebaseStorage(Uri imageUri, Usuario usuario) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
 
-        // Nombre de archivo único
-        String nombreArchivo = "imagen_" + System.currentTimeMillis() + ".jpg";
+        // Nombre único de archivo
+        String nombreArchivo = "imagenes_usuarios/" + System.currentTimeMillis() + ".jpg";
+        StorageReference imagenRef = storageRef.child(nombreArchivo);
 
-        // Construir URL de subida de Supabase
-        String url = SUPABASE_URL + "/storage/v1/object/" + STORAGE_BUCKET_NAME + "/" + nombreArchivo;
-
-        // Construir URL pública de la imagen
-        String imagenUrlPublica = SUPABASE_URL + "/storage/v1/object/public/" + STORAGE_BUCKET_NAME + "/" + nombreArchivo;
-
-        try {
-            // Leer bytes de la imagen
-            InputStream inputStream = getContentResolver().openInputStream(imageUri);
-            if (inputStream == null) {
-                Log.e("Supabase", "No se pudo abrir el InputStream de la imagen");
-                return;
-            }
-
-            // Comprimir la imagen para reducir tamaño
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-            byte[] imageBytes = baos.toByteArray();
-
-            // Crear cliente OkHttp con timeouts más largos
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .build();
-
-            // Crear cuerpo de la solicitud
-            RequestBody fileBody = RequestBody.create(imageBytes, MediaType.parse("image/jpeg"));
-            MultipartBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", nombreArchivo, fileBody)
-                    .build();
-
-            // Crear solicitud POST
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("apikey", API_KEY)
-                    .addHeader("Authorization", "Bearer " + API_KEY)
-                    .addHeader("Content-Type", "multipart/form-data")
-                    .post(requestBody)
-                    .build();
-
-            // Ejecutar solicitud de forma asíncrona
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String responseString = response.body().string();
-                    Log.d("Supabase", "Respuesta completa de Supabase: " + responseString);
-
-                    if (response.isSuccessful()) {
-                        runOnUiThread(() -> {
-                            // Guardar la URL pública en el usuario
-                            usuario.setImagenUrl(imagenUrlPublica);
-                            subirDatosAFirebase(usuario);
-                            Toast.makeText(VerificacionCorreoActivity.this, "Imagen subida con éxito", Toast.LENGTH_SHORT).show();
-                        });
-                    } else {
-                        Log.e("Supabase", "Error en la respuesta: " + response.code() + " - " + responseString);
-                        mostrarErrorEnUI("Error al subir la imagen: " + response.code());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e("Supabase", "Error en la solicitud", e);
-                    mostrarErrorEnUI("Fallo al subir la imagen: " + e.getMessage());
-                }
-
-                private void mostrarErrorEnUI(String mensaje) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(VerificacionCorreoActivity.this, mensaje, Toast.LENGTH_SHORT).show();
+        imagenRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imagenRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String urlImagen = uri.toString();
+                        usuario.setImagenUrl(urlImagen);
+                        subirDatosAFirebase(usuario);
+                        Toast.makeText(VerificacionCorreoActivity.this, "Imagen subida con éxito", Toast.LENGTH_SHORT).show();
+                    }).addOnFailureListener(e -> {
+                        Log.e("FirebaseStorage", "Error al obtener URL", e);
+                        Toast.makeText(this, "Error al obtener URL de imagen", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     });
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("Supabase", "Error general al subir imagen", e);
-            Toast.makeText(this, "Error al procesar la imagen", Toast.LENGTH_SHORT).show();
-        }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FirebaseStorage", "Error al subir imagen", e);
+                    Toast.makeText(this, "Fallo al subir imagen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                });
     }
+
 
 
     private void subirDatosAFirebase(Usuario usuario) {

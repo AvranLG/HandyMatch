@@ -51,6 +51,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:25.1.3")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation ("com.google.firebase:firebase-storage:21.0.1")
+
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")
     implementation("com.google.firebase:firebase-auth-ktx:23.2.0")
 
@@ -85,6 +87,11 @@ dependencies {
     // Glide para cargar imágenes desde URLs
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    //Para maps
+    implementation ("com.google.android.gms:play-services-maps:19.1.0")  // Para Maps
+    implementation ("com.google.android.gms:play-services-location:21.3.0")  // Para obtener la ubicación actual
+
 
 
     // Dependencias de red
