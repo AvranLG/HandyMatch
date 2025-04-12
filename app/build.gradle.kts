@@ -17,6 +17,15 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
+        resValue("string", "maps_api_key", "mapsApiKey")
+
+
+
+
+
+
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["allowBackup"] = "true"
@@ -27,6 +36,10 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
+            debug {
+                buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
+            }
         }
     }
     compileOptions {
@@ -35,6 +48,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
+
+        buildConfig = true
     }
 
 }
@@ -51,6 +66,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:25.1.3")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation ("com.google.firebase:firebase-storage:21.0.1")
+
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")
     implementation("com.google.firebase:firebase-auth-ktx:23.2.0")
 
@@ -70,6 +87,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
     implementation ("com.facebook.android:facebook-android-sdk:18.0.2")
 
+    implementation ("com.google.firebase:firebase-messaging:24.1.1")
+    implementation("com.google.firebase:firebase-inappmessaging-display")
+    implementation("com.google.firebase:firebase-analytics")
+
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.cloudinary:cloudinary-android:2.3.1")
@@ -81,6 +102,11 @@ dependencies {
     // Glide para cargar imágenes desde URLs
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    //Para maps
+    implementation ("com.google.android.gms:play-services-maps:19.1.0")  // Para Maps
+    implementation ("com.google.android.gms:play-services-location:21.3.0")  // Para obtener la ubicación actual
+
 
 
     // Dependencias de red
