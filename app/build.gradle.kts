@@ -17,6 +17,15 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
+        resValue("string", "maps_api_key", "mapsApiKey")
+
+
+
+
+
+
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["allowBackup"] = "true"
@@ -27,6 +36,10 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
+            debug {
+                buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
+            }
         }
     }
     compileOptions {
@@ -35,6 +48,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
+
+        buildConfig = true
     }
 
 }

@@ -57,7 +57,8 @@ public class DireccionActivity extends AppCompatActivity {
     private String telefono;
     private String imagenUri;
 
-    private static final String GOOGLE_MAPS_API_KEY = "AIzaSyDo-9fdsV8I3DvJ_iTTkqO2_10ifKk1hh4";
+    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+
 
 
     @Override

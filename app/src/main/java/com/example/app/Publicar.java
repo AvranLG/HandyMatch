@@ -63,6 +63,7 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
     private double latitudSeleccionada;
     private double longitudSeleccionada;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
 
         // Inicializar Places API
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyDo-9fdsV8I3DvJ_iTTkqO2_10ifKk1hh4");
+            Places.initialize(getApplicationContext(), GOOGLE_MAPS_API_KEY);
         }
 
         fechaHoraEditText = findViewById(R.id.fechaHora);
