@@ -57,9 +57,9 @@ public class DireccionActivity extends AppCompatActivity {
     private String telefono;
     private String imagenUri;
 
-    private static final String SUPABASE_URL = "https://yyaepcxpedvbkxsjldtf.supabase.co";
-    private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWVwY3hwZWR2Ymt4c2psZHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjY5NTQsImV4cCI6MjA1ODUwMjk1NH0.B8WbrpGjiMWQxR2cNGKsJ_DXOQbmdA-DW8ygNfCbl_8";  // Coloca tu API key de Supabase aquí
-    private static final String STORAGE_BUCKET_NAME = "imagenes-usuarios";  // Nombre del bucket en Supabase
+    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -339,18 +339,16 @@ public class DireccionActivity extends AppCompatActivity {
         }
     }
 
-    private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
-        String url = "https://api.zippopotam.us/MX/" + codigoPostal;
 
-        // Crear cliente OkHttp
+    private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GOOGLE_MAPS_API_KEY;
+
         OkHttpClient client = new OkHttpClient();
 
-        // Crear solicitud GET
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        // Ejecutar solicitud de forma asíncrona
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -359,54 +357,70 @@ public class DireccionActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonObject = new JSONObject(responseBody);
-                        JSONArray places = jsonObject.getJSONArray("places");
+                        JSONArray results = jsonObject.getJSONArray("results");
 
-                        if (places.length() > 0) {
-                            String estado = places.getJSONObject(0).getString("state");
-                            String ciudad = places.getJSONObject(0).getString("place name");
+                        if (results.length() > 0) {
+                            JSONArray addressComponents = results.getJSONObject(0).getJSONArray("address_components");
 
-                            // Actualizar UI en el hilo principal
+                            String ciudad = "";
+                            String estado = "";
+
+                            for (int i = 0; i < addressComponents.length(); i++) {
+                                JSONObject component = addressComponents.getJSONObject(i);
+                                JSONArray types = component.getJSONArray("types");
+
+                                for (int j = 0; j < types.length(); j++) {
+                                    String type = types.getString(j);
+
+                                    if (type.equals("locality")) {
+                                        ciudad = component.getString("long_name");
+                                    }
+
+                                    if (type.equals("administrative_area_level_1")) {
+                                        estado = component.getString("long_name");
+                                    }
+                                }
+                            }
+
+                            String finalCiudad = ciudad;
+                            String finalEstado = estado;
                             runOnUiThread(() -> {
-                                ciudadText.setText(ciudad);
-                                estadoText.setText(estado);
-                                estadoText.setEnabled(false);
+                                if (!finalCiudad.isEmpty() || !finalEstado.isEmpty()) {
+                                    ciudadText.setText(finalCiudad);
+                                    estadoText.setText(finalEstado);
+                                    estadoText.setEnabled(false);
+                                } else {
+                                    limpiarCampos();
+                                }
                             });
+                        } else {
+                            runOnUiThread(() -> limpiarCampos());
                         }
                     } catch (JSONException e) {
-                        Log.e("ObtenerCiudad", "Error parseando JSON", e);
-
-                        // Manejar error en el hilo principal
-                        runOnUiThread(() -> {
-                            ciudadText.setText("");
-                            estadoText.setText("");
-                            estadoText.setEnabled(true);
-                        });
+                        Log.e("GeoAPI", "Error parseando JSON", e);
+                        runOnUiThread(() -> limpiarCampos());
                     }
                 } else {
-                    // Manejar errores de respuesta
-                    Log.e("ObtenerCiudad", "Error en la respuesta: " + response.code());
-
-                    runOnUiThread(() -> {
-                        ciudadText.setText("");
-                        estadoText.setText("");
-                        estadoText.setEnabled(true);
-                    });
+                    Log.e("GeoAPI", "Respuesta fallida: " + response.code());
+                    runOnUiThread(() -> limpiarCampos());
                 }
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
-                // Manejar errores de red
-                Log.e("ObtenerCiudad", "Error de red", e);
+                Log.e("GeoAPI", "Error de red", e);
+                runOnUiThread(() -> limpiarCampos());
+            }
 
-                runOnUiThread(() -> {
-                    ciudadText.setText("");
-                    estadoText.setText("");
-                    estadoText.setEnabled(true);
-                });
+            private void limpiarCampos() {
+                ciudadText.setText("");
+                estadoText.setText("");
+                estadoText.setEnabled(true);
             }
         });
     }
+
+
     public void abrirTerminos(View v) {
         Intent i = new Intent(this, activity_terminos.class);
         startActivity(i);

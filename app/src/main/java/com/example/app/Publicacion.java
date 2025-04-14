@@ -6,8 +6,8 @@ public class Publicacion {
     private String fechaHora;
     private String pago;
     private String ubicacion;
-    private double latitud;
-    private double longitud;
+    private Double latitud;
+    private Double longitud;
     private String idUsuario;
     private String estadoPublicacion;
 
@@ -16,7 +16,7 @@ public class Publicacion {
 
     // Constructor con todos los campos
     public Publicacion(String titulo, String categoria, String descripcion, String fechaHora,
-                       String pago, String ubicacion, double latitud, double longitud, String idUsuario, String estadoPublicacion) {
+                       String pago, String ubicacion, Double latitud, Double longitud, String idUsuario, String estadoPublicacion) {
         this.titulo = titulo;
         this.categoria = categoria;
         this.descripcion = descripcion;
@@ -78,7 +78,7 @@ public class Publicacion {
         this.ubicacion = ubicacion;
     }
 
-    public double getLatitud() {
+    public Double getLatitud() {
         return latitud;
     }
 
@@ -86,7 +86,7 @@ public class Publicacion {
         this.latitud = latitud;
     }
 
-    public double getLongitud() {
+    public Double getLongitud() {
         return longitud;
     }
 

@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -21,9 +23,14 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
-            android:name=".activity_terminos"
+            android:name=".item_chat"
             android:exported="false" />
-        <!-- Definición de las actividades de la app -->
+        <activity
+            android:name=".ChatsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity_terminos"
+            android:exported="false" /> <!-- Definición de las actividades de la app -->
         <activity
             android:name=".activity_mapa"
             android:exported="false" />
@@ -33,7 +40,6 @@
         <activity
             android:name=".VerificacionCorreoActivity"
             android:exported="false" />
-
         <activity
             android:name=".Retrieve_Password"
             android:exported="false" />
@@ -70,6 +76,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".ServicioMensajeriaFirebase"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_api_key" />
+
+
+
+
+
     </application>
 
 </manifest>
