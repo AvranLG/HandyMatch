@@ -227,8 +227,9 @@
 
     <Button
         android:id="@+id/fabPublicar"
-        android:layout_width="59dp"
+        android:layout_width="69dp"
         android:layout_height="69dp"
+        android:background="@drawable/boton_redondo"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="Publicar trabajo"
