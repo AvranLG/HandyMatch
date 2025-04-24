@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -159,6 +161,19 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(tokenTask -> {
+                                        if (tokenTask.isSuccessful()) {
+                                            String token = tokenTask.getResult();
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(user.getUid());
+                                            userRef.child("fcmToken").setValue(token);
+                                        }
+                                    });
+                        }
+
                     } else {
                         Toast.makeText(LoginActivity.this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                         ErrContra.setVisibility(View.VISIBLE);
@@ -221,6 +236,16 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Si la autenticación es exitosa
                         FirebaseUser user = mAuth.getCurrentUser();
+
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(tokenTask -> {
+                                    if (tokenTask.isSuccessful()) {
+                                        String token = tokenTask.getResult();
+                                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(user.getUid());
+                                        userRef.child("fcmToken").setValue(token);
+                                    }
+                                });
+
 
                         // Verificar si el usuario existe en la base de datos
                         if (user != null) {
