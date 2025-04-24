@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
 
 
         // Inicializar vistas
-        btnPublicarTrabajo = view.findViewById(R.id.btPublicarTrabajo);
+        btnPublicarTrabajo = view.findViewById(R.id.fabPublicar);
         btnNotificacion = view.findViewById(R.id.btn_notificacion);
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.recyclerViewPublicaciones);

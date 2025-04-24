@@ -66,35 +66,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btPublicarTrabajo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:elevation="8dp"
-                    android:padding="12dp"
-                    android:text="Publicar trabajo"
-                    android:textAllCaps="false"
-                    android:textColor="@color/fondosyletras"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
 
             <!-- Categorías -->
             <HorizontalScrollView
@@ -247,8 +219,21 @@
             android:layout_weight="1"
             android:padding="8dp"
             android:clipToPadding="false"
+
             android:nestedScrollingEnabled="true"
             tools:listitem="@layout/card_trabajo" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/fabPublicar"
+        android:layout_width="59dp"
+        android:layout_height="69dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="Publicar trabajo"
+        android:text="+"
+        android:textSize="25dp"
+        app:backgroundTint="@color/fondosyletras"
+        app:tint="@android:color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
