@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,6 +132,9 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getText().toString().trim();
         String password = passwordText.getText().toString().trim();
 
+        Button btnLogin = findViewById(R.id.btnLogin);
+        ProgressBar loginProgress = findViewById(R.id.loginProgressBar);
+
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Por favor ingrese ambos campos", Toast.LENGTH_SHORT).show();
             return;
@@ -138,26 +143,32 @@ public class LoginActivity extends AppCompatActivity {
         // Cerrar sesión de Google si está activa
         FirebaseAuth.getInstance().signOut();
 
-        // Mostrar el ProgressDialog mientras se realiza el login
-        progressDialog.show();
+        // Mostrar el ProgressBar y ocultar el texto del botón
+        btnLogin.setText("");
+        loginProgress.setVisibility(View.VISIBLE);
 
         // Iniciar sesión con Firebase Authentication
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
+                    // Ocultar el ProgressBar y restaurar el texto del botón
+                    btnLogin.setText("Iniciar sesión");
+                    loginProgress.setVisibility(View.GONE);
+
                     if (task.isSuccessful()) {
-                        // Si la autenticación es exitosa
                         Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        // Si la autenticación falla (por ejemplo, correo o contraseña incorrectos)
                         Toast.makeText(LoginActivity.this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                         ErrContra.setVisibility(View.VISIBLE);
                     }
-                    progressDialog.dismiss();  // Cerrar el ProgressDialog
                 });
     }
+
+
+
+
 
 
 
