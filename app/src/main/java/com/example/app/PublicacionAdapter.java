@@ -104,6 +104,13 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             notifyItemChanged(currentPosition);
         });
 
+        //Lógica del botón Hanymatch
+        holder.btnHandymatch.setOnClickListener(v -> {
+            androidx.fragment.app.FragmentActivity activity = (androidx.fragment.app.FragmentActivity) context;
+            new HandyMatchDialogFragment().show(activity.getSupportFragmentManager(), "handymatchDialog");
+        });
+
+
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(publicacion.getIdUsuario());
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -139,7 +146,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
     @Override
     public void onViewRecycled(@NonNull PublicacionViewHolder holder) {
         super.onViewRecycled(holder);
-        if (holder.mapView != null && holder.mapView.getVisibility()==View.VISIBLE) {
+        if (holder.mapView != null && holder.mapView.getVisibility() == View.VISIBLE) {
             try {
                 holder.mapView.onPause();
                 holder.mapView.onDestroy();
@@ -158,7 +165,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
         TextView tvTitulo, tvDescripcion, tvFechaHora, tvUbicacion, tvPrecio, tvNombre;
         ImageView profileImage;
         Chip tvCategoria;
-        Button verMasButton;
+        Button verMasButton, btnHandymatch;
         MapView mapView;
 
         public PublicacionViewHolder(@NonNull View itemView) {
@@ -173,6 +180,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             profileImage = itemView.findViewById(R.id.profileImage);
             tvCategoria = itemView.findViewById(R.id.tvCategoria);
             verMasButton = itemView.findViewById(R.id.btnVerMas);
+            btnHandymatch = itemView.findViewById(R.id.btnHandymatch);
         }
     }
 
