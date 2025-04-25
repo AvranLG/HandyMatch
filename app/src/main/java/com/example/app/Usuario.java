@@ -19,6 +19,7 @@ public class Usuario implements Serializable {
     private String ciudad;
     private String referencia;
     private String imagenUrl;
+    private String fcmToken;
 
     // Constructor vacío para Firebase
     public Usuario() {}
@@ -153,5 +154,9 @@ public class Usuario implements Serializable {
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
     }
+
+    public String getFcmToken() { return fcmToken; }
+
+    public void setFcmToken(String fcmToken) { this.fcmToken = fcmToken; }
 
 }

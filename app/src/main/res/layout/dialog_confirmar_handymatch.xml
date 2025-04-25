@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@color/fondogris"
+        android:gravity="center_horizontal">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloDialogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Estás seguro que quieres hacer HandyMatch?"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/fondosyletras"
+            android:layout_marginBottom="12dp"
+            android:textAlignment="center"/>
+
+        <!-- Mensaje -->
+        <TextView
+            android:id="@+id/tvMensajeDialogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Antes de continuar puedes visitar el perfil del empleador para conocerlo mejor."
+            android:textSize="15sp"
+            android:textColor="@color/letrasnormales"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Botón: Ver perfil del empleador -->
+        <Button
+            android:id="@+id/btnVerPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver perfil del empleador"
+            android:backgroundTint="@color/fondosyletras"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Botón: Confirmar HandyMatch -->
+        <Button
+            android:id="@+id/btnConfirmarHandy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Sí, quiero hacer match!"
+            android:backgroundTint="@color/fondosyletras"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Botón: Cancelar -->
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:backgroundTint="#B0BEC5"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+</ScrollView>
