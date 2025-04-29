@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fondo_con_logo">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fondo_con_logo">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:srcCompat="@drawable/logo_difuminado" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tvTituloDialogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="¿Estás seguro que quieres hacer HandyMatch?"
+                android:textAlignment="center"
+                android:textColor="@color/fondosyletras"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Mensaje -->
+            <TextView
+                android:id="@+id/tvMensajeDialogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Antes de continuar puedes visitar el perfil del empleador para conocerlo mejor."
+                android:textAlignment="center"
+                android:textColor="@color/letrasnormales"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- Botón: Ver perfil del empleador -->
+            <Button
+                android:id="@+id/btnVerPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/fondosyletras"
+                android:text="Ver perfil del empleador"
+                android:textColor="@android:color/white" />
+
+            <!-- Botón: Confirmar HandyMatch -->
+            <Button
+                android:id="@+id/btnConfirmarHandy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/fondosyletras"
+                android:text="¡Sí, quiero hacer match!"
+                android:textColor="@android:color/white" />
+
+            <!-- Botón: Cancelar -->
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B0BEC5"
+                android:text="Cancelar"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+    </FrameLayout>
+
+</ScrollView>

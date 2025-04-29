@@ -130,11 +130,26 @@
             android:layout_height="wrap_content"
             android:text="Descripcion del problema"
             android:textColor="#424242"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:maxLines="2"
+            android:ellipsize="end"/>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
 
         <!-- Botones -->
         <Button

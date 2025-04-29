@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -232,36 +233,41 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
 
 
     private void subirDatosAFirebase(Usuario usuario) {
-        // Obtener el usuario actual de Firebase Authentication
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
         if (firebaseUser != null) {
-            String uid = firebaseUser.getUid();
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(tokenTask -> {
+                        if (tokenTask.isSuccessful()) {
+                            String token = tokenTask.getResult();
+                            usuario.setFcmToken(token); // Guarda el token en el objeto Usuario
+                        }
 
-            // Referencia a la base de datos Firebase
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("usuarios");
+                        String uid = firebaseUser.getUid();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("usuarios");
 
-            // Subir los datos del usuario usando su UID como clave
-            myRef.child(uid).setValue(usuario)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
+                        myRef.child(uid).setValue(usuario)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(this, "Datos registrados exitosamente", Toast.LENGTH_SHORT).show();
 
-                        // Redirigir a LoginActivity
-                        Intent intent = new Intent(this, LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                        progressDialog.dismiss();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error al registrar datos: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+                                    // Redirigir a LoginActivity
+                                    Intent intent = new Intent(this, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                    progressDialog.dismiss();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Error al registrar datos: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                });
                     });
         } else {
             Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
         }
     }
+
 
 }
