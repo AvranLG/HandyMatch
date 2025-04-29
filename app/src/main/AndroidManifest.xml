@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -22,6 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
+        <activity
+            android:name=".EditarPerfilActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
         <activity
             android:name=".item_chat"
             android:exported="false" />
@@ -88,11 +91,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/maps_api_key" />
-
-
-
-
-
     </application>
 
 </manifest>
