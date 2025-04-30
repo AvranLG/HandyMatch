@@ -69,10 +69,10 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_centerInParent="true"
-                    android:contentDescription="LogoGalería"
+                    android:contentDescription="LogoEditar"
                     android:saveEnabled="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/icono_galeria" />
+                    app:srcCompat="@drawable/ic_editar" />
 
             </RelativeLayout>
 
@@ -130,7 +130,7 @@
                 android:id="@+id/apellidosContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Apellidos"
+                android:hint="Apellidosssss"
                 android:textColorHint="@color/textodeguia"
                 app:boxBackgroundMode="filled"
                 app:boxStrokeColor="@android:color/darker_gray"
