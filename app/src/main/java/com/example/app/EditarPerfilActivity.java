@@ -11,11 +11,8 @@ import android.widget.Toast;
 
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +22,6 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +54,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private static final String KEY_IMAGE_PATH = "cropped_image_path";
     private String currentImagePath = null;
 
-
     TextInputEditText nombreText, apellidosText, numeroText, direccionText, postalText, coloniaText;
     private EditText ciudadText;
     private EditText estadoText;
@@ -72,16 +67,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_perfil);
 
-        postalText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                String codigoPostal = postalText.getText().toString().trim();
-                if (codigoPostal.length() == 5) {
-                    obtenerCiudadPorCodigoPostal(codigoPostal);
-                }
-            }
-        });
-
-
         if (savedInstanceState != null) {
             currentImagePath = savedInstanceState.getString(KEY_IMAGE_PATH);
             if (currentImagePath != null) {
@@ -92,7 +77,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 }
             }
         }
-
 
         profileImage = findViewById(R.id.profileImage);
         logoImagen = findViewById(R.id.logoImagen);
@@ -156,6 +140,15 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 }
             });
         }
+
+        postalText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String codigoPostal = postalText.getText().toString().trim();
+                if (codigoPostal.length() == 5) {
+                    obtenerCiudadPorCodigoPostal(codigoPostal);
+                }
+            }
+        });
     }
 
     @Override
@@ -165,7 +158,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
             outState.putString(KEY_IMAGE_PATH, currentImagePath);
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -208,7 +200,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 }
             }
         }
- else if (resultCode == UCrop.RESULT_ERROR) {
+        else if (resultCode == UCrop.RESULT_ERROR) {
             Throwable cropError = UCrop.getError(data);
             Toast.makeText(this, "Error al recortar: " + cropError.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -231,12 +223,15 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GOOGLE_MAPS_API_KEY;
 
+        Log.d("GeocodingRequest", "URL de la API: " + url);  // Log para verificar que la URL es correcta
+
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e("GeocodingError", "Error en la solicitud: " + e.getMessage());  // Log para capturar errores de la solicitud
                 runOnUiThread(() -> Toast.makeText(EditarPerfilActivity.this, "Error al obtener ciudad", Toast.LENGTH_SHORT).show());
             }
 
@@ -244,6 +239,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String responseData = response.body().string();
+                    Log.d("GeocodingResponse", "Respuesta de la API: " + responseData);  // Log para ver la respuesta completa de la API
                     try {
                         JSONObject jsonObject = new JSONObject(responseData);
                         JSONArray results = jsonObject.getJSONArray("results");
@@ -272,13 +268,15 @@ public class EditarPerfilActivity extends AppCompatActivity {
                             });
                         }
                     } catch (JSONException e) {
+                        Log.e("GeocodingError", "Error al procesar JSON: " + e.getMessage());  // Log para errores en el procesamiento del JSON
                         runOnUiThread(() -> Toast.makeText(EditarPerfilActivity.this, "Error al procesar JSON", Toast.LENGTH_SHORT).show());
                     }
+                } else {
+                    Log.e("GeocodingError", "Respuesta no exitosa: " + response.code());  // Log si la respuesta no es exitosa
                 }
             }
         });
     }
-
 
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK);
