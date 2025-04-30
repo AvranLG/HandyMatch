@@ -43,7 +43,7 @@
                 android:contentDescription="Notificaciones"
                 android:padding="5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_notificacion"
+                android:src="@drawable/ic_editar_foto"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@android:color/white" />
