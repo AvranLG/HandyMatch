@@ -373,12 +373,15 @@ Si no se resuelve una disputa dentro de la plataforma, los usuarios pueden recur
             android:layout_marginBottom="4dp" />
 
         <TextView
+            android:id="@+id/tvCorreoSoporte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\nsoporte.handymatch@gmail.com "
             android:textSize="14sp"
             android:textColor="@color/com_facebook_blue"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="4dp"
+            android:clickable="true"
+            android:focusable="true" />
 
         <TextView
             android:layout_width="wrap_content"
