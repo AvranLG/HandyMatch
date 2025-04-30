@@ -130,7 +130,7 @@
                 android:id="@+id/apellidosContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Apellidosssss"
+                android:hint="Apellidos"
                 android:textColorHint="@color/textodeguia"
                 app:boxBackgroundMode="filled"
                 app:boxStrokeColor="@android:color/darker_gray"
