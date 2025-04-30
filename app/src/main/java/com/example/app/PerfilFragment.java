@@ -1,11 +1,13 @@
 package com.example.app;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -46,6 +48,9 @@ public class PerfilFragment extends Fragment {
         apellidosText = view.findViewById(R.id.apellidosText);
         phoneText = view.findViewById(R.id.telefonoText);
         emailText = view.findViewById(R.id.emailText);
+
+        ImageButton btnEditarPerfil = view.findViewById(R.id.btn_editar);
+        btnEditarPerfil.setOnClickListener(v -> abrirEditarPerfil());
 
         auth = FirebaseAuth.getInstance();
         String uid = auth.getCurrentUser().getUid();
@@ -211,5 +216,10 @@ public class PerfilFragment extends Fragment {
             }
         });
     }
+    private void abrirEditarPerfil() {
+        Intent intent = new Intent(getActivity(), EditarPerfilActivity.class);
+        startActivity(intent);
+    }
+
 
 }
