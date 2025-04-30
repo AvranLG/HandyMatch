@@ -72,6 +72,16 @@ public class EditarPerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_perfil);
 
+        postalText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String codigoPostal = postalText.getText().toString().trim();
+                if (codigoPostal.length() == 5) {
+                    obtenerCiudadPorCodigoPostal(codigoPostal);
+                }
+            }
+        });
+
+
         if (savedInstanceState != null) {
             currentImagePath = savedInstanceState.getString(KEY_IMAGE_PATH);
             if (currentImagePath != null) {
@@ -217,6 +227,58 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     .into(profileImage);
         }
     }
+
+    private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GOOGLE_MAPS_API_KEY;
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(() -> Toast.makeText(EditarPerfilActivity.this, "Error al obtener ciudad", Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        JSONArray results = jsonObject.getJSONArray("results");
+                        if (results.length() > 0) {
+                            JSONArray addressComponents = results.getJSONObject(0).getJSONArray("address_components");
+                            String ciudad = "", estado = "";
+                            for (int i = 0; i < addressComponents.length(); i++) {
+                                JSONObject component = addressComponents.getJSONObject(i);
+                                JSONArray types = component.getJSONArray("types");
+
+                                for (int j = 0; j < types.length(); j++) {
+                                    String type = types.getString(j);
+                                    if (type.equals("locality")) {
+                                        ciudad = component.getString("long_name");
+                                    } else if (type.equals("administrative_area_level_1")) {
+                                        estado = component.getString("long_name");
+                                    }
+                                }
+                            }
+
+                            String finalCiudad = ciudad;
+                            String finalEstado = estado;
+                            runOnUiThread(() -> {
+                                ciudadText.setText(finalCiudad);
+                                estadoText.setText(finalEstado);
+                            });
+                        }
+                    } catch (JSONException e) {
+                        runOnUiThread(() -> Toast.makeText(EditarPerfilActivity.this, "Error al procesar JSON", Toast.LENGTH_SHORT).show());
+                    }
+                }
+            }
+        });
+    }
+
 
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK);

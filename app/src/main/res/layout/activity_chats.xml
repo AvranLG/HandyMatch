@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="#00796B"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Matches"
+        app:title="Diego es gei 3"
         app:titleTextColor="@android:color/white"
 
         app:layout_constraintTop_toTopOf="parent"
