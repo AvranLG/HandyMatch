@@ -153,73 +153,101 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
-            <TextView
-                android:id="@+id/contraseña"
+            <!-- Título y flechita -->
+            <LinearLayout
+                android:id="@+id/layoutTogglePasswordFields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contraseña"
-                android:textColor="@color/md_theme_onBackground"
-                android:textSize="16sp"
-                />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/pwdContainer"
+                <TextView
+                    android:id="@+id/contra"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Contraseña"
+                    android:textSize="16sp"
+                    android:textColor="@color/md_theme_onBackground"
+                    android:paddingVertical="8dp" />
+
+                <ImageView
+                    android:id="@+id/flecha_desplegarPWD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_right"
+                    android:contentDescription="Mostrar u ocultar campos de contraseña" />
+            </LinearLayout>
+
+            <!-- Campos de contraseña (inician ocultos) -->
+            <LinearLayout
+                android:id="@+id/layoutPasswordFields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingresa tu contraseña actual"
-                android:textColorHint="@color/textodeguia"
-                app:endIconMode="password_toggle"
-                app:startIconCheckable="false"
-                app:boxBackgroundMode="filled"
-                app:boxStrokeColor="@android:color/darker_gray"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pwdContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:background="@drawable/recuadro"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Ingresa tu contraseña actual"
+                    android:textColorHint="@color/textodeguia"
+                    app:endIconMode="password_toggle"
+                    app:startIconCheckable="false"
+                    app:boxBackgroundMode="filled"
+                    app:boxStrokeColor="@android:color/darker_gray"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp">
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/passwordText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:background="@drawable/recuadro" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/newPwdContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingresa tu nueva contraseña"
-                android:textColorHint="@color/textodeguia"
-                app:endIconMode="password_toggle"
-                app:startIconCheckable="false"
-                app:boxBackgroundMode="filled"
-                app:boxStrokeColor="@android:color/darker_gray"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/newPasswordText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/newPwdContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:background="@drawable/recuadro"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Ingresa tu nueva contraseña"
+                    android:textColorHint="@color/textodeguia"
+                    app:endIconMode="password_toggle"
+                    app:startIconCheckable="false"
+                    app:boxBackgroundMode="filled"
+                    app:boxStrokeColor="@android:color/darker_gray"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/newPasswordText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:background="@drawable/recuadro"
+                        android:enabled="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/telefono"
@@ -478,7 +506,7 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/fondosyletras"
                 android:includeFontPadding="true"
-                android:onClick="GuardarDatos"
+                android:onClick="guardarCambios"
                 android:padding="12dp"
                 android:text="Guardar"
                 android:textAllCaps="false"
