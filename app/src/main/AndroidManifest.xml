@@ -22,9 +22,12 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
-            android:name=".EditarPerfilActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".Activity_ayuda"
             android:exported="false" />
+        <activity
+            android:name=".EditarPerfilActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".item_chat"
             android:exported="false" />
