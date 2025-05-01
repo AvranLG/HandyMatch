@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,18 +57,6 @@ public class PerfilFragment extends Fragment {
         userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(uid);
 
         cargarDatosUsuario();
-
-        TextView tvAyuda = view.findViewById(R.id.tvAyuda);
-        tvAyuda.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Activity_ayuda.class);
-            startActivity(intent);
-        });
-
-        TextView tvTermino = view.findViewById(R.id.textTerminos);
-        tvTermino.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), activity_terminos.class);
-            startActivity(intent);
-        });
 
         return view;
     }
@@ -233,7 +220,6 @@ public class PerfilFragment extends Fragment {
         Intent intent = new Intent(getActivity(), EditarPerfilActivity.class);
         startActivity(intent);
     }
-
 
 
 }

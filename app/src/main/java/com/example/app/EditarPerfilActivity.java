@@ -592,6 +592,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
         // Si no hubo cambio de imagen, actualizar solo los datos
         if (!imagenModificada || currentImagePath == null) {
+            // Si no hubo modificación de imagen, se actualizan solo los datos
             actualizarDatos(userRef, userData, progressDialog);
             return;
         }
@@ -609,13 +610,40 @@ public class EditarPerfilActivity extends AppCompatActivity {
         // Subir imagen a Storage
         imageRef.putFile(fileUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    // Obtener URL de descarga
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        // Agregar URL de imagen a los datos
-                        userData.put("imagenUrl", uri.toString());
+                        String nuevaUrl = uri.toString();
+                        userData.put("imagenUrl", nuevaUrl);
 
-                        // Actualizar datos en la base de datos
-                        actualizarDatos(userRef, userData, progressDialog);
+                        // Obtener URL anterior de la base de datos
+                        userRef.child("imagenUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String urlAnterior = snapshot.getValue(String.class);
+
+                                // Verificar si la imagen anterior existe y no es la imagen por defecto
+                                if (urlAnterior != null && !urlAnterior.isEmpty() && !urlAnterior.contains("default_profile.png")) {
+                                    try {
+                                        // Eliminar imagen anterior del Storage
+                                        FirebaseStorage.getInstance().getReferenceFromUrl(urlAnterior)
+                                                .delete()
+                                                .addOnSuccessListener(unused -> Log.d("Storage", "Imagen anterior eliminada"))
+                                                .addOnFailureListener(e -> Log.e("Storage", "No se pudo eliminar imagen anterior: " + e.getMessage()));
+                                    } catch (Exception ex) {
+                                        Log.e("Storage", "Error al intentar eliminar imagen anterior: " + ex.getMessage());
+                                    }
+                                }
+
+                                // Finalmente, actualizar los datos en la base
+                                actualizarDatos(userRef, userData, progressDialog);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("Storage", "Error al leer imagenUrl anterior: " + error.getMessage());
+                                // Aunque no se pudo leer la imagen anterior, seguimos con la actualización
+                                actualizarDatos(userRef, userData, progressDialog);
+                            }
+                        });
                     }).addOnFailureListener(e -> {
                         progressDialog.dismiss();
                         Toast.makeText(EditarPerfilActivity.this,
@@ -636,7 +664,8 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 });
     }
 
-    // Método para comprimir la imagen
+
+    // Metodo para comprimir la imagen
     private File compressImage(String imagePath) {
         try {
             // Cargar la imagen desde la ruta proporcionada
