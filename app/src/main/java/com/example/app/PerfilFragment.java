@@ -58,6 +58,20 @@ public class PerfilFragment extends Fragment {
 
         cargarDatosUsuario();
 
+        TextView tvAyuda = view.findViewById(R.id.tvAyuda);
+        tvAyuda.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Activity_ayuda.class);
+            startActivity(intent);
+        });
+
+        TextView tvTermino = view.findViewById(R.id.textTerminos);
+        tvTermino.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), activity_terminos.class);
+            startActivity(intent);
+        });
+
+
+
         return view;
     }
 

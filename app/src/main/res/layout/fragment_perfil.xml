@@ -313,6 +313,7 @@
                 android:id="@+id/textTerminos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:paddingVertical="8dp"
                 android:text="Términos y condiciones"
                 android:textSize="16sp" />
