@@ -18,7 +18,9 @@ android {
         versionName = "1.0"
 
         buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
-        resValue("string", "maps_api_key", "mapsApiKey")
+        resValue("string", "maps_api_key", property("mapsApiKey") as String)
+
+
 
 
 
