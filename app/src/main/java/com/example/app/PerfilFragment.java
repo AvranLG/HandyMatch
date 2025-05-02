@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 public class PerfilFragment extends Fragment {
 
     private ImageView profileImage;
-    private TextView nameText, apellidosText, phoneText, emailText;
+    private TextView nameText, apellidosText, phoneText, emailText, direccionText, codigoPostalText, coloniaText, estadoText, ciudadText, referenciaText;
     private DatabaseReference userRef;
     private FirebaseAuth auth;
 
@@ -48,6 +49,18 @@ public class PerfilFragment extends Fragment {
         apellidosText = view.findViewById(R.id.apellidosText);
         phoneText = view.findViewById(R.id.telefonoText);
         emailText = view.findViewById(R.id.emailText);
+
+        // Campos adicionales de dirección
+        direccionText = view.findViewById(R.id.edit_calle_y_numero);
+        codigoPostalText = view.findViewById(R.id.edit_postal);
+        coloniaText = view.findViewById(R.id.edit_colonia);
+        estadoText = view.findViewById(R.id.edit_estado);
+        ciudadText = view.findViewById(R.id.edit_ciudad);
+        referenciaText = view.findViewById(R.id.edit_referencia);
+
+// Layout que contiene esos campos
+        View layoutDireccionFields = view.findViewById(R.id.layoutDomicilioFields);
+        layoutDireccionFields.setVisibility(View.GONE); // Oculto por defecto
 
         ImageButton btnEditarPerfil = view.findViewById(R.id.btn_editar);
         btnEditarPerfil.setOnClickListener(v -> abrirEditarPerfil());
@@ -70,6 +83,34 @@ public class PerfilFragment extends Fragment {
             startActivity(intent);
         });
 
+// Flechita para expandir/contraer
+        ImageView ivToggle = view.findViewById(R.id.ivToggle);
+        LinearLayout layoutDomicilio = view.findViewById(R.id.layoutDomicilioFields);
+
+        ivToggle.setOnClickListener(v -> {
+            if (layoutDomicilio.getVisibility() == View.GONE) {
+                layoutDomicilio.setAlpha(0f);
+                layoutDomicilio.setTranslationY(-30); // Comienza un poco arriba
+                layoutDomicilio.setVisibility(View.VISIBLE);
+
+                layoutDomicilio.animate()
+                        .alpha(1f)
+                        .translationY(0)
+                        .setDuration(300)
+                        .start();
+
+                ivToggle.animate().rotation(90f).setDuration(200).start(); // Flecha hacia abajo
+            } else {
+                layoutDomicilio.animate()
+                        .alpha(0f)
+                        .translationY(-30)
+                        .setDuration(200)
+                        .withEndAction(() -> layoutDomicilio.setVisibility(View.GONE))
+                        .start();
+
+                ivToggle.animate().rotation(0f).setDuration(200).start(); // Flecha a la derecha
+            }
+        });
 
 
         return view;
@@ -117,6 +158,12 @@ public class PerfilFragment extends Fragment {
                     String telefono = snapshot.child("telefono").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
                     String imagenUrl = snapshot.child("imagenUrl").getValue(String.class);
+                    String direccion = snapshot.child("direccion").getValue(String.class);
+                    String codigoPostal = snapshot.child("codigo_postal").getValue(String.class);
+                    String colonia = snapshot.child("colonia").getValue(String.class);
+                    String estado = snapshot.child("estado").getValue(String.class);
+                    String ciudad = snapshot.child("ciudad").getValue(String.class);
+                    String referencia = snapshot.child("referencia").getValue(String.class);
 
                     Log.d("PerfilFragment", "Datos obtenidos - Nombre: " + nombre +
                             ", Apellidos: " + apellidos +
@@ -154,6 +201,12 @@ public class PerfilFragment extends Fragment {
                     nameText.setText(nombre != null && !nombre.isEmpty() ? nombre : "Nombre no disponible");
                     apellidosText.setText(apellidos != null && !apellidos.isEmpty() ? apellidos : "Apellidos no disponibles");
                     phoneText.setText(telefono != null && !telefono.isEmpty() ? telefono : "Teléfono no disponible");
+                    direccionText.setText(direccion != null && !direccion.isEmpty() ? direccion : "Dirección no disponible");
+                    codigoPostalText.setText(codigoPostal != null && !codigoPostal.isEmpty() ? codigoPostal : "CP no disponible");
+                    coloniaText.setText(colonia != null && !colonia.isEmpty() ? colonia : "Colonia no disponible");
+                    estadoText.setText(estado != null && !estado.isEmpty() ? estado : "Estado no disponible");
+                    ciudadText.setText(ciudad != null && !ciudad.isEmpty() ? ciudad : "Ciudad no disponible");
+                    referenciaText.setText(referencia != null && !referencia.isEmpty() ? referencia : "Referencia no disponible");
                     emailText.setText(email != null && !email.isEmpty() ? email : auth.getCurrentUser().getEmail());
 
                     // Eliminar cualquier tinte previo del ImageView
