@@ -425,4 +425,9 @@ public class DireccionActivity extends AppCompatActivity {
         Intent i = new Intent(this, activity_terminos.class);
         startActivity(i);
     }
+
+    public void abrirRegistro(View v) {
+        Intent i = new Intent(this, RegistroActivity.class);
+        startActivity(i);
+    }
 }
