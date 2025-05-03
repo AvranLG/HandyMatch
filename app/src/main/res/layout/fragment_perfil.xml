@@ -315,8 +315,9 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:paddingVertical="8dp"
-                android:text="Términos y condiciones"
-                android:textSize="16sp" />
+                android:text="@string/terminosycondiciones"
+                android:textSize="16sp"
+                />
 
             <!-- Ayuda -->
 
@@ -342,14 +343,8 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:paddingVertical="8dp"
-                    android:text="Necesito ayuda"
+                    android:text="@string/ayuda"
                     android:textSize="16sp" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right"
-                    android:clickable="true"
-                    android:contentDescription="Go to Help" />
             </LinearLayout>
 
             <LinearLayout
