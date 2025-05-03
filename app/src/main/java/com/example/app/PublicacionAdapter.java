@@ -51,9 +51,9 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull PublicacionViewHolder holder, int position) {
-        Log.d("PublicacionAdapter", "Vinculando elemento en posición: " + position);
         Publicacion publicacion = listaPublicaciones.get(position);
 
+        // Datos de la publicación
         holder.tvTitulo.setText(publicacion.getTitulo());
         holder.tvDescripcion.setText(publicacion.getDescripcion());
         holder.tvFechaHora.setText(publicacion.getFechaHora());
@@ -104,13 +104,17 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             notifyItemChanged(currentPosition);
         });
 
-        //Lógica del botón Hanymatch
+        // Lógica del botón Hanymatch
         holder.btnHandymatch.setOnClickListener(v -> {
+            String idUsuarioEmpleador = publicacion.getIdUsuario(); // Obtener el id del empleador
+
+            // Crear el diálogo y pasarle el idUsuario
             androidx.fragment.app.FragmentActivity activity = (androidx.fragment.app.FragmentActivity) context;
-            new HandyMatchDialogFragment().show(activity.getSupportFragmentManager(), "handymatchDialog");
+            HandyMatchDialogFragment dialog = HandyMatchDialogFragment.newInstance(idUsuarioEmpleador);
+            dialog.show(activity.getSupportFragmentManager(), "handymatchDialog");
         });
 
-
+        // Aquí se carga el nombre y la foto del empleador que hizo la publicación
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(publicacion.getIdUsuario());
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -137,6 +141,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

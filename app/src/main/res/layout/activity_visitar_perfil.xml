@@ -14,41 +14,28 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStartWithNavigation="0dp" >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:text="Perfil"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/btn_editar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textStyle="bold" />
+        </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btn_editar"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="24dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="Notificaciones"
-                android:padding="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_editar_foto"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@android:color/white" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -89,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mi cuenta"
+                android:text="Datos del usuario"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
@@ -288,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingVertical="8dp"
-                    android:text="Mi calificación"
+                    android:text="Calificación del usuario"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -330,8 +317,8 @@
                     android:layout_marginStart="8dp" />
 
                 <Space
-                android:layout_width="25dp"
-                android:layout_height="match_parent"/>
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -411,73 +398,6 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <!-- Privacidad -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Privacidad"
-                android:textSize="18sp"
-                android:textStyle="bold"
-
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                />
-
-            <TextView
-                android:id="@+id/textTerminos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:paddingVertical="8dp"
-                android:text="@string/terminosycondiciones"
-                android:textSize="16sp"
-                />
-
-            <!-- Ayuda -->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ayuda"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tvAyuda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:paddingVertical="8dp"
-                    android:text="@string/ayuda"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Preguntas Frecuentes"
-                    android:textSize="16sp"
-                    android:paddingVertical="8dp"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to FAQ" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
