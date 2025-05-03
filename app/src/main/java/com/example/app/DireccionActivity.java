@@ -17,6 +17,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -156,7 +157,11 @@ public class DireccionActivity extends AppCompatActivity {
 
     // Metodo para enviar los datos a Firebase
     public void enviarDatosFirebase(View v) {
-
+        CheckBox terminos3 = findViewById(R.id.terminos3);
+        if (!terminos3.isChecked()) {
+            Toast.makeText(this, "Debes aceptar términos y condiciones para continuar", Toast.LENGTH_SHORT).show();
+            return;
+        }
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registrando...");
         progressDialog.show();
