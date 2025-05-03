@@ -2,6 +2,7 @@ package com.example.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -57,5 +58,10 @@ public class Retrieve_Password extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void abrirLogin(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
     }
 }
