@@ -72,7 +72,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private TextInputEditText nombreText, apellidosText, numeroText, direccionText, postalText, coloniaText, descripcionText;
     private EditText ciudadText;
     private EditText estadoText;
-    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+    private static final String GEOCODING_API_KEY = BuildConfig.GEOCODING_API_KEY;
 
     // Variable para almacenar la URL de la imagen
     private String fotoUrl = "";
@@ -401,7 +401,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GOOGLE_MAPS_API_KEY;
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GEOCODING_API_KEY;
 
         Log.d("GeocodingRequest", "URL de la API: " + url);  // Log para verificar que la URL es correcta
 
