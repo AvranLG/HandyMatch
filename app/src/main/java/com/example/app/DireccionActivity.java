@@ -58,7 +58,7 @@ public class DireccionActivity extends AppCompatActivity {
     private String telefono;
     private String imagenUri;
 
-    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+    private static final String GEOCODING_API_KEY = BuildConfig.GEOCODING_API_KEY;
 
 
 
@@ -346,7 +346,7 @@ public class DireccionActivity extends AppCompatActivity {
 
 
     private void obtenerCiudadPorCodigoPostal(String codigoPostal) {
-        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GOOGLE_MAPS_API_KEY;
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + codigoPostal + ",MX&key=" + GEOCODING_API_KEY;
 
         OkHttpClient client = new OkHttpClient();
 
