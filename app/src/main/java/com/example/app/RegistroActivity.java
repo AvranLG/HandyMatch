@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,6 +33,9 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -41,6 +45,10 @@ public class RegistroActivity extends AppCompatActivity {
     private Uri imageUri; // Guardar la URI de la imagen seleccionada
 
     private EditText nombreText, apellidosText, correoText, contrasenaText, telefonoText;
+    private EditText fechaNacimientoText;
+    private static final int PICK_IDENTITY_FILE = 2;
+    private Uri identidadUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,24 @@ public class RegistroActivity extends AppCompatActivity {
         correoText = findViewById(R.id.tituloText);
         contrasenaText = findViewById(R.id.passwordText);
         telefonoText = findViewById(R.id.numeroText);
+
+        fechaNacimientoText = findViewById(R.id.fechaNacimientoText);
+        fechaNacimientoText.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePicker = new DatePickerDialog(RegistroActivity.this,
+                    (view, year1, month1, dayOfMonth) -> {
+                        String fecha = String.format("%02d/%02d/%04d", dayOfMonth, month1 + 1, year1);
+                        fechaNacimientoText.setText(fecha);
+                    }, year, month, day);
+            datePicker.show();
+        });
+
+
+
 
         // Referencias de ImageView
         profileImage = findViewById(R.id.profileImage);
@@ -150,6 +176,23 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
+
+    // Método para verificar si la persona es mayor de 18 años
+    private boolean isAdult(String fechaNacimiento) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Cambiar el formato
+            Date birthDate = sdf.parse(fechaNacimiento); // Parseamos la fecha de nacimiento
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR, -18); // Restamos 18 años a la fecha actual
+            Date adultDate = calendar.getTime();
+
+            // Comparamos si la fecha de nacimiento es menor o igual a la fecha de 18 años atrás
+            return !birthDate.after(adultDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public void abrirDireccion(View v) {
 
         ProgressDialog progressDialog = new ProgressDialog(this);
@@ -169,6 +212,16 @@ public class RegistroActivity extends AppCompatActivity {
         TextInputLayout emailContainer = findViewById(R.id.emailContainer);
         TextInputLayout pwdContainer = findViewById(R.id.pwdContainer);
         TextInputLayout numeroContainer = findViewById(R.id.numeroContainer);
+
+        String fechaNacimiento = fechaNacimientoText.getText().toString().trim();
+
+        if (fechaNacimiento.isEmpty()) {
+            Toast.makeText(this, "La fecha de nacimiento es obligatoria", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+            return;
+        }
+
+
 
         // Validar los datos antes de enviarlos
         if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
@@ -195,6 +248,11 @@ public class RegistroActivity extends AppCompatActivity {
         } else {
             // Si el apellido es válido, se elimina el error
             apellidosContainer.setErrorEnabled(false);
+        }
+
+        if (!isAdult(fechaNacimiento)) {
+            Toast.makeText(this, "Debes ser mayor de edad para registrarte", Toast.LENGTH_SHORT).show();
+            error = true;
         }
 
         // Validar el correo electrónico
