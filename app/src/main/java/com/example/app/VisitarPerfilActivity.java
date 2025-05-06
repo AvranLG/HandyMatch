@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,12 +26,18 @@ public class VisitarPerfilActivity extends AppCompatActivity {
     private TextView nameText, apellidosText, phoneText, emailText, direccionText, codigoPostalText, coloniaText, estadoText, ciudadText, referenciaText;
     private DatabaseReference userRef;
     private FirebaseAuth auth;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visitar_perfil);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        btnBack = findViewById(R.id.btn_back);
         profileImage = findViewById(R.id.profileImage);
         nameText = findViewById(R.id.nombreText);
         apellidosText = findViewById(R.id.apellidosText);
@@ -75,6 +83,14 @@ public class VisitarPerfilActivity extends AppCompatActivity {
                 layoutDomicilio.animate().alpha(0f).translationY(-30).setDuration(200)
                         .withEndAction(() -> layoutDomicilio.setVisibility(View.GONE)).start();
                 ivToggle.animate().rotation(0f).setDuration(200).start();
+            }
+        });
+
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

@@ -169,6 +169,47 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <!-- Fecha de nacimiento -->
+        <TextView
+            android:id="@+id/fechaNacimientoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha de nacimiento"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fechaNacimientoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selecciona tu fecha"
+            android:textColorHint="@color/textodeguia"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fechaNacimientoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
+                android:background="@drawable/recuadro" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
         <TextView
             android:id="@+id/correo"
             android:layout_width="match_parent"
@@ -278,6 +319,39 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
+        <!-- Verificación de identidad
+        <TextView
+            android:id="@+id/verificacionIdentidadLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verificación de identidad (opcional)"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/verificacionIdentidadContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="CURP o documento oficial"
+            android:textColorHint="@color/textodeguia"
+            app:boxBackgroundMode="filled"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/btnUploadDocument"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType=""
+                android:background="@drawable/recuadro" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+-->
 
         <Button
             android:id="@+id/btnregistro"

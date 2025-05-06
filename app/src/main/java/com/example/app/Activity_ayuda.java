@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Activity_ayuda extends AppCompatActivity {
 
-    private final String correoSoporte = "support@handymatch.com";
+    private final String correoSoporte = "soporte.handymatch@gmail.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

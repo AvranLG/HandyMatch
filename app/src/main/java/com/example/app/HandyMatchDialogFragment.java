@@ -60,6 +60,9 @@ public class HandyMatchDialogFragment extends DialogFragment {
                 Log.e("HandyMatchDialogFragment", "idUsuarioEmpleador es null");
             }
         });
+//Botón de cancelar
+        Button btnCancelar = view.findViewById(R.id.btnCancelar);
+        btnCancelar.setOnClickListener(v -> dismiss());
 
         Button btnConfirmarHandy = view.findViewById(R.id.btnConfirmarHandy);
         btnConfirmarHandy.setOnClickListener(v -> {
