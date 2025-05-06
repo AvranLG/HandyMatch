@@ -3,8 +3,11 @@ package com.example.app;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,5 +46,11 @@ public class activity_terminos extends AppCompatActivity {
                 Toast.makeText(activity_terminos.this, "Correo copiado al portapapeles", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Cambiar el color de la barra de estado
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(Color.parseColor("#FFFFFF"));
     }
+
 }

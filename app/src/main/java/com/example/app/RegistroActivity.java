@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -11,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +39,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -49,11 +53,18 @@ public class RegistroActivity extends AppCompatActivity {
     private static final int PICK_IDENTITY_FILE = 2;
     private Uri identidadUri;
 
+    // Constantes para log
+    private static final String TAG = "RegistroActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+
+        // Cambiar el color de la barra de estado
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(Color.parseColor("#FFFFFF"));
 
         // Inicializar los EditText
         nombreText = findViewById(R.id.direccionText);
@@ -76,9 +87,6 @@ public class RegistroActivity extends AppCompatActivity {
                     }, year, month, day);
             datePicker.show();
         });
-
-
-
 
         // Referencias de ImageView
         profileImage = findViewById(R.id.profileImage);
@@ -176,7 +184,6 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
-
     // Método para verificar si la persona es mayor de 18 años
     private boolean isAdult(String fechaNacimiento) {
         try {
@@ -193,8 +200,8 @@ public class RegistroActivity extends AppCompatActivity {
             return false;
         }
     }
-    public void abrirDireccion(View v) {
 
+    public void abrirDireccion(View v) {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Procesando...");
         progressDialog.show();
@@ -220,8 +227,6 @@ public class RegistroActivity extends AppCompatActivity {
             progressDialog.dismiss();
             return;
         }
-
-
 
         // Validar los datos antes de enviarlos
         if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasena.isEmpty() || telefono.isEmpty()) {
@@ -286,43 +291,104 @@ public class RegistroActivity extends AppCompatActivity {
             numeroContainer.setErrorEnabled(false);
         }
 
-        if(error){
+        if (error) {
             progressDialog.dismiss();
             return;
         }
 
+        // Verificar si el correo o teléfono ya existen
+        verificarDatosExistentes(correo, telefono, progressDialog);
+    }
+
+    private void verificarDatosExistentes(String correo, String telefono, ProgressDialog progressDialog) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usuariosRef = database.getReference("usuarios");
 
+        // Flags para rastrear si hemos encontrado duplicados
+        AtomicBoolean correoExiste = new AtomicBoolean(false);
+        AtomicBoolean telefonoExiste = new AtomicBoolean(false);
+        AtomicBoolean verificacionCompleta = new AtomicBoolean(false);
+
+        // Verificar si el correo ya existe
         usuariosRef.orderByChild("email").equalTo(correo)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        progressDialog.dismiss();
-
                         // Log para verificar existencia en Realtime Database
-                        Log.d("RegistroActivitydepu", "Snapshot existe: " + snapshot.exists());
+                        Log.d(TAG, "Verificación de correo - Snapshot existe: " + snapshot.exists());
 
                         if (snapshot.exists()) {
                             // Correo encontrado en la base de datos
+                            correoExiste.set(true);
                             correoText.setError("El correo electrónico ya está en uso");
-                            Log.w("RegistroActivitydepu", "Correo encontrado en Realtime Database");
+                            Log.w(TAG, "Correo encontrado en Realtime Database");
+                        }
+
+                        // Verificamos si ambas comprobaciones han terminado para continuar
+                        if (verificacionCompleta.get()) {
+                            finalizarVerificacion(correoExiste.get(), telefonoExiste.get(), progressDialog);
                         } else {
-                            // Correo no registrado, continuar con el registro
-                            Log.i("RegistroActivitydepu", "Correo válido, continuando registro");
-                            continuarRegistro();
+                            verificacionCompleta.set(true);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         progressDialog.dismiss();
-                        Log.e("RegistroActivitydepu", "Error al verificar correo en Realtime Database", error.toException());
+                        Log.e(TAG, "Error al verificar correo en Realtime Database", error.toException());
                         Toast.makeText(RegistroActivity.this,
                                 "Error al verificar el correo",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        // Verificar si el teléfono ya existe
+        usuariosRef.orderByChild("telefono").equalTo(telefono)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Log para verificar existencia en Realtime Database
+                        Log.d(TAG, "Verificación de teléfono - Snapshot existe: " + snapshot.exists());
+
+                        if (snapshot.exists()) {
+                            // Teléfono encontrado en la base de datos
+                            telefonoExiste.set(true);
+                            telefonoText.setError("El número de teléfono ya está en uso");
+                            Log.w(TAG, "Teléfono encontrado en Realtime Database");
+                        }
+
+                        // Verificamos si ambas comprobaciones han terminado para continuar
+                        if (verificacionCompleta.get()) {
+                            finalizarVerificacion(correoExiste.get(), telefonoExiste.get(), progressDialog);
+                        } else {
+                            verificacionCompleta.set(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        progressDialog.dismiss();
+                        Log.e(TAG, "Error al verificar teléfono en Realtime Database", error.toException());
+                        Toast.makeText(RegistroActivity.this,
+                                "Error al verificar el teléfono",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void finalizarVerificacion(boolean correoExiste, boolean telefonoExiste, ProgressDialog progressDialog) {
+        progressDialog.dismiss();
+
+        if (correoExiste && telefonoExiste) {
+            Toast.makeText(this, "El correo y el teléfono ya están registrados en una cuena existente", Toast.LENGTH_LONG).show();
+        } else if (correoExiste) {
+            Toast.makeText(this, "El correo ya está registrado en una cuenta existente", Toast.LENGTH_LONG).show();
+        } else if (telefonoExiste) {
+            Toast.makeText(this, "El teléfono ya está registrado en una cuenta existente", Toast.LENGTH_LONG).show();
+        } else {
+            // Ni el correo ni el teléfono existen, continuar con el registro
+            continuarRegistro();
+        }
     }
 
     private void continuarRegistro() {
@@ -331,6 +397,7 @@ public class RegistroActivity extends AppCompatActivity {
         String correo = correoText.getText().toString().trim();
         String contrasena = contrasenaText.getText().toString().trim();
         String telefono = telefonoText.getText().toString().trim();
+        String fechaNacimiento = fechaNacimientoText.getText().toString().trim();
 
         Intent i = new Intent(this, DireccionActivity.class);
         i.putExtra("nombre", nombre);
@@ -338,6 +405,7 @@ public class RegistroActivity extends AppCompatActivity {
         i.putExtra("correo", correo);
         i.putExtra("contrasena", contrasena);
         i.putExtra("telefono", telefono);
+        i.putExtra("fechaNacimiento", fechaNacimiento);
         i.putExtra("imagenUri", (imageUri != null) ? imageUri.toString() : "");
 
         startActivity(i);
@@ -347,4 +415,5 @@ public class RegistroActivity extends AppCompatActivity {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
+
 }
