@@ -51,6 +51,22 @@
                 android:text="$ 500 mxn"
                 android:textColor="#009688"
                 android:textStyle="bold" />
+
+            <Space
+                android:layout_width="15dp"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/tvEliminar"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="Eliminar"
+                android:foregroundGravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_eliminar"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
         </LinearLayout>
 
         <!-- Descripción -->
