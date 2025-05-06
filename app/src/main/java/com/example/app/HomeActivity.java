@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
                 lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_mensaje) {
-                // loadFragment(new MensajesFragment(), isGoingToRight);
+                 loadFragment(new ChatFragment(), isGoingToRight);
                 lastSelectedIndex = currentIndex;
                 return true;
             }

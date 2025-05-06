@@ -12,6 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class HandyMatchDialogFragment extends DialogFragment {
 
     private String idUsuarioEmpleador;
@@ -51,6 +60,39 @@ public class HandyMatchDialogFragment extends DialogFragment {
                 Log.e("HandyMatchDialogFragment", "idUsuarioEmpleador es null");
             }
         });
+
+        Button btnConfirmarHandy = view.findViewById(R.id.btnConfirmarHandy);
+        btnConfirmarHandy.setOnClickListener(v -> {
+            String uidActual = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String uidOtro = idUsuarioEmpleador;
+
+            if (uidActual == null || uidOtro == null) {
+                Log.e("HandyMatch", "UIDs no válidos");
+                return;
+            }
+
+            String idConversacion = uidActual.compareTo(uidOtro) < 0 ?
+                    uidActual + "_" + uidOtro : uidOtro + "_" + uidActual;
+
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+
+            // Crear nodo vacío para mensajes
+            dbRef.child("mensajes").child(idConversacion).setValue(null);
+
+            // Crear datos de la conversación
+            Map<String, Object> conversacionData = new HashMap<>();
+            conversacionData.put("idConversacion", idConversacion);
+            conversacionData.put("ultimoMensaje", "");
+            conversacionData.put("timestamp", ServerValue.TIMESTAMP);
+
+            // Guardar para ambos usuarios
+            dbRef.child("conversaciones_usuario").child(uidActual).child(uidOtro).setValue(conversacionData);
+            dbRef.child("conversaciones_usuario").child(uidOtro).child(uidActual).setValue(conversacionData);
+
+            Log.d("HandyMatch", "Conversación creada entre " + uidActual + " y " + uidOtro);
+            dismiss(); // opcional, cerrar el diálogo
+        });
+
 
         return view;
     }
