@@ -17,6 +17,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Manteniendo tu estructura original de header -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -45,7 +46,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +59,7 @@
                 android:text="Paso 1 de 2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="16dp"/> <!-- Margen opcional -->
+                android:layout_marginEnd="16dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
@@ -67,8 +67,6 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-
-            <!-- Contenedor circular -->
             <ImageView
                 android:id="@+id/profileImage"
                 android:layout_width="117dp"
@@ -79,7 +77,6 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/circulo_imagen" />
 
-            <!-- Imagen logo dentro del círculo -->
             <ImageView
                 android:id="@+id/logoImagen"
                 android:layout_width="24dp"
@@ -89,15 +86,11 @@
                 android:saveEnabled="false"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/icono_galeria" />
-
         </RelativeLayout>
 
+        <Space android:layout_width="match_parent" android:layout_height="30dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
-        <!-- Imput Layout de Email -->
+        <!-- Manteniendo todos tus campos de formulario exactamente como los tenías -->
         <TextView
             android:id="@+id/nombre"
             android:layout_width="match_parent"
@@ -129,9 +122,7 @@
                 android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        <Space android:layout_width="match_parent" android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/apellidos"
@@ -139,8 +130,7 @@
             android:layout_height="wrap_content"
             android:text="Apellidos"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp"
-             />
+            android:textSize="16sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/apellidosContainer"
@@ -165,15 +155,8 @@
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        <Space android:layout_width="match_parent" android:layout_height="10dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <!-- Fecha de nacimiento -->
         <TextView
             android:id="@+id/fechaNacimientoLabel"
             android:layout_width="match_parent"
@@ -206,9 +189,7 @@
                 android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        <Space android:layout_width="match_parent" android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/correo"
@@ -216,8 +197,8 @@
             android:layout_height="wrap_content"
             android:text="Correo electronico"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailContainer"
             android:layout_width="match_parent"
@@ -241,9 +222,7 @@
                 android:background="@drawable/recuadro" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        <Space android:layout_width="match_parent" android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/contraseña"
@@ -251,8 +230,7 @@
             android:layout_height="wrap_content"
             android:text="Contraseña"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp"
-             />
+            android:textSize="16sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/pwdContainer"
@@ -279,9 +257,7 @@
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        <Space android:layout_width="match_parent" android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/telefono"
@@ -316,42 +292,121 @@
                 android:background="@drawable/recuadro"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+        <Space android:layout_width="match_parent" android:layout_height="10dp" />
 
-        <!-- Verificación de identidad
+        <!-- SECCIÓN DE VERIFICACIÓN DE IDENTIDAD MEJORADA -->
         <TextView
-            android:id="@+id/verificacionIdentidadLabel"
+            android:id="@+id/verifiacionIdentidadLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Verificación de identidad (opcional)"
             android:textColor="@color/md_theme_onBackground"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/verificacionIdentidadContainer"
+        <TextView
+            android:id="@+id/descripcionVerificacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="CURP o documento oficial"
-            android:textColorHint="@color/textodeguia"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusBottomEnd="16dp">
+            android:text="Para obtener un perfil verificado, sube una imagen de tu identificación oficial"
+            android:textColor="@color/md_theme_onBackground"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/btnUploadDocument"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/identityCardContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/fondogris">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType=""
-                android:background="@drawable/recuadro" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical"
+                android:padding="16dp">
 
--->
+                <!-- Contenedor mejorado para mostrar la INE -->
+                <FrameLayout
+                    android:id="@+id/identityImageContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@drawable/recuadro">
+
+                    <!-- Vista previa de la INE (inicialmente oculta) -->
+                    <ImageView
+                        android:id="@+id/identityImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"/>
+
+                    <!-- Placeholder cuando no hay imagen -->
+                    <LinearLayout
+                        android:id="@+id/identityPlaceholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icono_galeria"
+                            android:contentDescription="Subir identificación"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Toca para subir tu identificación"
+                            android:textColor="@color/textodeguia"
+                            android:layout_marginTop="8dp"/>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- Botones de acción -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <Button
+                        android:id="@+id/btnSeleccionarIne"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="Seleccionar"
+                        android:textAllCaps="false"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                    <Space android:layout_width="8dp" android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:id="@+id/btnRemoveIdentity"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:text="Remover"
+                        android:textAllCaps="false"
+                        android:enabled="false"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/identityStatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No se ha subido ninguna identificación"
+                    android:textColor="@color/textodeguia"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/btnregistro"
@@ -364,8 +419,6 @@
             android:padding="12dp"
             android:text="Continuar"
             android:textAllCaps="false"
-            android:textColor="#F7FAFA"
-            app:layout_constraintTop_toBottomOf="@id/descrpicion" />
-
+            android:textColor="#F7FAFA"/>
     </LinearLayout>
 </ScrollView>
