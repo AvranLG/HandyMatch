@@ -1,6 +1,5 @@
 package com.example.app;
 
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +18,13 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.TextView;
 
+import com.google.ai.client.generativeai.GenerativeModel;
+import com.google.ai.client.generativeai.java.GenerativeModelFutures;
+import com.google.ai.client.generativeai.type.Content;
+import com.google.ai.client.generativeai.type.GenerateContentResponse;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -47,6 +53,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -63,7 +71,13 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
     private double latitudSeleccionada;
     private double longitudSeleccionada;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+    private static final String GOOGLE_MAPS_API_KEY = Secrets.MAPS_API_KEY;
+
+    GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", Secrets.GEMINI_API_KEY);
+    GenerativeModelFutures model = GenerativeModelFutures.from(gm);
+    private final Executor executor = Executors.newFixedThreadPool(1); // Un solo hilo para secuenciar las llamadas a la API
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -412,46 +426,76 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
             return;  // Detener la ejecución si algún campo está vacío
         }
 
-        // Si tienes latitud y longitud
-        double latitud = this.latitudSeleccionada;
-        double longitud = this.longitudSeleccionada;
+        // Verificar el contenido del título y la descripción con Gemini
+        String prompt = "Analiza el siguiente título y descripción de una publicación y determina si contiene algo dudoso, inapropiado o que infrinja alguna política de contenido. Responde solo con 'true' si es dudoso y 'false' si es aceptable.\n\nTítulo: " + titulo + "\nDescripción: " + descripcion;
 
-        // Verificar que el usuario esté autenticado
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            Toast.makeText(this, "Debe iniciar sesión", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Content content = new Content.Builder()
+                .addText(prompt)
+                .build();
 
-        // Obtener el ID del usuario autenticado
-        String idUsuario = user.getUid();
+        ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
 
-        // Crear el objeto de publicación
-        Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario, estadoPublicacion);
+        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
+            @Override
+            public void onSuccess(GenerateContentResponse result) {
+                String geminiResponse = result.getText();
+                Log.d("Gemini Response", "Resultado de Gemini: " + geminiResponse);
 
-        // Guardar en la base de datos de Firebase Realtime Database
-        FirebaseDatabase.getInstance().getReference("publicaciones")
-                .push() // Crear un nuevo nodo con una clave única
-                .setValue(publicacion)
-                .addOnSuccessListener(aVoid -> {
-                    // Acción después de guardar con éxito
-                    Toast.makeText(this, "Trabajo publicado", Toast.LENGTH_SHORT).show();
+                if (geminiResponse != null && geminiResponse.trim().equalsIgnoreCase("true")) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(Publicar.this, "El título o la descripción contienen contenido dudoso. Por favor, revíselos.", Toast.LENGTH_LONG).show();
+                    });
+                } else {
+                    // Si Gemini no lo considera dudoso, proceder con la publicación
+                    double latitud = Publicar.this.latitudSeleccionada;
+                    double longitud = Publicar.this.longitudSeleccionada;
 
-                    // Obtener la instancia de HomeFragment y llamar agregarPublicacion()
-                    HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HOME_FRAGMENT_TAG");
-                    if (homeFragment != null) {
-                        homeFragment.agregarPublicacion(publicacion); // Agregar la nueva publicación
+                    // Verificar que el usuario esté autenticado
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user == null) {
+                        runOnUiThread(() -> Toast.makeText(Publicar.this, "Debe iniciar sesión", Toast.LENGTH_SHORT).show());
+                        return;
                     }
-                })
-                .addOnFailureListener(e -> {
-                    // Acción en caso de error
-                    Toast.makeText(this, "Error al publicar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
 
-        // Redirigir a HomeActivity
-        Intent intent = new Intent(Publicar.this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish(); // Para cerrar esta actividad y evitar volver con el botón "atrás"
+                    // Obtener el ID del usuario autenticado
+                    String idUsuario = user.getUid();
+
+                    // Crear el objeto de publicación
+                    Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario, estadoPublicacion);
+
+                    // Guardar en la base de datos de Firebase Realtime Database
+                    FirebaseDatabase.getInstance().getReference("publicaciones")
+                            .push() // Crear un nuevo nodo con una clave única
+                            .setValue(publicacion)
+                            .addOnSuccessListener(aVoid -> {
+                                // Acción después de guardar con éxito
+                                runOnUiThread(() -> Toast.makeText(Publicar.this, "Trabajo publicado", Toast.LENGTH_SHORT).show());
+
+                                // Obtener la instancia de HomeFragment y llamar agregarPublicacion()
+                                HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HOME_FRAGMENT_TAG");
+                                if (homeFragment != null) {
+                                    homeFragment.agregarPublicacion(publicacion); // Agregar la nueva publicación
+                                }
+
+                                // Redirigir a HomeActivity
+                                Intent intent = new Intent(Publicar.this, HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish(); // Para cerrar esta actividad y evitar volver con el botón "atrás"
+                            })
+                            .addOnFailureListener(e -> {
+                                // Acción en caso de error
+                                runOnUiThread(() -> Toast.makeText(Publicar.this, "Error al publicar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                            });
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                // Manejar el fallo de la llamada a Gemini
+                Log.e("Gemini Error", "Error al analizar el contenido: " + t.getMessage());
+                runOnUiThread(() -> Toast.makeText(Publicar.this, "Error al verificar el contenido. Intente de nuevo.", Toast.LENGTH_SHORT).show());
+            }
+        }, executor);
     }
 }
