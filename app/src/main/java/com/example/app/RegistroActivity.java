@@ -74,13 +74,10 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-        setupStatusBar();
         initViews();
         setupRestoredState(savedInstanceState);
         setupListeners();
-    }
 
-    private void setupStatusBar() {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#FFFFFF"));

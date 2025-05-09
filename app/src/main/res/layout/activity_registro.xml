@@ -376,12 +376,13 @@
 
                     <Button
                         android:id="@+id/btnSeleccionarIne"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:text="Seleccionar"
                         android:textAllCaps="false"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                        android:textColor="#2196F3" />
 
                     <Space android:layout_width="8dp" android:layout_height="wrap_content"/>
 
@@ -393,6 +394,7 @@
                         android:text="Remover"
                         android:textAllCaps="false"
                         android:enabled="false"
+                        
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
                 </LinearLayout>
 
