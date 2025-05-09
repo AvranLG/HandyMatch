@@ -3,6 +3,7 @@ package com.example.app;
 import android.app.ProgressDialog;
 import android.content.Intent;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -17,6 +18,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -118,6 +121,10 @@ public class DireccionActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(Color.parseColor("#FFFFFF"));
     }
 
     // Metodo para validar dirección
