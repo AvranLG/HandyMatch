@@ -1,6 +1,7 @@
 package com.example.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
 
     private List<Conversacion> conversaciones;
     private Context context;
-    private OnItemClickListener listener;  // Agregamos el listener
+    private OnItemClickListener listener;
 
     // Interfaz para manejar los clics en las conversaciones
     public interface OnItemClickListener {
@@ -58,24 +59,7 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
                 .into(holder.profileImage);
 
         // Agregamos el OnClickListener al itemView para manejar el clic
-        holder.itemView.setOnClickListener(v -> {
-            // Obtener el uid del otro usuario
-            String uidOtroUsuario = conversacion.getUidOtro();
-
-            // Crear un Bundle y agregar el uidOtroUsuario
-            Bundle bundle = new Bundle();
-            bundle.putString("uidOtroUsuario", uidOtroUsuario);
-
-            // Crear el fragmento y pasarle el Bundle
-            DetalleConversacionFragment detalleFragment = new DetalleConversacionFragment();
-            detalleFragment.setArguments(bundle);
-
-            // Iniciar el fragmento
-            ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, detalleFragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+        holder.itemView.setOnClickListener(v -> abrirDetalleConversacion(v, conversacion));
     }
 
     @Override
@@ -101,5 +85,19 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
     private String formatHora(long timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return sdf.format(new Date(timestamp));
+    }
+
+    // Metodo para abrir la actividad de detalle de conversación
+    private void abrirDetalleConversacion(View view, Conversacion conversacion) {
+        // Crear un Intent para abrir la actividad DetalleConversacionActivity
+        Intent intent = new Intent(context, DetalleConversacionActivity.class);
+
+        // Pasar los datos de la conversación a la actividad
+        intent.putExtra("uidOtroUsuario", conversacion.getUidOtro());
+        intent.putExtra("nombre", conversacion.getNombre());
+        intent.putExtra("fotoUrl", conversacion.getFotoUrl());
+
+        // Iniciar la actividad
+        context.startActivity(intent);
     }
 }
