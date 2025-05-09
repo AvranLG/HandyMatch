@@ -65,7 +65,8 @@
                 android:foregroundGravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_eliminar"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

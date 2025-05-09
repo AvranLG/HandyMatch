@@ -24,6 +24,12 @@
     <string name="matches">Matches</string>
     <string name="perfil">Perfil</string>
 
+    <string name="AvisoCifrado">Los mensajes enviados a través de esta plataforma no están cifrados.
+        Por motivos de seguridad y para garantizar el cumplimiento de nuestras políticas,
+        el contenido de sus conversaciones podría ser monitoreado.
+        Por favor, no comparta información confidencial
+        o sensible a través de este medio.</string>
+
     <string name="terminosycondiciones"><u>Términos y condiciones</u></string>
     <string name="ayuda"><u>Necesito ayuda</u></string>
 

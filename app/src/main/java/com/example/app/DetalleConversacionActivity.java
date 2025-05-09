@@ -57,6 +57,7 @@ public class DetalleConversacionActivity extends AppCompatActivity {
         btnRetroceso = findViewById(R.id.imageButton3);
         rvMensajes = findViewById(R.id.rvMensajes);
 
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         uidAuth = mAuth.getCurrentUser().getUid();
