@@ -35,6 +35,8 @@ import com.google.firebase.database.ValueEventListener;
 public class PerfilFragment extends Fragment {
 
     private ImageView profileImage;
+    private ImageView verifiedBadge;
+
     private TextView nameText, apellidosText, phoneText, emailText, direccionText, codigoPostalText, coloniaText, estadoText, ciudadText, referenciaText;
     private DatabaseReference userRef;
     private FirebaseAuth auth;
@@ -45,6 +47,7 @@ public class PerfilFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
 
         profileImage = view.findViewById(R.id.profileImage);
+        verifiedBadge = view.findViewById(R.id.verifiedBadge);
         nameText = view.findViewById(R.id.nombreText);
         apellidosText = view.findViewById(R.id.apellidosText);
         phoneText = view.findViewById(R.id.telefonoText);
@@ -153,6 +156,7 @@ public class PerfilFragment extends Fragment {
                         Log.d("PerfilFragment", "Clave en Firebase: " + child.getKey() + ", Valor: " + child.getValue());
                     }
 
+
                     String nombre = snapshot.child("nombre").getValue(String.class);
                     String apellidos = snapshot.child("apellidos").getValue(String.class);
                     String telefono = snapshot.child("telefono").getValue(String.class);
@@ -164,6 +168,18 @@ public class PerfilFragment extends Fragment {
                     String estado = snapshot.child("estado").getValue(String.class);
                     String ciudad = snapshot.child("ciudad").getValue(String.class);
                     String referencia = snapshot.child("referencia").getValue(String.class);
+
+
+                    Boolean verificado = snapshot.child("verificado").getValue(Boolean.class);
+                    boolean mostrarInsignia = verificado != null && verificado;
+                    Log.d("DEBUG_VERIFICADO", "Valor: " + verificado);  // Debe mostrar "true"
+
+                    if (verifiedBadge != null) {
+                        verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
+                        Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
+                    }
+
+
 
                     Log.d("PerfilFragment", "Datos obtenidos - Nombre: " + nombre +
                             ", Apellidos: " + apellidos +
@@ -287,6 +303,4 @@ public class PerfilFragment extends Fragment {
         Intent intent = new Intent(getActivity(), EditarPerfilActivity.class);
         startActivity(intent);
     }
-
-
 }

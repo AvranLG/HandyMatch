@@ -308,7 +308,7 @@
             android:id="@+id/descripcionVerificacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Para obtener un perfil verificado, sube una imagen de tu identificación oficial"
+            android:text="Para obtener un perfil verificado, sube una imagen de tu identificación oficial (solo la parte frontal)"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
