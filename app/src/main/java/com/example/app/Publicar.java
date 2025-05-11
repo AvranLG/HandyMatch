@@ -71,9 +71,9 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
     private double latitudSeleccionada;
     private double longitudSeleccionada;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private static final String GOOGLE_MAPS_API_KEY = Secrets.MAPS_API_KEY;
+    private static final String GOOGLE_MAPS_API_KEY = secrets.MAPS_API_KEY;
 
-    GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", Secrets.GEMINI_API_KEY);
+    GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", secrets.GEMINI_API_KEY);
     GenerativeModelFutures model = GenerativeModelFutures.from(gm);
     private final Executor executor = Executors.newFixedThreadPool(1); // Un solo hilo para secuenciar las llamadas a la API
 

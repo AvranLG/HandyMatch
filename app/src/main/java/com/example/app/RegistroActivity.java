@@ -573,10 +573,31 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void proceedWithRegistration() {
-        // 1. Mostrar un diálogo de progreso
-        showProgress("Guardando datos...");
+        showProgress("Creando cuenta...");
 
-        // 2. Crear el mapa con TODOS los datos de una vez
+        String email = emailText.getText().toString().trim();
+        String password = contrasenaText.getText().toString().trim();
+
+        FirebaseAuth.getInstance()
+                .createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Usuario autenticado correctamente
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        String uid = auth.getCurrentUser().getUid();
+
+                        // Guardar los datos en la base de datos
+                        guardarDatosEnFirebase(uid);
+
+                    } else {
+                        dismissProgress();
+                        showError("Error al crear cuenta: " + task.getException().getMessage());
+                        Log.e(TAG, "FirebaseAuth error", task.getException());
+                    }
+                });
+    }
+
+    private void guardarDatosEnFirebase(String uid) {
         Map<String, Object> datosUsuario = new HashMap<>();
         datosUsuario.put("nombre", nombreText.getText().toString().trim());
         datosUsuario.put("apellidos", apellidosText.getText().toString().trim());
@@ -584,32 +605,21 @@ public class RegistroActivity extends AppCompatActivity {
         datosUsuario.put("contrasena", hashPassword(contrasenaText.getText().toString().trim()));
         datosUsuario.put("telefono", telefonoText.getText().toString().trim());
         datosUsuario.put("fechaNacimiento", fechaNacimientoText.getText().toString().trim());
+        datosUsuario.put("verificado", Boolean.TRUE.equals(identityVerified));
 
-        // 3. Añadir explícitamente el campo verificado como un valor booleano
-        datosUsuario.put("verificado", Boolean.TRUE.equals(identityVerified)); // Garantiza valor booleano
-
-        // Log para debug
-        Log.d(TAG, "Guardando verificado como: " + identityVerified);
-
-        // 4. Agregar las URIs si existen
         if (imageUri != null) datosUsuario.put("imagenUri", imageUri.toString());
         if (ineUri != null) datosUsuario.put("ineUri", ineUri.toString());
 
-        // 5. Preparar datos para la siguiente pantalla (aparte de Firebase)
-        Bundle datosIntent = new Bundle();
-        datosIntent.putString("nombre", nombreText.getText().toString().trim());
-        datosIntent.putString("apellidos", apellidosText.getText().toString().trim());
-        // ... otros datos necesarios para la siguiente actividad
-
-        // 6. Guardar en Firebase y esperar la respuesta
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("usuarios").child(uid);
 
         ref.setValue(datosUsuario)
                 .addOnSuccessListener(unused -> {
                     dismissProgress();
-                    // Solo navegar a la siguiente pantalla cuando se complete exitosamente
-                    startActivity(new Intent(RegistroActivity.this, DireccionActivity.class).putExtras(datosIntent));
+                    // Solo pasamos a la siguiente actividad - ya no necesitamos pasar todos los datos
+                    // porque están guardados en Firebase y podemos recuperarlos por el UID
+                    Intent intent = new Intent(RegistroActivity.this, DireccionActivity.class);
+                    startActivity(intent);
+                    finish(); // Cerrar esta actividad para evitar volver atrás
                 })
                 .addOnFailureListener(e -> {
                     dismissProgress();
