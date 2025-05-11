@@ -125,6 +125,7 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
+
     private void restoreImageState() {
         try {
             if (imageUri != null) {
@@ -195,16 +196,37 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void handleImageSelection(Uri sourceUri) {
-        UCrop.of(sourceUri, Uri.fromFile(new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg")))
-                .withAspectRatio(1, 1)
-                .withMaxResultSize(800, 800)
-                .withOptions(getCropOptions())
-                .start(this);
+
+                if(analizandoIne){
+                    UCrop.of(sourceUri, Uri.fromFile(new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg")))
+                            .withAspectRatio(1, 1)
+                            .withMaxResultSize(800, 800)
+                            .withOptions(getCropOptions2())
+                            .start(this);
+                } else{
+                    UCrop.of(sourceUri, Uri.fromFile(new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg")))
+                            .withAspectRatio(1, 1)
+                            .withMaxResultSize(800, 800)
+                            .withOptions(getCropOptions())
+                            .start(this);
+                }
+
     }
 
+    //Este es para la imagen de perfil
     private UCrop.Options getCropOptions() {
         UCrop.Options options = new UCrop.Options();
         options.setCircleDimmedLayer(true);
+        options.setShowCropFrame(false);
+        options.setShowCropGrid(false);
+        options.setHideBottomControls(true);
+        options.setCompressionQuality(80);
+        return options;
+    }
+
+    //Este es para la INE
+    private UCrop.Options getCropOptions2() {
+        UCrop.Options options = new UCrop.Options();
         options.setShowCropFrame(false);
         options.setShowCropGrid(false);
         options.setHideBottomControls(true);
