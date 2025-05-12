@@ -2,7 +2,6 @@ package com.example.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
         void onItemClick(Conversacion conversacion);
     }
 
-    // Modificamos el constructor para aceptar el listener
+    // Constructor que acepta el listener
     public ConversacionesAdapter(List<Conversacion> conversaciones, Context context, OnItemClickListener listener) {
         this.conversaciones = conversaciones;
         this.context = context;
@@ -58,13 +58,24 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
                 .circleCrop()
                 .into(holder.profileImage);
 
-        // Agregamos el OnClickListener al itemView para manejar el clic
-        holder.itemView.setOnClickListener(v -> abrirDetalleConversacion(v, conversacion));
+        // Click para abrir el detalle de la conversación
+        holder.itemView.setOnClickListener(v -> abrirDetalleConversacion(conversacion));
     }
 
     @Override
     public int getItemCount() {
         return conversaciones.size();
+    }
+
+    // Metodo para actualizar una conversación específica
+    public void actualizarConversacion(Conversacion nuevaConversacion) {
+        for (int i = 0; i < conversaciones.size(); i++) {
+            if (conversaciones.get(i).getUidOtro().equals(nuevaConversacion.getUidOtro())) {
+                conversaciones.set(i, nuevaConversacion);
+                notifyItemChanged(i); // Notifica el cambio en esa posición
+                break;
+            }
+        }
     }
 
     public static class ConversacionViewHolder extends RecyclerView.ViewHolder {
@@ -81,23 +92,18 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
         }
     }
 
-    // Metodo para formatear la hora (puedes personalizarlo)
+    // Metodo para formatear la hora
     private String formatHora(long timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return sdf.format(new Date(timestamp));
     }
 
     // Metodo para abrir la actividad de detalle de conversación
-    private void abrirDetalleConversacion(View view, Conversacion conversacion) {
-        // Crear un Intent para abrir la actividad DetalleConversacionActivity
+    private void abrirDetalleConversacion(Conversacion conversacion) {
         Intent intent = new Intent(context, DetalleConversacionActivity.class);
-
-        // Pasar los datos de la conversación a la actividad
         intent.putExtra("uidOtroUsuario", conversacion.getUidOtro());
         intent.putExtra("nombre", conversacion.getNombre());
         intent.putExtra("fotoUrl", conversacion.getFotoUrl());
-
-        // Iniciar la actividad
         context.startActivity(intent);
     }
 }
