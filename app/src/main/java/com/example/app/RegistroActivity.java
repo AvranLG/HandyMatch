@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,9 +50,15 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegistroActivity extends AppCompatActivity {
@@ -65,10 +72,15 @@ public class RegistroActivity extends AppCompatActivity {
     private EditText nombreText, apellidosText, emailText, contrasenaText, telefonoText, fechaNacimientoText;
     private TextInputLayout[] inputLayouts;
 
+
     // Variables de estado
     private Uri imageUri, ineUri;
     private boolean analizandoIne = false;
     private AlertDialog progressDialog;
+
+    // Variables para verificación de identidad
+    private String extractedBirthDate = null;
+    private boolean identityVerified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +119,8 @@ public class RegistroActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             imageUri = savedInstanceState.getParcelable("imageUri");
             ineUri = savedInstanceState.getParcelable("ineUri");
+            extractedBirthDate = savedInstanceState.getString("extractedBirthDate");
+            identityVerified = savedInstanceState.getBoolean("identityVerified", false);
             restoreImageState();
         }
     }
@@ -147,6 +161,11 @@ public class RegistroActivity extends AppCompatActivity {
         new DatePickerDialog(this, (view, year, month, day) -> {
             String selectedDate = String.format("%02d/%02d/%04d", day, month + 1, year);
             fechaNacimientoText.setText(selectedDate);
+
+            // Verificar coherencia con fecha extraída de la identificación
+            if (extractedBirthDate != null) {
+                verifyBirthDateCoherence(selectedDate);
+            }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
@@ -161,6 +180,8 @@ public class RegistroActivity extends AppCompatActivity {
         findViewById(R.id.identityPlaceholder).setVisibility(View.VISIBLE);
         findViewById(R.id.btnRemoveIdentity).setEnabled(false);
         ineUri = null;
+        extractedBirthDate = null;
+        identityVerified = false;
         showToast("Identificación removida");
     }
 
@@ -250,6 +271,8 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
+
+
     private Bitmap createCircularBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -285,24 +308,132 @@ public class RegistroActivity extends AppCompatActivity {
 
     private void handleOCRSuccess(Text result) {
         dismissProgress();
-        String text = result.getText().toUpperCase(); // El texto extraído de la imagen.
+        String text = result.getText().toUpperCase();
         Log.d(TAG, "Texto OCR: " + text);
 
-        // Verifica si el texto extraído corresponde a un formato válido de INE.
-        boolean valid = text.matches(".*[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}.*") ||
-                text.matches(".*[A-Z]{6}[0-9]{8}[A-Z]{1}.*") ||
-                text.contains("CLAVE DE ELECTOR");
+        // Patrones para validación de documentos
+        String claveElectorPattern = ".*[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}.*";
+        String curpPattern = ".*[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}.*"; // O el patrón específico de CURP
 
-        // Si el INE es válido
-        if (valid) {
+        // Verifica si el texto contiene Clave de Elector o CURP
+        boolean hasClaveElector = text.matches(claveElectorPattern) || text.contains("CLAVE DE ELECTOR");
+        boolean hasCURP = text.matches(curpPattern) || text.contains("CURP");
+
+        // Si contiene al menos uno de los dos documentos válidos
+        if (hasClaveElector || hasCURP) {
+            identityVerified = true;
+            extractBirthDateFromID(text);
+
+            // Si ya hay una fecha de nacimiento ingresada, verificar coherencia
+            if (!fechaNacimientoText.getText().toString().isEmpty() && extractedBirthDate != null) {
+                verifyBirthDateCoherence(fechaNacimientoText.getText().toString());
+            } else if (extractedBirthDate != null) {
+                // Si se extrajo la fecha pero el usuario no ha ingresado una, sugerir la fecha extraída
+                suggestBirthDate();
+            }
+
             showToast("✅ Identificación válida detectada");
         } else {
-            // Si el INE no es válido
             showError("❌ No se detectó una identificación válida");
-            removeIdentityImage();  // Remueve la imagen de la identificación
+            removeIdentityImage();
         }
     }
 
+    private void extractBirthDateFromID(String text) {
+        extractedBirthDate = null;
+
+        // Intentar extraer la fecha de la CURP
+        Pattern curpPattern = Pattern.compile("[A-Z]{4}(\\d{2})(\\d{2})(\\d{2})[HM][A-Z]{5}[0-9A-Z]{2}");
+        Matcher curpMatcher = curpPattern.matcher(text);
+
+        if (curpMatcher.find()) {
+            try {
+                int year = Integer.parseInt(curpMatcher.group(1));
+                int month = Integer.parseInt(curpMatcher.group(2));
+                int day = Integer.parseInt(curpMatcher.group(3));
+
+                // Ajustar año (considerar si es 1900s o 2000s)
+                year = (year > 25) ? 1900 + year : 2000 + year; // Ajusta según tus necesidades
+
+                // Formatear a DD/MM/YYYY
+                extractedBirthDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month, year);
+                Log.d(TAG, "Fecha extraída de CURP: " + extractedBirthDate);
+                return;
+            } catch (Exception e) {
+                Log.e(TAG, "Error al extraer fecha de CURP", e);
+            }
+        }
+
+        // Intentar buscar fecha directamente en formato común (DD/MM/YYYY o YYYY/MM/DD)
+        Pattern directDatePattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{2,4})");
+        Matcher directDateMatcher = directDatePattern.matcher(text);
+
+        if (directDateMatcher.find()) {
+            extractedBirthDate = directDateMatcher.group();
+            Log.d(TAG, "Fecha encontrada directamente: " + extractedBirthDate);
+
+            // Normalizar formato si es necesario
+            try {
+                SimpleDateFormat inputFormat;
+                if (extractedBirthDate.matches("\\d{2}/\\d{2}/\\d{2}")) {
+                    inputFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+                } else {
+                    inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                }
+
+                Date date = inputFormat.parse(extractedBirthDate);
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                extractedBirthDate = outputFormat.format(date);
+            } catch (ParseException e) {
+                Log.e(TAG, "Error al formatear fecha", e);
+            }
+        }
+    }
+
+    private void suggestBirthDate() {
+        if (extractedBirthDate == null) return;
+
+        new AlertDialog.Builder(this)
+                .setTitle("Fecha de Nacimiento Detectada")
+                .setMessage("Se ha detectado la fecha de nacimiento: " + extractedBirthDate + "\n¿Desea utilizarla?")
+                .setPositiveButton("Sí", (dialog, which) -> {
+                    fechaNacimientoText.setText(extractedBirthDate);
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void verifyBirthDateCoherence(String userEnteredDate) {
+        if (extractedBirthDate == null || userEnteredDate == null) return;
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date userDate = sdf.parse(userEnteredDate);
+            Date idDate = sdf.parse(extractedBirthDate);
+
+            // Permitir un margen de error de un día
+            long diffMillis = Math.abs(userDate.getTime() - idDate.getTime());
+            long diffDays = diffMillis / (24 * 60 * 60 * 1000);
+
+            if (diffDays > 1) {
+                // Las fechas no coinciden
+                new AlertDialog.Builder(this)
+                        .setTitle("Advertencia")
+                        .setMessage("La fecha ingresada (" + userEnteredDate +
+                                ") no coincide con la fecha detectada en su identificación (" +
+                                extractedBirthDate + ").\n\n¿Desea utilizar la fecha de la identificación?")
+                        .setPositiveButton("Sí", (dialog, which) -> {
+                            fechaNacimientoText.setText(extractedBirthDate);
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            showToast("Verifique su fecha de nacimiento");
+                        })
+                        .show();
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "Error al comparar fechas", e);
+        }
+    }
 
     private void handleOCRFailure(Exception e) {
         dismissProgress();
@@ -346,6 +477,30 @@ public class RegistroActivity extends AppCompatActivity {
 
         // Validación de fecha
         if (!validateBirthDate()) isValid = false;
+
+        // Verificación de coherencia entre fecha ingresada y la de identificación
+        if (isValid && extractedBirthDate != null && !fechaNacimientoText.getText().toString().isEmpty()) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                Date userDate = sdf.parse(fechaNacimientoText.getText().toString());
+                Date idDate = sdf.parse(extractedBirthDate);
+
+                long diffMillis = Math.abs(userDate.getTime() - idDate.getTime());
+                long diffDays = diffMillis / (24 * 60 * 60 * 1000);
+
+                if (diffDays > 1) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Verificación de Identidad")
+                            .setMessage("Los datos no coinciden.\n" +
+                                    "Por favor verifique su información antes de continuar.")
+                            .setPositiveButton("Entendido", null)
+                            .show();
+                    return false;
+                }
+            } catch (ParseException e) {
+                Log.e(TAG, "Error al comparar fechas en validación", e);
+            }
+        }
 
         return isValid;
     }
@@ -418,18 +573,59 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     private void proceedWithRegistration() {
-        Bundle data = new Bundle();
-        data.putString("nombre", nombreText.getText().toString().trim());
-        data.putString("apellidos", apellidosText.getText().toString().trim());
-        data.putString("correo", emailText.getText().toString().trim());
-        data.putString("contrasena", hashPassword(contrasenaText.getText().toString().trim()));
-        data.putString("telefono", telefonoText.getText().toString().trim());
-        data.putString("fechaNacimiento", fechaNacimientoText.getText().toString().trim());
+        showProgress("Creando cuenta...");
 
-        if (imageUri != null) data.putString("imagenUri", imageUri.toString());
-        if (ineUri != null) data.putString("ineUri", ineUri.toString());
+        String email = emailText.getText().toString().trim();
+        String password = contrasenaText.getText().toString().trim();
 
-        startActivity(new Intent(this, DireccionActivity.class).putExtras(data));
+        FirebaseAuth.getInstance()
+                .createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Usuario autenticado correctamente
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        String uid = auth.getCurrentUser().getUid();
+
+                        // Guardar los datos en la base de datos
+                        guardarDatosEnFirebase(uid);
+
+                    } else {
+                        dismissProgress();
+                        showError("Error al crear cuenta: " + task.getException().getMessage());
+                        Log.e(TAG, "FirebaseAuth error", task.getException());
+                    }
+                });
+    }
+
+    private void guardarDatosEnFirebase(String uid) {
+        Map<String, Object> datosUsuario = new HashMap<>();
+        datosUsuario.put("nombre", nombreText.getText().toString().trim());
+        datosUsuario.put("apellidos", apellidosText.getText().toString().trim());
+        datosUsuario.put("email", emailText.getText().toString().trim());
+        datosUsuario.put("contrasena", hashPassword(contrasenaText.getText().toString().trim()));
+        datosUsuario.put("telefono", telefonoText.getText().toString().trim());
+        datosUsuario.put("fechaNacimiento", fechaNacimientoText.getText().toString().trim());
+        datosUsuario.put("verificado", Boolean.TRUE.equals(identityVerified));
+
+        if (imageUri != null) datosUsuario.put("imagenUri", imageUri.toString());
+        if (ineUri != null) datosUsuario.put("ineUri", ineUri.toString());
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("usuarios").child(uid);
+
+        ref.setValue(datosUsuario)
+                .addOnSuccessListener(unused -> {
+                    dismissProgress();
+                    // Solo pasamos a la siguiente actividad - ya no necesitamos pasar todos los datos
+                    // porque están guardados en Firebase y podemos recuperarlos por el UID
+                    Intent intent = new Intent(RegistroActivity.this, DireccionActivity.class);
+                    startActivity(intent);
+                    finish(); // Cerrar esta actividad para evitar volver atrás
+                })
+                .addOnFailureListener(e -> {
+                    dismissProgress();
+                    showError("Error al guardar usuario: " + e.getMessage());
+                    Log.e(TAG, "Error al guardar en Firebase", e);
+                });
     }
 
     private String hashPassword(String password) {
@@ -501,6 +697,8 @@ public class RegistroActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable("imageUri", imageUri);
         outState.putParcelable("ineUri", ineUri);
+        outState.putString("extractedBirthDate", extractedBirthDate);
+        outState.putBoolean("identityVerified", identityVerified);
     }
 
     @Override
