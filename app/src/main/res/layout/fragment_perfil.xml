@@ -452,7 +452,6 @@
                 android:text="Privacidad"
                 android:textSize="18sp"
                 android:textStyle="bold"
-
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 />
@@ -465,8 +464,7 @@
                 android:clickable="true"
                 android:paddingVertical="8dp"
                 android:text="@string/terminosycondiciones"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
 
             <!-- Ayuda -->
@@ -502,19 +500,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Preguntas Frecuentes"
-                    android:textSize="16sp"
-                    android:paddingVertical="8dp"/>
-                <ImageView
+                    android:id="@+id/tvPreguntas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to FAQ" />
+                    android:clickable="true"
+                    android:paddingVertical="8dp"
+                    android:text="@string/preguntas"
+                    android:textSize="16sp" />
             </LinearLayout>
+
+
+
+
             <!-- Acerca de nosotros -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -526,15 +525,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Acerca de nosotros"
+                    android:text="@string/acercade"
                     android:textSize="16sp"
                     android:paddingVertical="8dp"
                     android:clickable="true"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="Go to About Us" />
             </LinearLayout>
 
             <!-- Cerrar Sesión -->

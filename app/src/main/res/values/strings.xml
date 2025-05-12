@@ -32,6 +32,89 @@
 
     <string name="terminosycondiciones"><u>Términos y condiciones</u></string>
     <string name="ayuda"><u>Necesito ayuda</u></string>
+    <string name="preguntas"><u>Preguntas frecuentes</u></string>
+    <string name="acercade"><u>Acerca de nosotros</u></string>
+
+
+
+    <string name="queeshandymatch">HandyMatch es una plataforma que conecta a personas que necesitan ayuda
+        con tareas específicas con proveedores de servicios calificados para realizarlas.</string>
+
+    <string name="comoregistrarme">Puedes registrarte creando una cuenta con tu correo electrónico,
+        número de teléfono y una contraseña. También puedes registrarte con tu cuenta de Google.</string>
+
+    <string name="esgratis">Sí, descargar y registrarte en HandyMatch es completamente gratuito.
+        Sin embargo, los servicios contratados pueden tener un costo que acuerdas con el proveedor.</string>
+
+    <string name="tiposdeservicios">Puedes encontrar y ofrecer servicios como reparaciones, limpieza, jardinería,
+        apoyo técnico, cuidado de mascotas, entre otros.</string>
+
+    <string name="pagos">El pago se acuerda directamente entre el cliente y el proveedor.
+        En futuras actualizaciones se implementarán métodos de pago seguros desde la app.</string>
+
+    <string name="verificacionproveedores">Sí, pedimos a los proveedores ciertos datos de
+        verificación para garantizar mayor confianza en la comunidad.</string>
+
+    <string name="calificaciones">Sí, al finalizar un servicio puedes dejar una calificación
+        y comentario que ayudará a otros usuarios a tomar decisiones informadas.</string>
+
+    <string name="problemasconservicio">Puedes reportar cualquier problema desde la sección de soporte dentro de la app.
+        Nuestro equipo revisará el caso y te dará seguimiento.</string>
+
+    <string name="disponibilidad">Actualmente HandyMatch está disponible en determinadas regiones,
+        pero estamos trabajando para expandirnos a más lugares.</string>
+
+    <string name="variosservicios">Sí, puedes agregar múltiples servicios a tu perfil y
+        definir en qué áreas deseas trabajar.</string>
+
+    <string name="contactarproveedor">Puedes buscar proveedores en la app según el tipo de servicio y tu ubicación.
+        Una vez encuentres uno que te interese, puedes enviarle un mensaje directo desde su perfil.</string>
+
+    <string name="modificarperfil">Sí, puedes actualizar tu nombre, foto de perfil, descripción,
+        servicios ofrecidos y ubicación desde la sección de perfil.</string>
+
+    <string name="seguridaddatos">Sí, protegemos tus datos con medidas de seguridad.
+        Solo se comparte lo necesario para que los usuarios puedan interactuar dentro de la plataforma.</string>
+
+    <string name="incumplimientoproveedor">Te recomendamos calificar la experiencia honestamente y reportar
+        el problema en la sección de soporte. HandyMatch revisará el caso para tomar acciones si es necesario.</string>
+
+    <string name="eliminarcuenta">Sí, puedes solicitar la desactivación o eliminación de tu cuenta
+        desde la configuración de la app o escribiéndonos a través del soporte.</string>
+
+    <string name="limitesolicitudes">No hay un límite fijo, pero te recomendamos mantener una buena
+        comunicación con los proveedores para evitar confusiones.</string>
+
+    <string name="destacarservicios">Completa tu perfil, agrega una buena descripción, fotos relevantes
+        y mantén una alta calificación con comentarios positivos.</string>
+
+    <string name="notificaciones">Sí, la app te enviará notificaciones en tiempo real cuando recibas mensajes,
+        solicitudes o actualizaciones importantes.</string>
+
+    <string name="comisiones">Actualmente no cobramos comisión por los acuerdos entre usuarios,
+        pero esto puede cambiar en futuras versiones con mejoras y funciones premium.</string>
+
+    <string name="soloquierocontratar">Sí, puedes registrarte como cliente sin necesidad de ofrecer ningún servicio.</string>
+
+    <string name="cancelarservicio">Sí, puedes cancelar un servicio antes de que comience.
+        Sin embargo, te recomendamos hacerlo con anticipación para evitar molestias al proveedor.
+        Si cancelas muchas veces sin motivo, podrías recibir advertencias en tu cuenta.</string>
+
+    <string name="proveedornollega">Si el proveedor no se presenta en la fecha y hora acordada,
+        puedes reportarlo desde su perfil o desde la sección de soporte. HandyMatch registrará
+        el incidente y tomará las medidas necesarias para proteger la experiencia del usuario.</string>
+
+    <string name="reprogramarcita">Sí, puedes reprogramar una cita desde tu historial de servicios
+        o contacto directo con el proveedor. Asegúrate de avisarle con tiempo para facilitar la
+        disponibilidad y evitar malentendidos.</string>
+
+    <string name="confiabilidadproveedor">Todos los proveedores deben completar un perfil con datos verificables,
+        calificaciones de otros usuarios y un historial de servicios. Te recomendamos revisar esta información y
+        leer comentarios antes de contratar.</string>
+
+    <string name="malaexperiencia">Si tuviste una mala experiencia con un proveedor o cliente,
+        puedes dejar una calificación detallada y reportar el caso a soporte. Nos comprometemos a revisar
+        cada situación y tomar acciones cuando sea necesario.</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
