@@ -85,6 +85,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //comentario
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_perfil);
 
