@@ -28,6 +28,9 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
+            android:name=".Activiy_Preguntas"
+            android:exported="false" />
+        <activity
             android:name=".ValidarIdentidadActivity"
             android:exported="false" />
         <activity
