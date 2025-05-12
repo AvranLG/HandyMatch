@@ -7,13 +7,13 @@
     tools:context=".Publicar"
     android:fitsSystemWindows="true">
 
-    <!-- Fondo azul en toda la pantalla excepto la parte superior -->
+    <!-- Fondo en toda la pantalla excepto la parte superior -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:background="@color/fondoazul"
-        android:orientation="vertical" /> <!-- Ajusta este valor según el tamaño de tu encabezado -->
+        android:background="@color/ligth_gray"
+        android:orientation="vertical" />
 
     <!-- Contenedor Principal -->
     <LinearLayout
@@ -21,282 +21,418 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Encabezado -->
-        <LinearLayout
+        <!-- Encabezado Mejorado -->
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/fondosyletras"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:background="@color/fondosyletras">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStart="16dp">
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="116dp"
+                    android:layout_gravity="center"
                     android:text="Publicar trabajo"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.555" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/btn_notificacion"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@android:color/transparent"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Notificaciones"
-                    android:padding="5dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_notificacion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:tint="@android:color/white" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Contenido Desplazable -->
+        <!-- Contenido Desplazable con Tarjetas Flotantes -->
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp"> <!-- Agregado para mejor distribución -->
+                android:paddingHorizontal="20dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="24dp">
 
-                <!-- Campo de Título con tamaño ajustado -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/dequetrata"
+                <!-- Tarjeta de Título -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Título del trabajo"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Título del trabajo"
-                    android:textColorHint="@color/fondosyletras"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:boxBackgroundColor="@android:color/white">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tituloText"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dequetrata"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="@android:color/transparent"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="1dp"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:startIconDrawable="@drawable/baseline_title_24"
+                        app:startIconTint="@color/fondosyletras">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tituloText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:hint="Pintura de interior para casa" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/categoriaLayout"
+                <!-- Tarjeta de Categoría -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Categoría"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Categoría"
-                    android:textColorHint="@color/fondosyletras"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:boxBackgroundColor="@android:color/white">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/spinnerCategoria"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/categoriaLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:inputType="none"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:clickable="true"
-                        android:cursorVisible="false"
-                        android:textSize="16sp" />
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="@android:color/transparent"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="1dp"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:startIconDrawable="@drawable/ic_category"
+                        app:startIconTint="@color/fondosyletras">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerCategoria"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:cursorVisible="false"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                <!-- Tarjeta de Descripción -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
 
-                <!-- Campo de Descripción -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/referenciaContainer"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Descripción"
-                    android:textColorHint="@color/fondosyletras"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:boxBackgroundColor="@android:color/white">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/descripcionText"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:gravity="top|start"
-                        android:inputType="textMultiLine"
-                        android:maxLines="6"
-                        android:minLines="4"
-                        android:overScrollMode="always"
-                        android:paddingTop="20dp"
-                        android:scrollbars="vertical" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginBottom="20dp">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <!-- Campo de Fecha y Hora -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha y hora"
-                    android:textColorHint="@color/fondosyletras"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusTopStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxBackgroundColor="@android:color/white">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fechaHora"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/referenciaContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="@android:color/transparent"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="1dp"
+                        app:boxBackgroundColor="@android:color/white"
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                        app:startIconTint="@color/fondosyletras">
 
-                <!-- Campo de Pago -->
-                <com.google.android.material.textfield.TextInputLayout
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/descripcionText"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine"
+                            android:minLines="4"
+                            android:overScrollMode="always"
+                            android:scrollbars="vertical"
+                            android:hint="Necesito pintar el interior de mi casa, son 4 habitaciones y un baño..." />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Tarjeta de Fecha y Hora -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha y hora"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Pago"
-                    android:textColorHint="@color/fondosyletras"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusTopStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxBackgroundColor="@android:color/white">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/pagoText"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="1dp"
+                        app:boxStrokeColor="@android:color/transparent"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:startIconDrawable="@drawable/ic_data_time"
+                        app:startIconTint="@color/fondosyletras"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_callendary"
+                        app:endIconTint="@color/fondosyletras">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/fechaHora"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:hint="15/05/2025 16:30" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- Campo de Ubicación -->
-                <FrameLayout
+                <!-- Tarjeta de Pago -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pago"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="1dp"
+                        app:boxStrokeColor="@android:color/transparent"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:startIconDrawable="@drawable/ic_payment"
+                        app:startIconTint="@color/fondosyletras"
+                        app:prefixText="$">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/pagoText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:hint="$5000.00" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Ubicación - Fragment mejorado -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <fragment
+                            android:id="@+id/autocomplete_fragment"
+                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorNormal" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Mapa - Fragment mejorado -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mapa"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
 
                     <fragment
-                        android:id="@+id/autocomplete_fragment"
-                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                        android:id="@+id/map"
+                        android:name="com.example.app.TouchableMapFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </FrameLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <fragment android:id="@+id/map"
-                    android:name="com.example.app.TouchableMapFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    xmlns:android="http://schemas.android.com/apk/res/android" />
-
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                        android:layout_height="250dp" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- Botón de Agregar Fotos -->
-                <com.google.android.material.textfield.TextInputLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fotos"
+                    android:textColor="@color/fondosyletras"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"/>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Agregar Fotos"
-                    android:textColorHint="@color/fondosyletras"
-                    app:boxBackgroundMode="filled"
-                    app:boxCornerRadiusTopStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxBackgroundColor="@android:color/white">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginBottom="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/agregarFotos"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:boxBackgroundMode="filled"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="1dp"
+                        app:boxStrokeColor="@android:color/transparent"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:startIconDrawable="@drawable/ic_photo"
+                        app:startIconTint="@color/fondosyletras"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_add_a_photo"
+                        app:endIconTint="@color/fondosyletras">
 
-                <Space
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/agregarFotos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:hint="Toca para añadir fotos del trabajo" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Contenedor para mostrar imágenes seleccionadas -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fotosRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:visibility="visible" />
 
-                <Button
+                <!-- Botón de Publicar Mejorado -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnregistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@color/fondosyletras"
-                    android:includeFontPadding="true"
-                    android:onClick="publicarTrabajo"
-                    android:padding="12dp"
+                    android:paddingVertical="14dp"
                     android:text="Publicar"
                     android:textAllCaps="false"
-                    android:textColor="#F7FAFA" />
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFF"
+                    app:cornerRadius="16dp"
+                    android:backgroundTint="@color/fondosyletras"
+                    app:icon="@drawable/ic_publish"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    android:onClick="publicarTrabajo" />
 
             </LinearLayout>
         </ScrollView>
