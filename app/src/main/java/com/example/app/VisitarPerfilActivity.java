@@ -23,6 +23,9 @@ import com.google.firebase.database.*;
 public class VisitarPerfilActivity extends AppCompatActivity {
 
     private ImageView profileImage;
+
+    private ImageView verifiedBadge;
+
     private TextView nameText, apellidosText, phoneText, emailText, direccionText, codigoPostalText, coloniaText, estadoText, ciudadText, referenciaText;
     private DatabaseReference userRef;
     private FirebaseAuth auth;
@@ -43,6 +46,8 @@ public class VisitarPerfilActivity extends AppCompatActivity {
         apellidosText = findViewById(R.id.apellidosText);
         phoneText = findViewById(R.id.telefonoText);
         emailText = findViewById(R.id.emailText);
+        verifiedBadge = findViewById(R.id.verifiedBadge);
+
 
         direccionText = findViewById(R.id.edit_calle_y_numero);
         codigoPostalText = findViewById(R.id.edit_postal);
@@ -115,6 +120,17 @@ public class VisitarPerfilActivity extends AppCompatActivity {
                 String estado = snapshot.child("estado").getValue(String.class);
                 String ciudad = snapshot.child("ciudad").getValue(String.class);
                 String referencia = snapshot.child("referencia").getValue(String.class);
+
+                // Gestionar la visibilidad de la insignia
+
+                Boolean verificado = snapshot.child("verificado").getValue(Boolean.class);
+                boolean mostrarInsignia = verificado != null && verificado;
+                Log.d("DEBUG_VERIFICADO", "Valor: " + verificado);  // Debe mostrar "true"
+
+                if (verifiedBadge != null) {
+                    verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
+                    Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
+                }
 
                 nameText.setText(nombre != null ? nombre : "Nombre no disponible");
                 apellidosText.setText(apellidos != null ? apellidos : "Apellidos no disponibles");

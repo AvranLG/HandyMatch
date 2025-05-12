@@ -35,6 +35,9 @@ public class DetalleConversacionActivity extends AppCompatActivity {
     private TextView tvNombreUsuario;
     private EditText etMensaje;
     private RecyclerView rvMensajes;
+    private ImageView verifiedBadge;
+    private ImageView verifiedBadge1;
+
     private ImageButton btnRetroceso;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -56,6 +59,9 @@ public class DetalleConversacionActivity extends AppCompatActivity {
         btnEnviar = findViewById(R.id.btnEnviar);
         btnRetroceso = findViewById(R.id.imageButton3);
         rvMensajes = findViewById(R.id.rvMensajes);
+        verifiedBadge = findViewById(R.id.verifiedBadge);
+        verifiedBadge1 = findViewById(R.id.verifiedBadge1);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -86,6 +92,23 @@ public class DetalleConversacionActivity extends AppCompatActivity {
                 String fotoUrl = snapshot.child("imagenUrl").getValue(String.class);
                 tvNombreUsuario.setText(nombre);
                 Glide.with(DetalleConversacionActivity.this).load(fotoUrl).circleCrop().into(imgUsuario);
+
+                // Gestionar la visibilidad de la insignia
+
+                Boolean verificado = snapshot.child("verificado").getValue(Boolean.class);
+                boolean mostrarInsignia = verificado != null && verificado;
+                Log.d("DEBUG_VERIFICADO", "Valor: " + verificado);  // Debe mostrar "true"
+
+                if (verifiedBadge != null) {
+                    verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
+                    Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
+                }
+
+                if (verifiedBadge1 != null) {
+                    verifiedBadge1.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
+                    Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
+                }
+
             }
 
             @Override

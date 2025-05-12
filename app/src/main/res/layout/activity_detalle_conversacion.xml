@@ -35,16 +35,31 @@
                 android:contentDescription="Regresar"
                 app:srcCompat="?attr/actionModeCloseDrawable" />
 
-            <!-- Foto del otro usuario -->
-            <ImageView
-                android:id="@+id/imgUsuario"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/usuario"
-                android:contentDescription="Foto Usuario"
-                android:scaleType="centerCrop"
-                android:layout_gravity="center" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp">
+
+                <ImageView
+                    android:id="@+id/imgUsuario"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/usuario"
+                    android:contentDescription="Foto Usuario"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/verifiedBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="2dp"
+                    android:contentDescription="Usuario verificado"
+                    android:src="@drawable/ic_verified"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+
 
             <!-- Nombre del otro usuario -->
             <TextView
@@ -81,15 +96,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Foto del usuario autenticado -->
-            <ImageView
-                android:id="@+id/imgUsuarioAuth"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/usuario"
-                android:contentDescription="Foto Usuario Auth"
-                android:layout_marginEnd="10dp"
-                android:scaleType="centerCrop" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp">
+
+                <ImageView
+                    android:id="@+id/imgUsuarioAuth"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/usuario"
+                    android:contentDescription="Foto Usuario"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/verifiedBadge1"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="2dp"
+                    android:contentDescription="Usuario verificado"
+                    android:src="@drawable/ic_verified"
+                    android:visibility="gone" />
+            </FrameLayout>
+
 
             <!-- EditText para escribir mensaje -->
             <EditText
