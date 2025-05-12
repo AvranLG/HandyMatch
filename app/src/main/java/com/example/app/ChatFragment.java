@@ -1,7 +1,5 @@
 package com.example.app;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,10 +46,12 @@ public class ChatFragment extends Fragment {
                 .getReference("conversaciones_usuario")
                 .child(uidActual);
 
+        // Actualización eficiente sin duplicados
         conversacionesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                conversacionesList.clear();
+                // Crear una lista temporal
+                List<Conversacion> nuevasConversaciones = new ArrayList<>();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String uidOtro = snapshot.getKey();
@@ -73,8 +73,16 @@ public class ChatFragment extends Fragment {
                                             timestamp != null ? timestamp : 0
                                     );
 
-                                    conversacionesList.add(conversacion);
-                                    adapter.notifyDataSetChanged();
+                                    // Agregar a la lista temporal
+                                    nuevasConversaciones.add(conversacion);
+
+                                    // Verificar si se han cargado todas las conversaciones
+                                    if (nuevasConversaciones.size() == dataSnapshot.getChildrenCount()) {
+                                        // Reemplazar la lista completa solo cuando se termine de cargar
+                                        conversacionesList.clear();
+                                        conversacionesList.addAll(nuevasConversaciones);
+                                        adapter.notifyDataSetChanged();
+                                    }
                                 }
 
                                 @Override
@@ -84,7 +92,11 @@ public class ChatFragment extends Fragment {
                             });
                 }
 
-                adapter.notifyDataSetChanged();
+                // Si no hay conversaciones, limpiar directamente
+                if (!dataSnapshot.hasChildren()) {
+                    conversacionesList.clear();
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override

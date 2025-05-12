@@ -118,14 +118,27 @@ public class DetalleConversacionActivity extends AppCompatActivity {
             long timestamp = System.currentTimeMillis();
             Mensaje mensaje = new Mensaje(texto, uidAuth, timestamp);
 
-            DatabaseReference refEmisor = database.getReference("conversaciones_usuario").child(uidAuth).child(uidOtroUsuario).child("mensajes");
-            DatabaseReference refReceptor = database.getReference("conversaciones_usuario").child(uidOtroUsuario).child(uidAuth).child("mensajes");
+            // Referencias para guardar el mensaje en ambas conversaciones (emisor y receptor)
+            DatabaseReference refEmisor = database.getReference("conversaciones_usuario").child(uidAuth).child(uidOtroUsuario);
+            DatabaseReference refReceptor = database.getReference("conversaciones_usuario").child(uidOtroUsuario).child(uidAuth);
 
-            refEmisor.push().setValue(mensaje);
-            refReceptor.push().setValue(mensaje);
+            // Guardar el mensaje en ambos nodos
+            refEmisor.child("mensajes").push().setValue(mensaje);
+            refReceptor.child("mensajes").push().setValue(mensaje);
+
+            // Actualizar el último mensaje y el timestamp en ambas conversaciones
+            Map<String, Object> ultimoMensajeMap = new HashMap<>();
+            ultimoMensajeMap.put("ultimoMensaje", texto);
+            ultimoMensajeMap.put("timestamp", timestamp);
+
+            refEmisor.updateChildren(ultimoMensajeMap);
+            refReceptor.updateChildren(ultimoMensajeMap);
+
+            // Limpiar el campo de texto
             etMensaje.setText("");
         }
     }
+
 
     private void cargarMensajes() {
         DatabaseReference mensajesRef = database.getReference("conversaciones_usuario").child(uidAuth).child(uidOtroUsuario).child("mensajes");
