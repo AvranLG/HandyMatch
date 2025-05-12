@@ -152,6 +152,12 @@ public class PerfilFragment extends Fragment {
             startActivity(intent);
         });
 
+        TextView tvPreguntas = view.findViewById(R.id.tvPreguntas);
+        tvPreguntas.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Activiy_Preguntas.class);
+            startActivity(intent);
+        });
+
 // Flechita para expandir/contraer
         ImageView ivToggle = view.findViewById(R.id.ivToggle);
         LinearLayout layoutDomicilio = view.findViewById(R.id.layoutDomicilioFields);
