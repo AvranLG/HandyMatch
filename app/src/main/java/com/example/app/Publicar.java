@@ -131,7 +131,7 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
         });
 
 
-        // Configuración de Google Maps
+        // Configuración de Google Maps si
         TouchableMapFragment mapFragment = (TouchableMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
