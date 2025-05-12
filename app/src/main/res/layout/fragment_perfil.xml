@@ -543,7 +543,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#E45A4E"
+                android:backgroundTint="#1E998A"
                 android:padding="12dp"
                 android:text="Cerrar sesión"
                 android:textColor="#FFFFFF" />
@@ -554,7 +554,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="#D32F2F"
+                android:backgroundTint="#009688"
                 android:padding="12dp"
                 android:text="Eliminar cuenta"
                 android:textColor="#FFFFFF" />

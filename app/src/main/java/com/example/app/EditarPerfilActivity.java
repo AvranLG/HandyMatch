@@ -28,6 +28,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import com.google.ai.client.generativeai.GenerativeModel;
+import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -77,6 +79,9 @@ public class EditarPerfilActivity extends AppCompatActivity {
     // Variable para almacenar la URL de la imagen
     private String fotoUrl = "";
     private SharedPreferences preferences;
+
+    GenerativeModel gm = new GenerativeModel(/* modelName */ "gemini-1.5-flash", Secrets.GEMINI_API_KEY);
+    GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -326,6 +331,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     .start(this);  // Inicia el recorte
         }
         // Si el usuario terminó de recortar la imagen
+        //_____________________________________________________
+        //_____________________________________________________
+        //_____________________________________________________
+        //_____________________________________________________
+        //_____________________________________________________
+
+
         else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             final Uri resultUri = UCrop.getOutput(data);
             if (resultUri != null) {
