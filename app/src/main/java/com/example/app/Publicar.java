@@ -71,9 +71,10 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
     private double latitudSeleccionada;
     private double longitudSeleccionada;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private static final String GOOGLE_MAPS_API_KEY = Secrets.MAPS_API_KEY;
+    private static final String GOOGLE_MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+    private static final String GEMINI_API_KEY = BuildConfig.GEMINI_API_KEY;
 
-    GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", Secrets.GEMINI_API_KEY);
+    GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", GEMINI_API_KEY);
     GenerativeModelFutures model = GenerativeModelFutures.from(gm);
     private final Executor executor = Executors.newFixedThreadPool(1); // Un solo hilo para secuenciar las llamadas a la API
 
@@ -411,6 +412,8 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
 
 
     public void publicarTrabajo(View v) {
+        Log.d("PublicarTrabajo", "Iniciando el proceso de publicación...");
+
         // Obtener los datos de los campos
         String titulo = ((TextInputEditText) findViewById(R.id.tituloText)).getText().toString().trim();
         String categoria = ((AutoCompleteTextView) findViewById(R.id.spinnerCategoria)).getText().toString().trim();
@@ -420,19 +423,21 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
         String ubicacion = direccionSeleccionada;
         String estadoPublicacion = "Publicada";
 
+        Log.d("PublicarTrabajo", "Datos obtenidos: Título: " + titulo + ", Categoría: " + categoria + ", Descripción: " + descripcion
+                + ", FechaHora: " + fechaHora + ", Pago: " + pago + ", Ubicación: " + ubicacion);
+
         // Verificar que todos los campos estén llenos
         if (titulo.isEmpty() || categoria.isEmpty() || descripcion.isEmpty() || fechaHora.isEmpty() || pago.isEmpty() || ubicacion.isEmpty()) {
+            Log.e("PublicarTrabajo", "Campos incompletos, mostrando Toast...");
             Toast.makeText(this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
-            return;  // Detener la ejecución si algún campo está vacío
+            return;
         }
 
         // Verificar el contenido del título y la descripción con Gemini
         String prompt = "Analiza el siguiente título y descripción de una publicación y determina si contiene algo dudoso, inapropiado o que infrinja alguna política de contenido. Responde solo con 'true' si es dudoso y 'false' si es aceptable.\n\nTítulo: " + titulo + "\nDescripción: " + descripcion;
+        Log.d("PublicarTrabajo", "Prompt para Gemini: " + prompt);
 
-        Content content = new Content.Builder()
-                .addText(prompt)
-                .build();
-
+        Content content = new Content.Builder().addText(prompt).build();
         ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
 
         Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
@@ -442,49 +447,52 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
                 Log.d("Gemini Response", "Resultado de Gemini: " + geminiResponse);
 
                 if (geminiResponse != null && geminiResponse.trim().equalsIgnoreCase("true")) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(Publicar.this, "El título o la descripción contienen contenido dudoso. Por favor, revíselos.", Toast.LENGTH_LONG).show();
-                    });
+                    Log.w("Gemini Response", "Contenido dudoso detectado.");
+                    runOnUiThread(() -> Toast.makeText(Publicar.this, "El título o la descripción contienen contenido dudoso. Por favor, revíselos.", Toast.LENGTH_LONG).show());
                 } else {
-                    // Si Gemini no lo considera dudoso, proceder con la publicación
+                    Log.d("Gemini Response", "Contenido aceptable. Procediendo a la publicación...");
+
                     double latitud = Publicar.this.latitudSeleccionada;
                     double longitud = Publicar.this.longitudSeleccionada;
 
                     // Verificar que el usuario esté autenticado
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user == null) {
+                        Log.e("PublicarTrabajo", "Usuario no autenticado.");
                         runOnUiThread(() -> Toast.makeText(Publicar.this, "Debe iniciar sesión", Toast.LENGTH_SHORT).show());
                         return;
                     }
 
-                    // Obtener el ID del usuario autenticado
                     String idUsuario = user.getUid();
+                    Log.d("PublicarTrabajo", "Usuario autenticado con ID: " + idUsuario);
 
                     // Crear el objeto de publicación
                     Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario, estadoPublicacion);
+                    Log.d("PublicarTrabajo", "Publicación creada: " + publicacion);
 
                     // Guardar en la base de datos de Firebase Realtime Database
                     FirebaseDatabase.getInstance().getReference("publicaciones")
-                            .push() // Crear un nuevo nodo con una clave única
+                            .push()
                             .setValue(publicacion)
                             .addOnSuccessListener(aVoid -> {
-                                // Acción después de guardar con éxito
+                                Log.d("PublicarTrabajo", "Publicación guardada exitosamente en Firebase.");
                                 runOnUiThread(() -> Toast.makeText(Publicar.this, "Trabajo publicado", Toast.LENGTH_SHORT).show());
 
-                                // Obtener la instancia de HomeFragment y llamar agregarPublicacion()
+                                // Actualizar la lista en HomeFragment
                                 HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("HOME_FRAGMENT_TAG");
                                 if (homeFragment != null) {
-                                    homeFragment.agregarPublicacion(publicacion); // Agregar la nueva publicación
+                                    Log.d("PublicarTrabajo", "Actualizando HomeFragment...");
+                                    homeFragment.agregarPublicacion(publicacion);
                                 }
 
                                 // Redirigir a HomeActivity
                                 Intent intent = new Intent(Publicar.this, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                                finish(); // Para cerrar esta actividad y evitar volver con el botón "atrás"
+                                finish();
                             })
                             .addOnFailureListener(e -> {
-                                // Acción en caso de error
+                                Log.e("PublicarTrabajo", "Error al publicar: " + e.getMessage());
                                 runOnUiThread(() -> Toast.makeText(Publicar.this, "Error al publicar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                             });
                 }
@@ -492,10 +500,10 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
 
             @Override
             public void onFailure(Throwable t) {
-                // Manejar el fallo de la llamada a Gemini
                 Log.e("Gemini Error", "Error al analizar el contenido: " + t.getMessage());
                 runOnUiThread(() -> Toast.makeText(Publicar.this, "Error al verificar el contenido. Intente de nuevo.", Toast.LENGTH_SHORT).show());
             }
         }, executor);
     }
+
 }

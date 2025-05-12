@@ -19,6 +19,7 @@ android {
 
         buildConfigField("String", "MAPS_API_KEY", "\"${property("mapsApiKey")}\"")
         buildConfigField("String", "GEOCODING_API_KEY", "\"${project.findProperty("geocodingApiKey")}\"")
+        buildConfigField("String", "GEMINI_API_KEY", "\"${project.findProperty("geminiApiKey")}\"")
 
 
         resValue("string", "maps_api_key", property("mapsApiKey") as String)

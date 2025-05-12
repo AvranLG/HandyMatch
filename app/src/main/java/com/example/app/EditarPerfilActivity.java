@@ -1,5 +1,7 @@
 package com.example.app;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,12 +77,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private EditText ciudadText;
     private EditText estadoText;
     private static final String GEOCODING_API_KEY = BuildConfig.GEOCODING_API_KEY;
+    private static final String GEMINI_API_KEY = BuildConfig.GEMINI_API_KEY;
 
     // Variable para almacenar la URL de la imagen
     private String fotoUrl = "";
     private SharedPreferences preferences;
 
-    GenerativeModel gm = new GenerativeModel(/* modelName */ "gemini-1.5-flash", Secrets.GEMINI_API_KEY);
+    GenerativeModel gm = new GenerativeModel(/* modelName */ "gemini-1.5-flash", GEMINI_API_KEY);
     GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
     @Override
