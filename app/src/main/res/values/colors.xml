@@ -27,6 +27,10 @@
     <color name="fondoazul">#EAFBFF</color>
     <color name="colorSeleccionado">#017075</color>
     <color name="colorNormal">#FFFFFF</color>
+    <color name="your_toolbar_color">#FF5722</color>
+    <color name="your_statusbar_color">#E64A19</color>
+    <color name="your_accent_color">#4CAF50</color>
+    <color name="ligth_gray">#E4E5EF</color>
 
 
 </resources>

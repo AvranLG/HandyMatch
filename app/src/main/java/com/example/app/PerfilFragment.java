@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,9 +36,17 @@ import com.google.firebase.database.ValueEventListener;
 public class PerfilFragment extends Fragment {
 
     private ImageView profileImage;
+    private ImageView verifiedBadge;
+
     private TextView nameText, apellidosText, phoneText, emailText, direccionText, codigoPostalText, coloniaText, estadoText, ciudadText, referenciaText;
     private DatabaseReference userRef;
     private FirebaseAuth auth;
+
+    private LinearLayout layoutValidarIdentidad;
+    private TextView tvValidarIdentidad, tvAcercaDeNosotros;
+    private Button btnCerrarSesion;
+    private Button btnEliminarCuenta;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -45,10 +54,13 @@ public class PerfilFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
 
         profileImage = view.findViewById(R.id.profileImage);
+        verifiedBadge = view.findViewById(R.id.verifiedBadge);
         nameText = view.findViewById(R.id.nombreText);
         apellidosText = view.findViewById(R.id.apellidosText);
         phoneText = view.findViewById(R.id.telefonoText);
         emailText = view.findViewById(R.id.emailText);
+        btnEliminarCuenta = view.findViewById(R.id.btnEliminarCuenta);
+
 
         // Campos adicionales de dirección
         direccionText = view.findViewById(R.id.edit_calle_y_numero);
@@ -57,6 +69,63 @@ public class PerfilFragment extends Fragment {
         estadoText = view.findViewById(R.id.edit_estado);
         ciudadText = view.findViewById(R.id.edit_ciudad);
         referenciaText = view.findViewById(R.id.edit_referencia);
+
+        // Inicializar nuevos elementos
+        layoutValidarIdentidad = view.findViewById(R.id.layoutValidarIdentidad);
+        tvValidarIdentidad = view.findViewById(R.id.tvValidarIdentidad);
+        tvAcercaDeNosotros = view.findViewById(R.id.tvAcercaDeNosotros);
+        btnCerrarSesion = view.findViewById(R.id.btnCerrarSesion);
+
+        btnEliminarCuenta.setOnClickListener(v -> {
+            // Primer diálogo de confirmación
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Eliminar cuenta")
+                    .setMessage("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        // Segundo diálogo de confirmación
+                        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                                .setTitle("Confirmar eliminación")
+                                .setMessage("Esta es tu última oportunidad. ¿Realmente deseas eliminar tu cuenta permanentemente?")
+                                .setPositiveButton("Eliminar", (secondDialog, secondWhich) -> {
+                                    eliminarCuenta(); // Método para eliminar cuenta
+                                })
+                                .setNegativeButton("Cancelar", null)
+                                .show();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
+
+// Click listener para Acerca de nosotros
+        tvAcercaDeNosotros.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AcercaDeNosotrosActivity.class);
+            startActivity(intent);
+        });
+
+// Click listener para Validar identidad
+        tvValidarIdentidad.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ValidarIdentidadActivity.class);
+            startActivity(intent);
+        });
+
+// Click listener para Cerrar sesión
+        btnCerrarSesion.setOnClickListener(v -> {
+            // Mostrar diálogo de confirmación
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Cerrar sesión")
+                    .setMessage("¿Estás seguro que deseas cerrar sesión?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        FirebaseAuth.getInstance().signOut();
+                        // Redirigir al login
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        getActivity().finish();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
 
 // Layout que contiene esos campos
         View layoutDireccionFields = view.findViewById(R.id.layoutDomicilioFields);
@@ -153,6 +222,7 @@ public class PerfilFragment extends Fragment {
                         Log.d("PerfilFragment", "Clave en Firebase: " + child.getKey() + ", Valor: " + child.getValue());
                     }
 
+
                     String nombre = snapshot.child("nombre").getValue(String.class);
                     String apellidos = snapshot.child("apellidos").getValue(String.class);
                     String telefono = snapshot.child("telefono").getValue(String.class);
@@ -164,6 +234,20 @@ public class PerfilFragment extends Fragment {
                     String estado = snapshot.child("estado").getValue(String.class);
                     String ciudad = snapshot.child("ciudad").getValue(String.class);
                     String referencia = snapshot.child("referencia").getValue(String.class);
+
+                    // Gestionar la visibilidad de la insignia
+
+                    Boolean verificado = snapshot.child("verificado").getValue(Boolean.class);
+                    boolean mostrarInsignia = verificado != null && verificado;
+                    Log.d("DEBUG_VERIFICADO", "Valor: " + verificado);  // Debe mostrar "true"
+
+                    if (verifiedBadge != null) {
+                        verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
+                        Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
+                    }
+                    // Gestionar la visibilidad de la opción "Validar identidad"
+                    boolean estaVerificado = verificado != null && verificado;
+                    layoutValidarIdentidad.setVisibility(estaVerificado ? View.GONE : View.VISIBLE);
 
                     Log.d("PerfilFragment", "Datos obtenidos - Nombre: " + nombre +
                             ", Apellidos: " + apellidos +
@@ -283,10 +367,48 @@ public class PerfilFragment extends Fragment {
             }
         });
     }
+
+    private void eliminarCuenta() {
+        String uid = auth.getCurrentUser().getUid();
+
+        // 1. Eliminar datos del Realtime Database
+        userRef.removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("PerfilFragment", "Datos del usuario eliminados de la base de datos");
+
+                // 2. Eliminar cuenta de autenticación
+                auth.getCurrentUser().delete().addOnCompleteListener(deleteTask -> {
+                    if (deleteTask.isSuccessful()) {
+                        Log.d("PerfilFragment", "Cuenta de usuario eliminada de Firebase Auth");
+
+                        // Redirigir al login
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        getActivity().finish();
+                    } else {
+                        Log.e("PerfilFragment", "Error al eliminar la cuenta: " + deleteTask.getException());
+                        mostrarError("Ocurrió un error al eliminar la cuenta. Intenta nuevamente.");
+                    }
+                });
+            } else {
+                Log.e("PerfilFragment", "Error al eliminar datos del usuario: " + task.getException());
+                mostrarError("No se pudieron eliminar los datos del usuario.");
+            }
+        });
+    }
+
+    private void mostrarError(String mensaje) {
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Error")
+                .setMessage(mensaje)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+
     private void abrirEditarPerfil() {
         Intent intent = new Intent(getActivity(), EditarPerfilActivity.class);
         startActivity(intent);
     }
-
-
 }

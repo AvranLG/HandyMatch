@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,13 +55,6 @@ public class DireccionActivity extends AppCompatActivity {
     private EditText referenciaText;
 
     // Variables para recibir datos de la actividad anterior
-    private String nombre;
-    private String apellidos;
-    private String correo;
-    private String contrasena;
-    private String telefono;
-    private String imagenUri;
-
     private static final String GEOCODING_API_KEY = BuildConfig.GEOCODING_API_KEY;
 
 
@@ -70,12 +64,26 @@ public class DireccionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direccion);
 
+        // Verificar si hay un usuario autenticado
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            // No hay usuario autenticado, redirigir al login
+            Toast.makeText(this, "Error de autenticación. Inicie sesión nuevamente.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         // Inicializar RequestQueue
         queue = Volley.newRequestQueue(this);
 
         // Referencias a los EditText
+        direccionText = findViewById(R.id.direccionText);
         codigoPostalText = findViewById(R.id.postalText);
+        coloniaText = findViewById(R.id.coloniaText);
+        estadoText = findViewById(R.id.estadoText);
         ciudadText = findViewById(R.id.ciudadText);
+        referenciaText = findViewById(R.id.descripcionText);
 
         // Detectar cuando se pierde el foco en el campo de código postal
         codigoPostalText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -86,23 +94,6 @@ public class DireccionActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // Recibir los datos de la actividad anterior (RegistroActivity)
-        Intent intent = getIntent();
-        nombre = intent.getStringExtra("nombre");
-        apellidos = intent.getStringExtra("apellidos");
-        correo = intent.getStringExtra("correo");
-        contrasena = intent.getStringExtra("contrasena");
-        telefono = intent.getStringExtra("telefono");
-        imagenUri = intent.getStringExtra("imagenUri");
-
-        // Inicializar los EditText
-        direccionText = findViewById(R.id.direccionText);
-        codigoPostalText = findViewById(R.id.postalText);
-        coloniaText = findViewById(R.id.coloniaText);
-        estadoText = findViewById(R.id.estadoText);
-        ciudadText = findViewById(R.id.ciudadText);
-        referenciaText = findViewById(R.id.descripcionText);
 
         referenciaText.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -126,6 +117,7 @@ public class DireccionActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#FFFFFF"));
     }
+
 
     // Metodo para validar dirección
     private boolean validarDireccion(String direccion) {
@@ -169,11 +161,11 @@ public class DireccionActivity extends AppCompatActivity {
             Toast.makeText(this, "Debes aceptar términos y condiciones para continuar", Toast.LENGTH_SHORT).show();
             return;
         }
+
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registrando...");
+        progressDialog.setMessage("Guardando dirección...");
         progressDialog.show();
 
-        // Recoger los datos de los campos de dirección
         String direccion = direccionText.getText().toString();
         String codigoPostal = codigoPostalText.getText().toString();
         String colonia = coloniaText.getText().toString();
@@ -187,138 +179,91 @@ public class DireccionActivity extends AppCompatActivity {
         TextInputLayout ciudadContainer = findViewById(R.id.ciudadContainer);
         TextInputLayout referenciaContainer = findViewById(R.id.referenciaContainer);
 
-        // Validar si algún campo está vacío
-        if (direccion.isEmpty() || codigoPostal.isEmpty() || colonia.isEmpty() || estado.isEmpty() || ciudad.isEmpty() || referencia.isEmpty()) {
-            // Mostrar un Toast con el mensaje de error
+        boolean camposValidos = true;
+
+        if (!validarDireccion(direccion)) {
+            direccionContainer.setError("Dirección inválida");
+            camposValidos = false;
+        } else direccionContainer.setError(null);
+
+        if (!validarCodigoPostal(codigoPostal)) {
+            postalContainer.setError("Código postal inválido");
+            camposValidos = false;
+        } else postalContainer.setError(null);
+
+        if (!validarColonia(colonia)) {
+            coloniaContainer.setError("Colonia inválida");
+            camposValidos = false;
+        } else coloniaContainer.setError(null);
+
+        if (!validarCiudad(ciudad)) {
+            ciudadContainer.setError("Ciudad inválida");
+            camposValidos = false;
+        } else ciudadContainer.setError(null);
+
+        if (!validarReferencia(referencia)) {
+            referenciaContainer.setError("Referencia inválida");
+            camposValidos = false;
+        } else referenciaContainer.setError(null);
+
+        if (!camposValidos) {
             progressDialog.dismiss();
-            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
-        } else {
+            return;
+        }
 
-            // Bandera para rastrear validación general
-            boolean todosLosCamposValidos = true;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            progressDialog.dismiss();
+            Toast.makeText(this, "No hay usuario autenticado", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
 
-            // Validar dirección
-            if (!validarDireccion(direccion)) {
-                direccionContainer.setErrorEnabled(true);
-                direccionContainer.setError("Dirección inválida. Use letras, números, espacios, -,.#");
-                todosLosCamposValidos = false;
-            } else {
-                direccionContainer.setErrorEnabled(false);
-                direccionContainer.setError(null);
-            }
+        String uid = user.getUid();
 
-            // Validar código postal
-            if (!validarCodigoPostal(codigoPostal)) {
-                postalContainer.setErrorEnabled(true);
-                postalContainer.setError("Código postal inválido. Debe contener 5 dígitos.");
-                todosLosCamposValidos = false;
-            } else {
-                postalContainer.setErrorEnabled(false);
-                postalContainer.setError(null);
-            }
+        // Guardar la dirección en Firebase
+        UsuarioDireccion direccionObj = new UsuarioDireccion(
+                direccion, codigoPostal, colonia, estado, ciudad, referencia
+        );
 
-            // Validar colonia
-            if (!validarColonia(colonia)) {
-                coloniaContainer.setErrorEnabled(true);
-                coloniaContainer.setError("Colonia inválida. Solo letras y espacios");
-                todosLosCamposValidos = false;
-            } else {
-                coloniaContainer.setErrorEnabled(false);
-                coloniaContainer.setError(null);
-            }
+        FirebaseDatabase.getInstance().getReference("usuarios")
+                .child(uid)
+                .child("direccion")
+                .setValue(direccionObj)
+                .addOnSuccessListener(unused -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(this, "Dirección guardada con éxito", Toast.LENGTH_SHORT).show();
 
-            // Validar ciudad
-            if (!validarCiudad(ciudad)) {
-                ciudadContainer.setErrorEnabled(true);
-                ciudadContainer.setError("Ciudad inválida. Solo letras y espacios");
-                todosLosCamposValidos = false;
-            } else {
-                ciudadContainer.setErrorEnabled(false);
-                ciudadContainer.setError(null);
-            }
+                    // Ir a la pantalla de verificación o siguiente paso
+                    Intent intent = new Intent(this, VerificacionCorreoActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(this, "Error al guardar dirección: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
 
-            // Validar referencia
-            if (!validarReferencia(referencia)) {
-                referenciaContainer.setErrorEnabled(true);
-                referenciaContainer.setError("Referencia inválida. Caracteres no permitidos");
-                todosLosCamposValidos = false;
-            } else {
-                referenciaContainer.setErrorEnabled(false);
-                referenciaContainer.setError(null);
-            }
+    public class UsuarioDireccion {
+        public String direccion, codigoPostal, colonia, estado, ciudad, referencia;
 
-            // Si hay algún error, no continuar
-            if (!todosLosCamposValidos) {
-                progressDialog.dismiss();
-                return;
-            }
+        public UsuarioDireccion() {
+            // Constructor vacío requerido por Firebase
+        }
 
-            // Obtener instancia de FirebaseAuth
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-            // Crear usuario en Firebase Authentication
-            mAuth.createUserWithEmailAndPassword(correo, contrasena)
-                    .addOnCompleteListener(this, task -> {
-                        Log.d("correoenviado", "El correo enviado es: "+correo);
-                        if (task.isSuccessful()) {
-                            // Registro exitoso en Authentication
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                            // Enviar correo de verificación
-                            if (user != null) {
-                                user.sendEmailVerification()
-                                        .addOnCompleteListener(verificationTask -> {
-                                            if (verificationTask.isSuccessful()) {
-                                                // Preparar objeto de usuario
-                                                String fechaRegistro = obtenerFechaHoraActual();
-                                                Usuario usuario = new Usuario(
-                                                        nombre,
-                                                        apellidos,
-                                                        correo,
-                                                        telefono,
-                                                        contrasena,
-                                                        fechaRegistro,
-                                                        direccion,
-                                                        codigoPostal,
-                                                        colonia,
-                                                        estado,
-                                                        ciudad,
-                                                        referencia,
-                                                        imagenUri
-                                                );
-
-                                                // Establecer el UID de Firebase Auth en el usuario
-                                                usuario.setUid(user.getUid());
-
-                                                // Redirigir a una pantalla de verificación de correo
-                                                Intent intent = new Intent(this, VerificacionCorreoActivity.class);
-                                                intent.putExtra("usuario", usuario);
-                                                intent.putExtra("imagenUri", imagenUri);
-                                                startActivity(intent);
-
-                                                progressDialog.dismiss();
-                                                finish();
-                                            } else {
-                                                // Error al enviar correo de verificación
-                                                progressDialog.dismiss();
-                                                Toast.makeText(DireccionActivity.this,
-                                                        "Error al enviar correo de verificación",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
-                        } else {
-                            // Error en el registro de Authentication
-                            progressDialog.dismiss();
-                            Toast.makeText(DireccionActivity.this,
-                                    "Error en el registro: " + task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
+        public UsuarioDireccion(String direccion, String codigoPostal, String colonia,
+                                String estado, String ciudad, String referencia) {
+            this.direccion = direccion;
+            this.codigoPostal = codigoPostal;
+            this.colonia = colonia;
+            this.estado = estado;
+            this.ciudad = ciudad;
+            this.referencia = referencia;
         }
     }
+
 
     private String obtenerFechaHoraActual() {
         // Obtener la fecha y hora actual usando Calendar

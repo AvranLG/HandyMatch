@@ -67,24 +67,32 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp">
 
                 <ImageView
                     android:id="@+id/profileImage"
                     android:layout_width="117dp"
                     android:layout_height="117dp"
-                    android:layout_centerInParent="true"
-                    android:contentDescription="Logo Circular"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/usuario"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    android:contentDescription="Imagen de perfil"
+                    android:src="@drawable/usuario" />
 
-            </RelativeLayout>
+                <ImageView
+                    android:id="@+id/verifiedBadge"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="6dp"
+                    android:contentDescription="Usuario verificado"
+                    android:src="@drawable/ic_verified"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,6 +133,33 @@
                 android:paddingVertical="8dp"
                 android:text="Email"
                 android:textSize="16sp" />
+
+            <!-- Validar identidad (solo visible si no está verificado) -->
+            <LinearLayout
+                android:id="@+id/layoutValidarIdentidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvValidarIdentidad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:paddingVertical="8dp"
+                    android:text="Validar identidad"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_right"
+                    android:contentDescription="Validar identidad" />
+            </LinearLayout>
 
 
             <!-- Domicilio -->
@@ -395,7 +430,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="8dp"
                     android:text="Trabajos ofrecidos:"
                     android:textSize="13sp" />
 
@@ -423,6 +457,7 @@
                 android:layout_marginBottom="8dp"
                 />
 
+
             <TextView
                 android:id="@+id/textTerminos"
                 android:layout_width="wrap_content"
@@ -432,6 +467,7 @@
                 android:text="@string/terminosycondiciones"
                 android:textSize="16sp"
                 />
+
 
             <!-- Ayuda -->
 
@@ -460,6 +496,7 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -478,6 +515,50 @@
                     android:src="@drawable/ic_arrow_right"
                     android:contentDescription="Go to FAQ" />
             </LinearLayout>
+            <!-- Acerca de nosotros -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tvAcercaDeNosotros"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Acerca de nosotros"
+                    android:textSize="16sp"
+                    android:paddingVertical="8dp"
+                    android:clickable="true"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_right"
+                    android:contentDescription="Go to About Us" />
+            </LinearLayout>
+
+            <!-- Cerrar Sesión -->
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#1E998A"
+                android:padding="12dp"
+                android:text="Cerrar sesión"
+                android:textColor="#FFFFFF" />
+
+            <!-- Eliminar Cuenta - Nuevo botón -->
+            <Button
+                android:id="@+id/btnEliminarCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#009688"
+                android:padding="12dp"
+                android:text="Eliminar cuenta"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

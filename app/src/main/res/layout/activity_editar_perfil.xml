@@ -87,7 +87,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nombre"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -122,7 +123,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Apellidos"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp"
                 />
 
@@ -151,7 +153,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="10dp" />
+                android:layout_height="15dp" />
 
             <!-- Título y flechita -->
             <LinearLayout
@@ -168,7 +170,8 @@
                     android:layout_weight="1"
                     android:text="Contraseña"
                     android:textSize="16sp"
-                    android:textColor="@color/md_theme_onBackground"
+                    android:textStyle="bold"
+                    android:textColor="@color/fondosyletras"
                     android:paddingVertical="8dp" />
 
                 <ImageView
@@ -178,6 +181,10 @@
                     android:src="@drawable/ic_arrow_right"
                     android:contentDescription="Mostrar u ocultar campos de contraseña" />
             </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
             <!-- Campos de contraseña (inician ocultos) -->
             <LinearLayout
@@ -254,7 +261,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Número de teléfono"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -291,7 +299,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Dirección"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -326,7 +335,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Código postal"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -361,7 +371,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Colonia"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -396,7 +407,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Estado"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -431,7 +443,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ciudad"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -466,7 +479,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Referencia"
-                android:textColor="@color/md_theme_onBackground"
+                android:textStyle="bold"
+                android:textColor="@color/fondosyletras"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout

@@ -67,9 +67,10 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
     private static final long INTERVALO_TICK = 1000; // 1 segundo
 
     private static final String SUPABASE_URL = "https://yyaepcxpedvbkxsjldtf.supabase.co";
-    private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWVwY3hwZWR2Ymt4c2psZHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjY5NTQsImV4cCI6MjA1ODUwMjk1NH0.B8WbrpGjiMWQxR2cNGKsJ_DXOQbmdA-DW8ygNfCbl_8";  // Coloca tu API key de Supabase aquí
-    private static final String STORAGE_BUCKET_NAME = "imagenes-usuarios";  // Nombre del bucket en Supabase
+    private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWVwY3hwZWR2Ymt4c2psZHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MjY5NTQsImV4cCI6MjA1ODUwMjk1NH0.B8WbrpGjiMWQxR2cNGKsJ_DXOQbmdA-DW8ygNfCbl_8";
+    private static final String STORAGE_BUCKET_NAME = "imagenes-usuarios";
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,20 +79,41 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Validando datos...");  // Mensaje que se mostrará
-        progressDialog.setCancelable(false);  // No permite cancelar el ProgressDialog tocando fuera de él
+        progressDialog.setMessage("Validando datos...");
+        progressDialog.setCancelable(false);
 
-        // Recuperar datos del intent
-        Intent intent = getIntent();
-        usuario = (Usuario) intent.getSerializableExtra("usuario");
-        imagenUri = intent.getStringExtra("imagenUri");
-
+        // Inicializar vistas
         TextView correoTextView = findViewById(R.id.correoTextView);
         timerTextView = findViewById(R.id.timerTextView);
-        correoTextView.setText("Te hemos enviado un correo de verificación a: " + usuario.getEmail());
-
         Button reenviarCorreoButton = findViewById(R.id.reenviarCorreoButton);
         continuarButton = findViewById(R.id.continuarButton);
+
+        // SOLUCIÓN: Verificar que el intent y el extra existen
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("usuario")) {
+            usuario = (Usuario) intent.getSerializableExtra("usuario");
+            imagenUri = intent.getStringExtra("imagenUri");
+        } else {
+            // Si no existe el extra "usuario", intentar obtener el usuario de Firebase
+            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+            if (firebaseUser != null) {
+                usuario = new Usuario();
+                usuario.setEmail(firebaseUser.getEmail());
+                // Establecer otros campos si son necesarios
+            } else {
+                // Si aún así no hay usuario, crear uno temporal o manejar el error
+                Toast.makeText(this, "Error: No se pudo obtener información del usuario", Toast.LENGTH_LONG).show();
+                navigateToLogin();
+                return; // Salir del método onCreate para evitar NullPointerException
+            }
+        }
+
+        // SOLUCIÓN: Verificar que usuario no sea null antes de acceder a sus métodos
+        if (usuario != null && usuario.getEmail() != null) {
+            correoTextView.setText("Te hemos enviado un correo de verificación a: " + usuario.getEmail());
+        } else {
+            correoTextView.setText("Te hemos enviado un correo de verificación");
+        }
 
         reenviarCorreoButton.setOnClickListener(v -> reenviarCorreoVerificacion());
         continuarButton.setOnClickListener(v -> verificarCorreo());
@@ -99,6 +121,14 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
         iniciarCuentaRegresiva();
     }
 
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    // El resto de los métodos permanecen igual...
     private void iniciarCuentaRegresiva() {
         countDownTimer = new CountDownTimer(TIEMPO_VERIFICACION, INTERVALO_TICK) {
             @Override
@@ -135,6 +165,13 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
     }
 
     private void verificarCorreo() {
+        // SOLUCIÓN: Verificar que usuario no sea null antes de continuar
+        if (usuario == null) {
+            Toast.makeText(this, "Error: Información de usuario no disponible", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+            return;
+        }
+
         progressDialog.show();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -157,8 +194,12 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
             });
+        } else {
+            Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
         }
     }
+
     @Override
     public void onBackPressed() {
         // Si el usuario presiona el botón de retroceso, eliminar el usuario no verificado
