@@ -80,7 +80,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private String fotoUrl = "";
     private SharedPreferences preferences;
 
-    GenerativeModel gm = new GenerativeModel(/* modelName */ "gemini-1.5-flash", Secrets.GEMINI_API_KEY);
+    GenerativeModel gm = new GenerativeModel(/* modelName */ "gemini-1.5-flash", secrets.GEMINI_API_KEY);
     GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
     @Override
