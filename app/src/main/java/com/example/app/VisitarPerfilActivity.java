@@ -125,11 +125,9 @@ public class VisitarPerfilActivity extends AppCompatActivity {
 
                 Boolean verificado = snapshot.child("verificado").getValue(Boolean.class);
                 boolean mostrarInsignia = verificado != null && verificado;
-                Log.d("DEBUG_VERIFICADO", "Valor: " + verificado);  // Debe mostrar "true"
 
                 if (verifiedBadge != null) {
                     verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
-                    Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
                 }
 
                 nameText.setText(nombre != null ? nombre : "Nombre no disponible");

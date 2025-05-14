@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
+import com.google.common.net.InternetDomainName;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
 
     private List<Publicacion> listaPublicaciones;
     private Context context;
+    private ImageView verifiedBadge;
     private int itemExpandedPosition = -1;
 
     public PublicacionAdapter(List<Publicacion> listaPublicaciones, Context context) {
@@ -46,6 +48,8 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
     @Override
     public PublicacionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.card_trabajo, parent, false);
+
+
         return new PublicacionViewHolder(view);
     }
 
@@ -133,6 +137,33 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
                             .circleCrop()
                             .into(holder.profileImage);
                 }
+
+                DatabaseReference userRef = FirebaseDatabase.getInstance()
+                        .getReference("usuarios")
+                        .child(publicacion.getIdUsuario());
+
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String nombre = dataSnapshot.child("nombre").getValue(String.class);
+                        Boolean verificado = dataSnapshot.child("verificado").getValue(Boolean.class);
+
+                        // Asegúrate de que holder esté accesible aquí
+                        holder.tvNombre.setText(nombre != null ? nombre : "Desconocido");
+
+                        boolean mostrarInsignia = verificado != null && verificado;
+
+                        if (holder.verifiedBadge != null) {
+                            holder.verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("FirebaseError", "Error al obtener datos del usuario", databaseError.toException());
+                    }
+                });
+
             }
 
             @Override
@@ -168,7 +199,7 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
 
     public static class PublicacionViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitulo, tvDescripcion, tvFechaHora, tvUbicacion, tvPrecio, tvNombre;
-        ImageView profileImage;
+        ImageView profileImage, verifiedBadge;
         Chip tvCategoria;
         Button verMasButton, btnHandymatch;
         MapView mapView;
@@ -183,11 +214,13 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             profileImage = itemView.findViewById(R.id.profileImage);
+            verifiedBadge = itemView.findViewById(R.id.verifiedBadge);  // <- aquí
             tvCategoria = itemView.findViewById(R.id.tvCategoria);
             verMasButton = itemView.findViewById(R.id.btnVerMas);
             btnHandymatch = itemView.findViewById(R.id.btnHandymatch);
         }
     }
+
 
     private int getColorForCategoria(String categoria) {
         switch (categoria.toLowerCase()) {

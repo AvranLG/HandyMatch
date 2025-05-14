@@ -20,20 +20,37 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginBottom="6dp">
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:contentDescription="Logo Circular"
-                android:foregroundGravity="center"
-                android:scaleType="centerCrop"
-                android:src="@drawable/usuario"/>
 
+            <!-- Imagen de perfil con insignia -->
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Logo Circular"
+                    android:src="@drawable/usuario" />
+
+                <ImageView
+                    android:id="@+id/verifiedBadge"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="2dp"
+                    android:contentDescription="Usuario verificado"
+                    android:src="@drawable/ic_verified"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- Espacio entre imagen y texto -->
             <Space
-                android:layout_width="2dp"
+                android:layout_width="6dp"
                 android:layout_height="match_parent" />
 
+            <!-- Nombre del usuario -->
             <TextView
                 android:id="@+id/tvNombre"
                 android:layout_width="0dp"
@@ -44,6 +61,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
+            <!-- Precio -->
             <TextView
                 android:id="@+id/tvPrecio"
                 android:layout_width="wrap_content"
@@ -52,23 +70,23 @@
                 android:textColor="#009688"
                 android:textStyle="bold" />
 
+            <!-- Espacio entre precio y botón eliminar -->
             <Space
                 android:layout_width="15dp"
                 android:layout_height="match_parent" />
 
+            <!-- Botón eliminar -->
             <ImageView
                 android:id="@+id/tvEliminar"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_centerInParent="true"
                 android:contentDescription="Eliminar"
-                android:foregroundGravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_eliminar"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:visibility="gone"/>
-
+                android:visibility="gone" />
         </LinearLayout>
+
 
         <!-- Descripción -->
         <TextView
