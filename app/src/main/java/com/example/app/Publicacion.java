@@ -1,6 +1,7 @@
 package com.example.app;
 public class Publicacion {
     private String titulo;
+    private String tituloLower;
     private String categoria;
     private String descripcion;
     private String fechaHora;
@@ -15,9 +16,10 @@ public class Publicacion {
     public Publicacion() {}
 
     // Constructor con todos los campos
-    public Publicacion(String titulo, String categoria, String descripcion, String fechaHora,
+    public Publicacion(String titulo, String tituloLower, String categoria, String descripcion, String fechaHora,
                        String pago, String ubicacion, Double latitud, Double longitud, String idUsuario, String estadoPublicacion) {
         this.titulo = titulo;
+        this.tituloLower = tituloLower;
         this.categoria = categoria;
         this.descripcion = descripcion;
         this.fechaHora = fechaHora;
@@ -105,6 +107,15 @@ public class Publicacion {
     public String getEstadoPublicacion() {
         return estadoPublicacion;
     }
+
+    public String getTituloLower() {
+        return tituloLower;
+    }
+
+    public void setTituloLower(String tituloLower) {
+        this.tituloLower = tituloLower;
+    }
+
 
     public void setEstadoPublicacion(String estadoPublicacion) {
         this.estadoPublicacion = estadoPublicacion;

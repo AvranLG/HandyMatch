@@ -467,7 +467,7 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
                     Log.d("PublicarTrabajo", "Usuario autenticado con ID: " + idUsuario);
 
                     // Crear el objeto de publicación
-                    Publicacion publicacion = new Publicacion(titulo, categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario, estadoPublicacion);
+                    Publicacion publicacion = new Publicacion(titulo, titulo.toLowerCase(), categoria, descripcion, fechaHora, pago, ubicacion, latitud, longitud, idUsuario, estadoPublicacion);
                     Log.d("PublicarTrabajo", "Publicación creada: " + publicacion);
 
                     // Guardar en la base de datos de Firebase Realtime Database
