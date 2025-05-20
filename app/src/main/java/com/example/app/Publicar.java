@@ -434,7 +434,7 @@ public class Publicar extends AppCompatActivity implements OnMapReadyCallback {
         }
 
         // Verificar el contenido del título y la descripción con Gemini
-        String prompt = "Analiza el siguiente título y descripción de una publicación y determina si contiene algo dudoso, inapropiado o que infrinja alguna política de contenido. Responde solo con 'true' si es dudoso y 'false' si es aceptable.\n\nTítulo: " + titulo + "\nDescripción: " + descripcion;
+        String prompt = "Analiza el siguiente título y descripción de una publicación y determina si contiene algo dudoso, inapropiado o que infrinja alguna política de contenido. Maneja un nivel de sensibilidad del 30 %. Responde solo con 'true' si es dudoso y 'false' si es aceptable.\n\nTítulo: " + titulo + "\nDescripción: " + descripcion;
         Log.d("PublicarTrabajo", "Prompt para Gemini: " + prompt);
 
         Content content = new Content.Builder().addText(prompt).build();

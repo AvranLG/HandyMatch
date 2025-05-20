@@ -99,11 +99,11 @@
                         app:singleSelection="true">
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTodo"
+                            android:id="@+id/chipPublicaciones"
                             style="@style/Widget.MaterialComponents.Chip.Choice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Usuarios"
+                            android:text="Publicaciones"
                             android:textColor="@color/chip_text_selector"
                             android:textStyle="bold"
                             app:checkedIconVisible="false"
@@ -111,23 +111,11 @@
                             app:chipCornerRadius="8dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipHogar"
+                            android:id="@+id/chipUsuarios"
                             style="@style/Widget.MaterialComponents.Chip.Choice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Titulos"
-                            android:textColor="@color/chip_text_selector"
-                            app:checkedIconVisible="false"
-                            app:chipBackgroundColor="@color/chip_selector"
-                            app:chipCornerRadius="8dp" />
-
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTecnologia"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ubicacion"
+                            android:text="Usuarios"
                             android:textColor="@color/chip_text_selector"
                             app:checkedIconVisible="false"
                             app:chipBackgroundColor="@color/chip_selector"
