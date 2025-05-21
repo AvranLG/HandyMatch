@@ -122,7 +122,7 @@ public class DireccionActivity extends AppCompatActivity {
     // Metodo para validar dirección
     private boolean validarDireccion(String direccion) {
         // Permite letras (mayúsculas y minúsculas), números, espacios, guiones, puntos y #
-        String regex = "^[a-zA-Z0-9\\s\\-\\.#]+$";
+        String regex = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-\\.#]+$";
         return direccion.matches(regex) && direccion.length() >= 5 && direccion.length() <= 100;
     }
 
