@@ -24,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -141,7 +142,7 @@ public class DireccionActivity extends AppCompatActivity {
     }
 
     // Metodo para validar ciudad
-    private boolean validarCiudad(String ciudad) {
+    private boolean validarCiudad(@NonNull String ciudad) {
         // Permite solo letras y espacios, incluyendo acentos
         String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
         return ciudad.matches(regex) && ciudad.length() >= 2 && ciudad.length() <= 50;
