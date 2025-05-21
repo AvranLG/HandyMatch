@@ -115,10 +115,12 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
 
         holder.btnHandymatch.setOnClickListener(v -> {
             String idUsuarioEmpleador = publicacion.getIdUsuario();
+            String idPublicacion = publicacion.getIdPublicacion();
             androidx.fragment.app.FragmentActivity activity = (androidx.fragment.app.FragmentActivity) context;
-            HandyMatchDialogFragment dialog = HandyMatchDialogFragment.newInstance(idUsuarioEmpleador);
+            HandyMatchDialogFragment dialog = HandyMatchDialogFragment.newInstance(idUsuarioEmpleador, idPublicacion);
             dialog.show(activity.getSupportFragmentManager(), "handymatchDialog");
         });
+
 
         // Obtener datos del empleador
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(publicacion.getIdUsuario());

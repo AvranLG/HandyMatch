@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +82,7 @@ public class HomeFragment extends Fragment {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Publicacion publicacion = snapshot.getValue(Publicacion.class);
+                    publicacion.setIdPublicacion(snapshot.getKey());
                     if (publicacion != null && "publicada".equalsIgnoreCase(publicacion.getEstadoPublicacion())) {
                         listaOriginal.add(publicacion);
                         Log.d("HomeFragment", "Publicación publicada cargada: " + publicacion.toString());

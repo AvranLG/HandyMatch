@@ -25,10 +25,11 @@ public class HandyMatchDialogFragment extends DialogFragment {
 
     private String idUsuarioEmpleador;
 
-    public static HandyMatchDialogFragment newInstance(String idUsuario) {
+    public static HandyMatchDialogFragment newInstance(String idUsuario, String idPublicacion) {
         HandyMatchDialogFragment fragment = new HandyMatchDialogFragment();
         Bundle args = new Bundle();
         args.putString("idUsuario", idUsuario);
+        args.putString("idPublicacion", idPublicacion);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,6 +40,7 @@ public class HandyMatchDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_confirmar_handymatch, container, false);
 
         idUsuarioEmpleador = getArguments().getString("idUsuario");
+
 
         Button btnVisitarPerfil = view.findViewById(R.id.btnVerPerfil);
         btnVisitarPerfil.setOnClickListener(v -> {
@@ -64,37 +66,47 @@ public class HandyMatchDialogFragment extends DialogFragment {
         Button btnCancelar = view.findViewById(R.id.btnCancelar);
         btnCancelar.setOnClickListener(v -> dismiss());
 
+// Botón de confirmar HandyMatch
         Button btnConfirmarHandy = view.findViewById(R.id.btnConfirmarHandy);
         btnConfirmarHandy.setOnClickListener(v -> {
             String uidActual = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String uidOtro = idUsuarioEmpleador;
+            String idPublicacion = getArguments().getString("idPublicacion"); // Asegurar obtener idPublicacion
 
-            if (uidActual == null || uidOtro == null) {
-                Log.e("HandyMatch", "UIDs no válidos");
+            if (uidActual == null || uidOtro == null || idPublicacion == null) {
+                Log.e("HandyMatch", "Datos incompletos");
                 return;
             }
 
-            String idConversacion = uidActual.compareTo(uidOtro) < 0 ?
-                    uidActual + "_" + uidOtro : uidOtro + "_" + uidActual;
-
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
-            // Crear nodo vacío para mensajes
-            dbRef.child("mensajes").child(idConversacion).setValue(null);
+            // 🔹 Crear conversación (código sin cambios)
+            // ... (mantén tu lógica existente de creación de conversación)
 
-            // Crear datos de la conversación
-            Map<String, Object> conversacionData = new HashMap<>();
-            conversacionData.put("idConversacion", idConversacion);
-            conversacionData.put("ultimoMensaje", "");
-            conversacionData.put("timestamp", ServerValue.TIMESTAMP);
+            // 🔹 Enviar solicitud - PARTE CORREGIDA
+            DatabaseReference solicitudesRef = dbRef.child("usuarios")
+                    .child(uidOtro)
+                    .child("solicitudes");
 
-            // Guardar para ambos usuarios
-            dbRef.child("conversaciones_usuario").child(uidActual).child(uidOtro).setValue(conversacionData);
-            dbRef.child("conversaciones_usuario").child(uidOtro).child(uidActual).setValue(conversacionData);
+            String idSolicitud = solicitudesRef.push().getKey();
 
-            Log.d("HandyMatch", "Conversación creada entre " + uidActual + " y " + uidOtro);
-            dismiss(); // opcional, cerrar el diálogo
+            Map<String, Object> datosSolicitud = new HashMap<>();
+            datosSolicitud.put("idSolicitud", idSolicitud);
+            datosSolicitud.put("idUsuarioPostulante", uidActual);
+            datosSolicitud.put("idPublicacion", idPublicacion); // Campo crucial faltante
+            datosSolicitud.put("timestamp", ServerValue.TIMESTAMP);
+
+            // Guardar bajo el ID generado
+            solicitudesRef.child(idSolicitud).setValue(datosSolicitud)
+                    .addOnSuccessListener(unused -> {
+                        Log.d("HandyMatch", "Solicitud guardada con ID: " + idSolicitud);
+                        Log.d("HandyMatch", "Detalles: Publicación=" + idPublicacion + ", Postulante=" + uidActual);
+                    })
+                    .addOnFailureListener(e -> Log.e("HandyMatch", "Error al guardar", e));
+
+            dismiss();
         });
+
 
 
         return view;

@@ -11,6 +11,7 @@ public class Publicacion {
     private Double longitud;
     private String idUsuario;
     private String estadoPublicacion;
+    private String idPublicacion;
 
     // Constructor vacío (requerido por Firebase)
     public Publicacion() {}
@@ -114,6 +115,14 @@ public class Publicacion {
 
     public void setTituloLower(String tituloLower) {
         this.tituloLower = tituloLower;
+    }
+
+    public String getIdPublicacion() {
+        return idPublicacion;
+    }
+
+    public void setIdPublicacion(String idPublicacion) {
+        this.idPublicacion = idPublicacion;
     }
 
 
