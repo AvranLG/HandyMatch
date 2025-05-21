@@ -104,7 +104,7 @@ public class VerificacionCorreoActivity extends AppCompatActivity {
                 // Si aún así no hay usuario, crear uno temporal o manejar el error
                 Toast.makeText(this, "Error: No se pudo obtener información del usuario", Toast.LENGTH_LONG).show();
                 navigateToLogin();
-                return; // Salir del método onCreate para evitar NullPointerException
+                return; // Salir del metodo onCreate para evitar NullPointerException
             }
         }
 
