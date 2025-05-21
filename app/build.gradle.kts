@@ -89,6 +89,10 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.8.9")
     implementation("androidx.navigation:navigation-ui:2.8.9")
 
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    implementation ("com.squareup.picasso:picasso:2.8")
+
     implementation("com.google.firebase:firebase-auth:23.2.0")  // Dependencia de Firebase Authentication
     implementation("com.google.android.gms:play-services-auth:21.3.0")  // Dependencia de Google Sign-In
     implementation ("com.facebook.android:facebook-android-sdk:18.0.2")

@@ -23,6 +23,16 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.*;
+import com.squareup.picasso.Picasso;
+
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private int lastSelectedIndex = -1;
@@ -42,6 +52,48 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // ===================== Cargar datos de usuario en el header del drawer =====================
+        View headerView = navigationView.getHeaderView(0);
+        TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
+        TextView textViewEmail = headerView.findViewById(R.id.textViewEmail);
+        ImageView imageViewHeader = headerView.findViewById(R.id.imageViewHeader);
+
+// Obtener usuario actual de Firebase
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            String uid = user.getUid();
+            DatabaseReference usuarioRef = FirebaseDatabase.getInstance().getReference("usuarios").child(uid);
+
+            usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String nombre = snapshot.child("nombre").getValue(String.class);
+                        String correo = snapshot.child("email").getValue(String.class);
+                        String fotoUrl = snapshot.child("imagenUrl").getValue(String.class);
+
+                        textViewUsername.setText(nombre != null ? nombre : "Usuario");
+                        textViewEmail.setText(correo != null ? correo : "Sin correo");
+
+                        if (fotoUrl != null && !fotoUrl.isEmpty()) {
+                            Picasso.get()
+                                    .load(fotoUrl)
+                                    .placeholder(R.drawable.usuario)
+                                    .error(R.drawable.usuario)
+                                    .into(imageViewHeader);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Puedes mostrar un Toast o log
+                }
+            });
+        }
+
 
         // Verificar permisos para el mapa
         checkAndRequestPermissions();

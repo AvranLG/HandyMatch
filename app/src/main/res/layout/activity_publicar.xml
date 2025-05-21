@@ -367,7 +367,8 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginStart="4dp"
-                    android:layout_marginBottom="4dp"/>
+                    android:layout_marginBottom="4dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -392,7 +393,8 @@
                         app:startIconTint="@color/fondosyletras"
                         app:endIconMode="custom"
                         app:endIconDrawable="@drawable/ic_add_a_photo"
-                        app:endIconTint="@color/fondosyletras">
+                        app:endIconTint="@color/fondosyletras"
+                        android:visibility="gone">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/agregarFotos"
@@ -400,7 +402,8 @@
                             android:layout_height="wrap_content"
                             android:focusable="false"
                             android:inputType="none"
-                            android:hint="Toca para añadir fotos del trabajo" />
+                            android:hint="Toca para añadir fotos del trabajo"
+                            android:visibility="gone"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 

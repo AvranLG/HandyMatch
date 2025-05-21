@@ -102,8 +102,10 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
 
                         if (imagenUrl != null && !imagenUrl.isEmpty()) {
                             RequestOptions options = new RequestOptions()
+                                    .circleCropTransform()
                                     .placeholder(R.drawable.usuario)
                                     .error(R.drawable.usuario);
+
 
                             Glide.with(holder.itemView.getContext())
                                     .load(imagenUrl)
