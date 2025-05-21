@@ -1,8 +1,10 @@
 package com.example.app;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -14,21 +16,32 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private int lastSelectedIndex = -1;
     private static final int PERMISSION_REQUEST_CODE = 1;
+
+    // Drawer components
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        // Inicializar componentes del Drawer
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
 
         // Verificar permisos para el mapa
         checkAndRequestPermissions();
@@ -41,7 +54,11 @@ public class HomeActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                mostrarDialogoSalida();
+                if (drawerLayout.isDrawerOpen(navigationView)) {
+                    drawerLayout.closeDrawer(navigationView);
+                } else {
+                    mostrarDialogoSalida();
+                }
             }
         });
 
@@ -61,13 +78,16 @@ public class HomeActivity extends AppCompatActivity {
         // Cargar fragment inicial (Home)
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new HomeFragment(), "HOME_FRAGMENT_TAG") // Usamos un tag para identificar el fragmento
+                    .replace(R.id.fragmentContainer, new HomeFragment(), "HOME_FRAGMENT_TAG")
                     .commit();
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
             lastSelectedIndex = 0; // Inicializar con la posición del Home
+
+            // Marcar el ítem navSolicitudes por defecto seleccionado en el drawer
+            navigationView.setCheckedItem(R.id.navSolicitudes);
         }
 
-        // Configurar listener para la navegación
+        // Configurar listener para la navegación inferior
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             int currentIndex = getIndexFromItemId(id);
@@ -92,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
                 lastSelectedIndex = currentIndex;
                 return true;
             } else if (id == R.id.nav_mensaje) {
-                 loadFragment(new ChatFragment(), isGoingToRight);
+                loadFragment(new ChatFragment(), isGoingToRight);
                 lastSelectedIndex = currentIndex;
                 return true;
             }
@@ -189,5 +209,32 @@ public class HomeActivity extends AppCompatActivity {
                 .setPositiveButton("Sí", (dialog, which) -> finishAffinity()) // Cierra la app
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss()) // Cancela el cierre
                 .show();
+    }
+
+    // Implementación del NavigationItemSelectedListener para el drawer lateral
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.navPublicaciones) {
+            Intent intent = new Intent(this, MisPublicacionesActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.navMisTrabajos) {
+            // TODO: Acción para "Mis trabajos"
+            // Intent a otra actividad o abrir fragmento
+
+        } else if (id == R.id.navSolicitudes) {
+            Intent intent = new Intent(this, SolicitudesActivity.class);
+            startActivity(intent);
+        }
+
+        drawerLayout.closeDrawers(); // cerrar menú lateral
+        return true;
+    }
+
+    // Método para abrir el drawer desde fragmentos u otras clases
+    public void abrirDrawer() {
+        drawerLayout.openDrawer(navigationView);
     }
 }

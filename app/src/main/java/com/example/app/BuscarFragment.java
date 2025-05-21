@@ -50,7 +50,7 @@ public class BuscarFragment extends Fragment {
         buscarText = view.findViewById(R.id.buscarText);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listaPublicaciones = new ArrayList<>();
-        adapter = new PublicacionAdapter(listaPublicaciones, getContext());
+        adapter = new PublicacionAdapter(listaPublicaciones, getContext(), false);
         recyclerView.setAdapter(adapter);
 
         Chip chipPublicaciones = view.findViewById(R.id.chipPublicaciones);
@@ -166,8 +166,8 @@ public class BuscarFragment extends Fragment {
         Query query = refPublicaciones.orderByChild("idUsuario").equalTo(idUsuario);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            @Override            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 // Ignorar si ya hay una nueva búsqueda en curso
                 if (idBusqueda != busquedaActualId) {
                     Log.d("BuscarFragment", "Ignorando publicaciones de búsqueda anterior");

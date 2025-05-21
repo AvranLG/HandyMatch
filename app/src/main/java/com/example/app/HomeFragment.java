@@ -24,18 +24,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private Button btnPublicarTrabajo;
-    private ImageButton btnNotificacion;
+    private ImageButton btnPublicaciones;
     private ChipGroup chipGroup;
     private RecyclerView recyclerView;
     private PublicacionAdapter publicacionAdapter;
     private List<Publicacion> listaPublicaciones;
     private List<Publicacion> listaOriginal = new ArrayList<>();
-
 
     public HomeFragment() {
         // Constructor vacío requerido
@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflar el layout para este fragmento
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -56,17 +55,16 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         // Inicializar vistas
         btnPublicarTrabajo = view.findViewById(R.id.fabPublicar);
-        btnNotificacion = view.findViewById(R.id.btn_notificacion);
+        btnPublicaciones = view.findViewById(R.id.btn_menu);
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.recyclerViewPublicaciones);
 
         // Configurar RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listaPublicaciones = new ArrayList<>();
-        publicacionAdapter = new PublicacionAdapter(listaPublicaciones, getContext());
+        publicacionAdapter = new PublicacionAdapter(listaPublicaciones, getContext(), false);
         recyclerView.setAdapter(publicacionAdapter);
 
         // Cargar las publicaciones desde Firebase
@@ -75,36 +73,34 @@ public class HomeFragment extends Fragment {
         publicacionesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listaPublicaciones.clear(); // Limpiar lista antes de agregar nuevas publicaciones
+                listaPublicaciones.clear();
+                listaOriginal.clear();
 
                 Log.d("HomeFragment", "Cantidad de publicaciones en Firebase: " + dataSnapshot.getChildrenCount());
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Publicacion publicacion = snapshot.getValue(Publicacion.class);
-                    if (publicacion != null) {
+                    if (publicacion != null && "publicada".equalsIgnoreCase(publicacion.getEstadoPublicacion())) {
                         listaOriginal.add(publicacion);
-                        Log.d("HomeFragment", "Publicación cargada: " + publicacion.toString());
-                    } else {
-                        Log.e("HomeFragment", "Error al convertir publicación: " + snapshot.getKey());
+                        Log.d("HomeFragment", "Publicación publicada cargada: " + publicacion.toString());
                     }
                 }
 
-                Log.d("HomeFragment", "Total publicaciones cargadas: " + listaPublicaciones.size());
+                Collections.reverse(listaOriginal);
 
-                // Aplicar el filtro actualmente seleccionado
+                Log.d("HomeFragment", "Total publicaciones cargadas y filtradas: " + listaOriginal.size());
+
                 filtrarPorCategoria(getCategoriaSeleccionada());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar errores de Firebase
                 Log.e("HomeFragment", "Error al cargar publicaciones", databaseError.toException());
             }
         });
 
-        // Configurar listeners
+        // Botón para publicar trabajo
         btnPublicarTrabajo.setOnClickListener(v -> {
-            // Acción para publicar trabajo
             if (getActivity() != null) {
                 Intent intent = new Intent(getActivity(), Publicar.class);
                 startActivity(intent);
@@ -113,25 +109,26 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        btnNotificacion.setOnClickListener(v -> {
-            // Acción para ver notificaciones
+        // Botón para abrir el menú hamburguesa
+        btnPublicaciones.setOnClickListener(v -> {
+            if (getActivity() instanceof HomeActivity) {
+                ((HomeActivity) getActivity()).abrirDrawer();
+            } else {
+                Log.e("Error", "La actividad no es HomeActivity o es null.");
+            }
         });
 
-        // Configurar el chip seleccionado por defecto
+        // Seleccionar chip "todo" por defecto
         Chip chipTodo = view.findViewById(R.id.chipTodo);
         chipTodo.setChecked(true);
 
-        //Manejar el chip seleccionado
-        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            filtrarPorCategoria(getCategoriaSeleccionada());
-        });
-
+        // Manejar selección de chip
+        chipGroup.setOnCheckedChangeListener((group, checkedId) -> filtrarPorCategoria(getCategoriaSeleccionada()));
     }
 
-    // Metodo para agregar una nueva publicación
     public void agregarPublicacion(Publicacion publicacion) {
         listaPublicaciones.add(publicacion);
-        publicacionAdapter.notifyItemInserted(listaPublicaciones.size() - 1); // Notificar que se insertó un nuevo ítem
+        publicacionAdapter.notifyItemInserted(listaPublicaciones.size() - 1);
     }
 
     private void filtrarPorCategoria(String categoria) {
@@ -148,7 +145,6 @@ public class HomeFragment extends Fragment {
         publicacionAdapter.notifyDataSetChanged();
     }
 
-
     private String getCategoriaSeleccionada() {
         int chipId = chipGroup.getCheckedChipId();
         if (chipId == View.NO_ID || chipId == R.id.chipTodo) {
@@ -158,5 +154,4 @@ public class HomeFragment extends Fragment {
             return chipSeleccionado.getText().toString().toLowerCase();
         }
     }
-
 }

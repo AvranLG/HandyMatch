@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navPublicaciones"
+        android:icon="@drawable/publicacion_en_linea"
+        android:title="Mis Publicaciones" />
+
+    <item
+        android:id="@+id/navMisTrabajos"
+        android:icon="@drawable/martillo"
+        android:title="Mis trabajos" />
+
+    <item
+        android:id="@+id/navSolicitudes"
+        android:icon="@drawable/solicitudes"
+        android:title="Mis Solicitudes" />
+
+</menu>
