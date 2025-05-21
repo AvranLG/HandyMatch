@@ -16,18 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -35,11 +36,14 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
 
     private List<Publicacion> listaPublicaciones;
     private Context context;
+    private boolean mostrarBotonEliminar;   // ahora se recibe por constructor
     private int itemExpandedPosition = -1;
 
-    public PublicacionAdapter(List<Publicacion> listaPublicaciones, Context context) {
+    // Constructor actualizado para aceptar mostrarBotonEliminar
+    public PublicacionAdapter(List<Publicacion> listaPublicaciones, Context context, boolean mostrarBotonEliminar) {
         this.listaPublicaciones = listaPublicaciones;
         this.context = context;
+        this.mostrarBotonEliminar = mostrarBotonEliminar;
     }
 
     @NonNull
@@ -53,7 +57,13 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
     public void onBindViewHolder(@NonNull PublicacionViewHolder holder, int position) {
         Publicacion publicacion = listaPublicaciones.get(position);
 
-        // Datos de la publicación
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        boolean esMiPublicacion = currentUser != null && currentUser.getUid().equals(publicacion.getIdUsuario());
+
+        holder.btnHandymatch.setVisibility(esMiPublicacion ? View.GONE : View.VISIBLE);
+        // Mostrar botón eliminar solo si la variable es true y es la publicación del usuario actual
+        holder.btnEliminar.setVisibility(mostrarBotonEliminar && esMiPublicacion ? View.VISIBLE : View.GONE);
+
         holder.tvTitulo.setText(publicacion.getTitulo());
         holder.tvDescripcion.setText(publicacion.getDescripcion());
         holder.tvFechaHora.setText(publicacion.getFechaHora());
@@ -81,7 +91,6 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             holder.mapView.getMapAsync(googleMap -> {
                 MapsInitializer.initialize(holder.mapView.getContext().getApplicationContext());
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
                 googleMap.clear();
                 googleMap.addMarker(new MarkerOptions().position(coordenadas).title("Ubicación del trabajo"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 16));
@@ -104,27 +113,26 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             notifyItemChanged(currentPosition);
         });
 
-        // Lógica del botón Hanymatch
         holder.btnHandymatch.setOnClickListener(v -> {
-            String idUsuarioEmpleador = publicacion.getIdUsuario(); // Obtener el id del empleador
-
-            // Crear el diálogo y pasarle el idUsuario
+            String idUsuarioEmpleador = publicacion.getIdUsuario();
+            String idPublicacion = publicacion.getIdPublicacion();
             androidx.fragment.app.FragmentActivity activity = (androidx.fragment.app.FragmentActivity) context;
-            HandyMatchDialogFragment dialog = HandyMatchDialogFragment.newInstance(idUsuarioEmpleador);
+            HandyMatchDialogFragment dialog = HandyMatchDialogFragment.newInstance(idUsuarioEmpleador, idPublicacion);
             dialog.show(activity.getSupportFragmentManager(), "handymatchDialog");
         });
 
-        // Aquí se carga el nombre y la foto del empleador que hizo la publicación
+
+        // Obtener datos del empleador
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("usuarios").child(publicacion.getIdUsuario());
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String nombreUsuario = dataSnapshot.child("nombre").getValue(String.class);
-                    String tipoLogin = dataSnapshot.child("tipoLogin").getValue(String.class);
+                    Boolean verificado = dataSnapshot.child("verificado").getValue(Boolean.class);
                     String fotoUrl = dataSnapshot.child("imagenUrl").getValue(String.class);
 
-                    holder.tvNombre.setText(nombreUsuario);
+                    holder.tvNombre.setText(nombreUsuario != null ? nombreUsuario : "Desconocido");
 
                     Glide.with(context)
                             .load(fotoUrl)
@@ -132,6 +140,10 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
                             .error(R.drawable.usuario)
                             .circleCrop()
                             .into(holder.profileImage);
+
+                    if (holder.verifiedBadge != null) {
+                        holder.verifiedBadge.setVisibility((verificado != null && verificado) ? View.VISIBLE : View.GONE);
+                    }
                 }
             }
 
@@ -141,7 +153,6 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -168,9 +179,9 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
 
     public static class PublicacionViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitulo, tvDescripcion, tvFechaHora, tvUbicacion, tvPrecio, tvNombre;
-        ImageView profileImage;
+        ImageView profileImage, verifiedBadge;
         Chip tvCategoria;
-        Button verMasButton, btnHandymatch;
+        Button verMasButton, btnHandymatch, btnEliminar;
         MapView mapView;
 
         public PublicacionViewHolder(@NonNull View itemView) {
@@ -183,9 +194,11 @@ public class PublicacionAdapter extends RecyclerView.Adapter<PublicacionAdapter.
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             profileImage = itemView.findViewById(R.id.profileImage);
+            verifiedBadge = itemView.findViewById(R.id.verifiedBadge);
             tvCategoria = itemView.findViewById(R.id.tvCategoria);
             verMasButton = itemView.findViewById(R.id.btnVerMas);
             btnHandymatch = itemView.findViewById(R.id.btnHandymatch);
+            btnEliminar = itemView.findViewById(R.id.btnEliminar);
         }
     }
 

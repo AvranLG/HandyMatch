@@ -36,7 +36,7 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <ImageButton
-                android:id="@+id/btn_notificacion"
+                android:id="@+id/btn_menu"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="24dp"
@@ -44,7 +44,7 @@
                 android:contentDescription="Notificaciones"
                 android:padding="5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_notificacion"
+                android:src="@drawable/nav_menu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@android:color/white" />

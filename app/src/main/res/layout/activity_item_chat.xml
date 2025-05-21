@@ -2,22 +2,41 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:background="@android:color/white">
 
-    <!-- Imagen del usuario -->
-    <ImageView
-        android:id="@+id/imgProfile"
+    <!-- Contenedor de imagen de perfil + insignia -->
+    <FrameLayout
+        android:id="@+id/profileContainer"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo"
-        android:layout_marginEnd="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Imagen del usuario -->
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            android:contentDescription="Imagen de perfil" />
+
+        <!-- Insignia de verificado (badge sobre la foto) -->
+        <ImageView
+            android:id="@+id/verifiedBadge"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="2dp"
+            android:src="@drawable/ic_verified"
+            android:contentDescription="Usuario verificado"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <!-- Nombre del usuario -->
     <TextView
@@ -27,8 +46,8 @@
         android:text="Handy Match Suport"
         android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/imgProfile"
-        app:layout_constraintTop_toTopOf="@id/imgProfile"
+        app:layout_constraintStart_toEndOf="@id/profileContainer"
+        app:layout_constraintTop_toTopOf="@id/profileContainer"
         app:layout_constraintEnd_toStartOf="@id/txtTime"/>
 
     <!-- Hora o fecha -->

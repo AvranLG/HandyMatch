@@ -28,6 +28,12 @@
         android:theme="@style/Theme.HandyMatch"
         tools:targetApi="31">
         <activity
+            android:name=".SolicitudesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MisPublicacionesActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activiy_Preguntas"
             android:exported="false" />
         <activity

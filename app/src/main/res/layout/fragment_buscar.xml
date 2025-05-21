@@ -72,223 +72,69 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/ButtonCategoría"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="99dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/fondogris"
-                        android:text="Categoría"
-                        android:textAllCaps="false"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="12sp"
-                        app:cornerRadius="16dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/ButtonUbicación"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="112dp"
-                        android:layout_height="37dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/fondogris"
-                        android:text="Ubicación"
-                        android:textAllCaps="false"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="12sp"
-                        app:cornerRadius="16dp" />
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingHorizontal="8dp"
+                        app:chipSpacingVertical="4dp"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/ButtonPresupuesto"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="118dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginEnd="8dp"
-                        android:backgroundTint="@color/fondogris"
-                        android:text="Presupuesto"
-                        android:textAllCaps="false"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="12sp"
-                        app:cornerRadius="16dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipPublicaciones"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Publicaciones"
+                            android:textColor="@color/chip_text_selector"
+                            android:textStyle="bold"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_selector"
+                            app:chipCornerRadius="8dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipUsuarios"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Usuarios"
+                            android:textColor="@color/chip_text_selector"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/chip_selector"
+                            app:chipCornerRadius="8dp" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+
+                <!-- Contenido principal -->
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewPublicaciones"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="true"
+                        android:padding="8dp"
+                        tools:listitem="@layout/card_trabajo" />
 
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/pintura"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pintura exterior"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
-
-                    <ImageButton
-                        android:id="@+id/flecha1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:scaleType="fitCenter"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_flechaderecha" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/instalacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Instalación de puertas"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
-
-                    <ImageButton
-                        android:id="@+id/flecha2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:scaleType="fitCenter"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_flechaderecha" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/limpieza"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Limpieza de alfombra"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
-
-                    <ImageButton
-                        android:id="@+id/flecha3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:scaleType="fitCenter"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_flechaderecha" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/reparacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reparación de persianas"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
-
-                    <ImageButton
-                        android:id="@+id/flecha4"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:scaleType="fitCenter"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_flechaderecha" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/limpiezaVentana"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Limpieza de ventanas"
-                        android:textColor="@color/letrasnormales"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
-
-                    <ImageButton
-                        android:id="@+id/flecha5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:scaleType="fitCenter"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_flechaderecha" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

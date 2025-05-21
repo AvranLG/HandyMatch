@@ -21,13 +21,29 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="6dp">
 
-            <ImageView
-                android:id="@+id/profileImage"
+            <!-- FrameLayout para imagen de perfil con insignia -->
+            <FrameLayout
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:contentDescription="Imagen de perfil"
-                android:scaleType="centerCrop"
-                android:src="@drawable/usuario" />
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Imagen de perfil"
+                    android:src="@drawable/usuario" />
+
+                <ImageView
+                    android:id="@+id/verifiedBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="3dp"
+                    android:visibility="gone"
+                    android:contentDescription="Insignia de verificado"
+                    android:src="@drawable/ic_verified" />
+            </FrameLayout>
 
             <Space
                 android:layout_width="8dp"

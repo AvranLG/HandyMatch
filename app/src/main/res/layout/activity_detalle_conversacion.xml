@@ -30,9 +30,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="?attr/selectableItemBackground"
-                android:padding="8dp"
-                android:onClick="volver_atras"
                 android:contentDescription="Regresar"
+                android:onClick="volver_atras"
+                android:padding="8dp"
                 app:srcCompat="?attr/actionModeCloseDrawable" />
 
             <FrameLayout
@@ -104,11 +104,11 @@
 
                 <ImageView
                     android:id="@+id/imgUsuarioAuth"
-                    android:layout_width="50dp"
+                    android:layout_width="41dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/usuario"
                     android:contentDescription="Foto Usuario"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/usuario" />
 
                 <ImageView
                     android:id="@+id/verifiedBadge1"

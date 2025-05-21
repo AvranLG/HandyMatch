@@ -114,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:hint="Pintura de interior para casa" />
+                            android:hint="Titulo" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -209,7 +209,7 @@
                             android:minLines="4"
                             android:overScrollMode="always"
                             android:scrollbars="vertical"
-                            android:hint="Necesito pintar el interior de mi casa, son 4 habitaciones y un baño..." />
+                            android:hint="Descripcion" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -254,8 +254,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
-                            android:inputType="none"
-                            android:hint="15/05/2025 16:30" />
+                            android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -297,8 +296,7 @@
                             android:id="@+id/pagoText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:hint="$5000.00" />
+                            android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 

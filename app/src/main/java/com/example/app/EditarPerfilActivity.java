@@ -293,7 +293,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
         imagenModificada = false;
         preferences.edit()
                 .remove(KEY_IMAGE_PATH)
-                .remove(KEY_IMAGE_MODIFIED)
+                .remove(KEY_IMAGE_MODIFIED) 
                 .apply();
     }
 

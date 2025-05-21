@@ -85,6 +85,7 @@ public class DetalleConversacionActivity extends AppCompatActivity {
     }
 
     private void cargarDatosUsuario() {
+        // Cargar datos del otro usuario
         database.getReference("usuarios").child(uidOtroUsuario).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -93,38 +94,36 @@ public class DetalleConversacionActivity extends AppCompatActivity {
                 tvNombreUsuario.setText(nombre);
                 Glide.with(DetalleConversacionActivity.this).load(fotoUrl).circleCrop().into(imgUsuario);
 
-                // Gestionar la visibilidad de la insignia
-
-                Boolean verificado = snapshot.child("verificado").getValue(Boolean.class);
-                boolean mostrarInsignia = verificado != null && verificado;
-                Log.d("DEBUG_VERIFICADO", "Valor: " + verificado);  // Debe mostrar "true"
+                Boolean verificadoOtro = snapshot.child("verificado").getValue(Boolean.class);
+                boolean mostrarInsigniaOtro = verificadoOtro != null && verificadoOtro;
 
                 if (verifiedBadge != null) {
-                    verifiedBadge.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
-                    Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
+                    verifiedBadge.setVisibility(mostrarInsigniaOtro ? View.VISIBLE : View.GONE);
+                    Log.d("Insignia_OtroUsuario", "Insignia " + (mostrarInsigniaOtro ? "visible" : "oculta"));
                 }
-
-                if (verifiedBadge1 != null) {
-                    verifiedBadge1.setVisibility(mostrarInsignia ? View.VISIBLE : View.GONE);
-                    Log.d("PerfilFragment", "Insignia " + (mostrarInsignia ? "visible" : "oculta"));
-                }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Chat", "Error al cargar datos del usuario: " + error.getMessage());
+                Log.e("Chat", "Error al cargar datos del otro usuario: " + error.getMessage());
             }
         });
 
-
-        // Cargar los datos del usuario autenticado
+        // Cargar datos del usuario autenticado
         String uidAuth = mAuth.getCurrentUser().getUid();
         database.getReference("usuarios").child(uidAuth).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String fotoUrlAuth = snapshot.child("imagenUrl").getValue(String.class);
                 Glide.with(DetalleConversacionActivity.this).load(fotoUrlAuth).circleCrop().into(imgUsuarioAuth);
+
+                Boolean verificadoAuth = snapshot.child("verificado").getValue(Boolean.class);
+                boolean mostrarInsigniaAuth = verificadoAuth != null && verificadoAuth;
+
+                if (verifiedBadge1 != null) {
+                    verifiedBadge1.setVisibility(mostrarInsigniaAuth ? View.VISIBLE : View.GONE);
+                    Log.d("Insignia_UsuarioAuth", "Insignia " + (mostrarInsigniaAuth ? "visible" : "oculta"));
+                }
             }
 
             @Override
@@ -132,8 +131,8 @@ public class DetalleConversacionActivity extends AppCompatActivity {
                 Log.e("Chat", "Error al cargar datos del usuario autenticado: " + error.getMessage());
             }
         });
-
     }
+
 
     private void enviarMensaje() {
         String texto = etMensaje.getText().toString().trim();
